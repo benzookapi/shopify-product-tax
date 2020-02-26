@@ -18,19 +18,23 @@
   <div id="app"></div>
 
   <script>
-    import enTranslations from '@shopify/polaris/locales/en.json';
-    import {AppProvider, Page, Card, Button} from '@shopify/polaris';
+    var AppBridge = window['app-bridge'];
+var actions = AppBridge.actions;
+var TitleBar = actions.TitleBar;
+var Button = actions.Button;
+var Redirect = actions.Redirect;
 
-    ReactDOM.render(
-      <AppProvider i18n={enTranslations}>
-      <Page title="Example app">
-        <Card sectioned>
-        <Button onClick={() => alert('Button clicked!')}>Example button</Button>
-        </Card>
-      </Page>
-    </AppProvider>,
-    document.querySelector('#app'),
-   );
+var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
+breadcrumb.subscribe(Button.Action.CLICK, function() {
+  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+});
+
+var titleBarOptions = {
+  title: 'My page title',
+  breadcrumbs: breadcrumb
+};
+
+var myTitleBar = TitleBar.create(app, titleBarOptions);
 
   </script>
 
