@@ -24,6 +24,7 @@ const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
 const CONTENT_TYPE = 'application/json';
+const HMAC_SECRET = 'hush';
 
 // Mongo URL and DB name for date store
 const MONGO_URL = `${process.env.SHOPIFY_MONGO_URL}`;
@@ -39,17 +40,20 @@ process.env.TZ = 'Asia/Tokyo';
  * 
 */
 router.get('/callback',  async (ctx, next) => {
-    let req = {};
-    req.client_id = API_KEY;
-    req.client_secret = API_SECRET;
-    req.code = ctx.request.query.code;
+  if (!verifyCode(ctx.request.query)) {
+    ctx.status = 404;
+    return;
+  }
+  let req = {};
+  req.client_id = API_KEY;
+  req.client_secret = API_SECRET;
+  req.code = ctx.request.query.code;
 
-    let res = await(accessEndpoint(`POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
+  let res = await(accessEndpoint(`POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
 
-    jsonLog(res);
+  jsonLog(res);
 
-    ctx.status = 200;
-  
+  ctx.status = 200;
 });
 
 /* 
@@ -87,6 +91,7 @@ const accessEndpoint = function(endpoint, req, method = "POST") {
       };
       // Failure callback
       var catch_func = function(e){
+        console.log(`ERROR: ${e}`);
         return resolve(e);      
       };
       if (method == "GET") {
@@ -104,6 +109,19 @@ const accessEndpoint = function(endpoint, req, method = "POST") {
       }    
     });
   };    
+
+/* --- Check if the given code is correct or not --- */
+const verifyCode = function(json) {
+  let temp = JSON.parse(JSON.stringify(json));
+  if (typeof temp.hmac === 'undefined') return false;
+  let sig = temp.hmac;
+  delete temp.hmac; 
+  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
+  const hmac = crypto.createHmac('sha256', HMAC_SECRET);
+  hmac.update(msg);
+  let signarure = hmac.digest('hex');
+  return signarure === sig ? true : false;
+};
 
 /* --- Check if the given signarure is corect or not for Webhook --- */
 const checkWebhookSignature = function(ctx, secret) {
