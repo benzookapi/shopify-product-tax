@@ -58,7 +58,7 @@ router.get('/auth',  async (ctx, next) => {
   let locale = ctx.request.query.locale;
   await ctx.render('auth', {
     api_key: API_KEY,
-    callback: `${ctx.request.url}/callback`,
+    callback: `${ctx.request.method}://${ctx.request.hostname}/callback`,
     shop: shop,
     locale: locale    
   });
