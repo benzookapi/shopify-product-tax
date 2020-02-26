@@ -54,7 +54,7 @@ router.get('/script_auth',  async (ctx, next) => {
     locale: `${ctx.session.locale}`,
     callback: `${ctx.session.callback}`
   });
-}
+});
 
 /*
  *
