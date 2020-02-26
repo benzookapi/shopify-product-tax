@@ -81,7 +81,7 @@ router.get('/',  async (ctx, next) => {
         }
       }
     }`;
-    let api_res = await(callGraphql(shop, ql));
+    let api_res = await(callGraphql(ctx, shop, ql));
     console.log(`${JSON.stringify(api_res)}`);
 
     ctx.state = {
@@ -126,7 +126,7 @@ router.get('/callback',  async (ctx, next) => {
         handle
       }
     }`;
-    let api_res = await(callGraphql(shop, ql));
+    let api_res = await(callGraphql(ctx, shop, ql));
     ctx.redirect(`https://${shop}/admin/apps/${api_res.data.app.handle}`);  
   } else {
     ctx.status = 500;
@@ -168,7 +168,7 @@ const verifyCode = function(json) {
   return signarure === sig ? true : false;
 };
 
-const callGraphql = function(shop, ql, path = GRAPHQL_PATH_ADMIN, token = null) {
+const callGraphql = function(ctx, shop, ql, path = GRAPHQL_PATH_ADMIN, token = null) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
     api_req.query = ql.replace(/\n/g, '');
