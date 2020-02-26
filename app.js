@@ -5,7 +5,6 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const koaRequest = require('koa-http-request');
 const views = require('koa-views');
-const session = require('koa-session');
 
 const crypto = require('crypto');
 
@@ -27,8 +26,6 @@ app.use(views(__dirname + '/views', {
     html: 'underscore'
   }
 }));
-
-app.use(session(app));
 
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
@@ -105,8 +102,6 @@ router.get('/',  async (ctx, next) => {
     /*ctx.state = {
       session: this.session
     }; */ 
-    ctx.session.shop = shop;
-    ctx.session.locale = locale;
     await ctx.render('top', {
       name: api_res.data.shop.products.edges[0].node.handle,
       shop: shop,
