@@ -40,13 +40,55 @@ const MONGO_COLLECTION = 'shops';
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
 
+/*
+ *
+ * --- Top ---
+ *
+*/
+router.get('/',  async (ctx, next) => {  
+  console.log("+++++++++ / ++++++++++");
+  if (!verifyCode(ctx.request.query)) {
+    ctx.status = 400;
+    return;
+  }
+
+  let shop = ctx.request.query.shop;
+  let locale = ctx.request.query.locale;
+
+  var shop_data = await(getDB(shop)); 
+  if (shop_data == null) {
+    ctx.body = "No shop data";
+  } else {
+    var api_req = {};
+    api_req.query = `{
+      shop {
+        products(first: 5) {
+          edges {
+            node {
+              id
+              handle
+            }
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+    }`.replace(/\n/g, '');
+    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
+    console.log(`${JSON.stringify(api_res)}`);
+    ctx.body = JSON.stringify(api_res);
+  }
+
+}
+
 /* 
  *
  * --- Callback endpoint during the installation ---
  * 
 */
 router.get('/callback',  async (ctx, next) => {
-  console.log("+++++++++ / ++++++++++");
+  console.log("+++++++++ /callback ++++++++++");
   if (!verifyCode(ctx.request.query)) {
     ctx.status = 400;
     return;
@@ -87,7 +129,6 @@ router.get('/callback',  async (ctx, next) => {
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
     console.log(`${JSON.stringify(api_res)}`);
     ctx.body = JSON.stringify(api_res);
-    ctx.status = 200;
   } else {
     ctx.status = 500;
   }  
