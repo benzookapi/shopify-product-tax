@@ -83,11 +83,9 @@ router.get('/',  async (ctx, next) => {
     }`;
     let api_res = await(callGraphql(ctx, shop, ql));
     console.log(`${JSON.stringify(api_res)}`);
-
-    ctx.state = {
-      session: this.session,
-      title: `AAAAA`
-    };  
+    /*ctx.state = {
+      session: this.session
+    }; */ 
     await ctx.render('top', {
       name: `${api_res.data.shop.products.edges[0].node.handle}`
     });
