@@ -40,6 +40,7 @@ process.env.TZ = 'Asia/Tokyo';
  * 
 */
 router.get('/callback',  async (ctx, next) => {
+  console.log("+++++++++ / ++++++++++");
   if (!verifyCode(ctx.request.query)) {
     ctx.status = 404;
     return;
@@ -51,7 +52,7 @@ router.get('/callback',  async (ctx, next) => {
 
   let res = await(accessEndpoint(`POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
 
-  jsonLog(res);
+  logJson(res);
 
   ctx.status = 200;
 });
@@ -61,26 +62,40 @@ router.get('/callback',  async (ctx, next) => {
  * --- Webhook  ---
  * 
 */
-router.post('/webhookorder', async (ctx, next) => {
-  console.log("******** webhookorder ********");
+router.post('/webhook', async (ctx, next) => {
+  console.log("******** webhook ********");
   console.log(JSON.stringify(ctx.request.body));
   /* Check the signature */
-  let valid = await(checkWebhookSignature(ctx));
+  let valid = await(checkWebhookSignature(ctx, "mysecret"));
   if (!valid) {
     ctx.status = 200;
     return;
   }  
-
-  let webhook_body = ctx.request.body;
-  
+  let webhook_body = ctx.request.body;  
   
   ctx.status = 200;
 });
 
 /* --- --- */
-const jsonLog = function(d, header = "") {
+const logJson = function(d, header = "") {
     console.log(`${header} ${JSON.stringify(d)}`);
 }
+
+/* --- Check if the given code is correct or not --- */
+const verifyCode = function(json) {
+  let temp = JSON.parse(JSON.stringify(json));
+  logJson(temp, "verifyCode");
+  if (typeof temp.hmac === 'undefined') return false;
+  let sig = temp.hmac;
+  delete temp.hmac; 
+  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
+  console.log(msg, "verifyCode");
+  const hmac = crypto.createHmac('sha256', HMAC_SECRET);
+  hmac.update(msg);
+  let signarure = hmac.digest('hex');
+  console.log(signarure, "verifyCode");
+  return signarure === sig ? true : false;
+};
 
 /* ---  --- */
 const accessEndpoint = function(endpoint, req, method = "POST") {   
@@ -109,19 +124,6 @@ const accessEndpoint = function(endpoint, req, method = "POST") {
       }    
     });
   };    
-
-/* --- Check if the given code is correct or not --- */
-const verifyCode = function(json) {
-  let temp = JSON.parse(JSON.stringify(json));
-  if (typeof temp.hmac === 'undefined') return false;
-  let sig = temp.hmac;
-  delete temp.hmac; 
-  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
-  const hmac = crypto.createHmac('sha256', HMAC_SECRET);
-  hmac.update(msg);
-  let signarure = hmac.digest('hex');
-  return signarure === sig ? true : false;
-};
 
 /* --- Check if the given signarure is corect or not for Webhook --- */
 const checkWebhookSignature = function(ctx, secret) {
