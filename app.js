@@ -35,8 +35,6 @@ const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
 const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
 
-const MY_APP_NAME = 'producttaxreflection';
-
 const UNDEFINED = 'undefined';
 
 const HMAC_SECRET = API_SECRET;
@@ -68,8 +66,7 @@ router.get('/',  async (ctx, next) => {
   if (shop_data == null) {
     ctx.body = "No shop data";
   } else {
-    var api_req = {};
-    api_req.query = `{
+    var ql = `{
       shop {
         products(first: 5) {
           edges {
@@ -83,18 +80,16 @@ router.get('/',  async (ctx, next) => {
           }
         }
       }
-    }`.replace(/\n/g, '');
-    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
+    }`;
+    let api_res = await(callGraphql(shop, ql));
     console.log(`${JSON.stringify(api_res)}`);
-    //ctx.body = `Your locale: ${locale} ${JSON.stringify(api_res)}`;
 
     ctx.state = {
       session: this.session,
-      title: `${MY_APP_NAME}`
-    };
-  
+      title: `AAAAA`
+    };  
     await ctx.render('top', {
-      name: `${api_res.shop.products.edges[0].node.handle}`
+      name: `${api_res.data.shop.products.edges[0].node.handle}`
     });
   }
 
@@ -126,8 +121,13 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
-    ctx.redirect(`https://${shop}/admin/apps/${MY_APP_NAME}`);
-    //ctx.status = 307;   
+    var ql = `{
+      app {
+        handle
+      }
+    }`;
+    let api_res = await(callGraphql(shop, ql));
+    ctx.redirect(`https://${shop}/admin/apps/${api_res.data.app.handle}`);  
   } else {
     ctx.status = 500;
   }  
@@ -166,6 +166,36 @@ const verifyCode = function(json) {
   let signarure = hmac.digest('hex');
   //console.log(`verifyCode ${signarure}`);
   return signarure === sig ? true : false;
+};
+
+const callGraphql = function(shop, ql, path = GRAPHQL_PATH_ADMIN, token = null) {
+  return new Promise(function (resolve, reject) {
+    let api_req = {};
+    api_req.query = ql.replace(/\n/g, '');
+    var access_token = token;
+    if (access_token == null) {
+      getDB(shop).then(function(shop_data){
+        if (shop_data == null) return resolve(null);
+        access_token = shop_data.access_token;        
+        accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token).then(function(api_res){
+          return resolve(api_res);
+        }).catch(function(e){
+          console.log(`callGraphql ${e}`);
+          return reject(e);
+        }); 
+      }).catch(function(e){
+        console.log(`callGraphql ${e}`);
+        return reject(e);
+      });     
+    } else {
+      accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token).then(function(api_res){
+        return resolve(api_res);
+      }).catch(function(e){
+        console.log(`callGraphql ${e}`);
+        return reject(e);
+      }); 
+    }   
+  });
 };
 
 /* ---  --- */
