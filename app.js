@@ -42,7 +42,7 @@ process.env.TZ = 'Asia/Tokyo';
 router.get('/callback',  async (ctx, next) => {
   console.log("+++++++++ / ++++++++++");
   if (!verifyCode(ctx.request.query)) {
-    ctx.status = 404;
+    ctx.status = 400;
     return;
   }
   let req = {};
