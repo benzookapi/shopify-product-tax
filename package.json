@@ -10,8 +10,7 @@
       "koa-router": "^7.4.0",
       "koa-views": "^5.0.0",
       "mongodb": "^3.4.1",
-      "underscore": "^1.9.0",
-      "@shopify/polaris": "*"
+      "underscore": "^1.9.0"
     },
     "devDependencies": {},
     "scripts": {

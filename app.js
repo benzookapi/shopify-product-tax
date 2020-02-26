@@ -5,6 +5,7 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const koaRequest = require('koa-http-request');
 const views = require('koa-views');
+const session = require('koa-session');
 
 const crypto = require('crypto');
 
@@ -27,6 +28,8 @@ app.use(views(__dirname + '/views', {
   }
 }));
 
+app.use(session(app));
+
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
@@ -48,11 +51,18 @@ const MONGO_COLLECTION = 'shops';
 process.env.TZ = 'Asia/Tokyo'; 
 
 
-router.get('/script_auth',  async (ctx, next) => { 
+router.get('/auth',  async (ctx, next) => { 
+  console.log("+++++++++ /auth ++++++++++");
+  if (!checkSignature(ctx.request.query)) {
+    ctx.status = 400;
+    return;
+  }
+  let shop = ctx.request.query.shop;
+  let locale = ctx.request.query.locale;
   await ctx.render('auth', {
-    shop: `${ctx.session.shop}`,
-    locale: `${ctx.session.locale}`,
-    callback: `${ctx.session.callback}`
+    shop: shop,
+    locale: locale,
+    callback: `${ctx.request.url}/callback`
   });
 });
 
@@ -63,7 +73,7 @@ router.get('/script_auth',  async (ctx, next) => {
 */
 router.get('/',  async (ctx, next) => {  
   console.log("+++++++++ / ++++++++++");
-  if (!verifyCode(ctx.request.query)) {
+  if (!checkSignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
@@ -97,10 +107,14 @@ router.get('/',  async (ctx, next) => {
     }; */ 
     ctx.session.shop = shop;
     ctx.session.locale = locale;
-    ctx.session.callback = `${ctx.request.url}/callback`;
     await ctx.render('top', {
-      name: `${api_res.data.shop.products.edges[0].node.handle}`,
-      locale: `${locale}`
+      name: api_res.data.shop.products.edges[0].node.handle,
+      shop: shop,
+      locale: locale,
+      hmac: createSignature({
+        "shop": shop,
+        "locale": locale
+      })
     });
   }
 
@@ -113,7 +127,7 @@ router.get('/',  async (ctx, next) => {
 */
 router.get('/callback',  async (ctx, next) => {
   console.log("+++++++++ /callback ++++++++++");
-  if (!verifyCode(ctx.request.query)) {
+  if (!checkSignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
@@ -163,20 +177,25 @@ router.post('/webhook', async (ctx, next) => {
   ctx.status = 200;
 });
 
-/* --- Check if the given code is correct or not --- */
-const verifyCode = function(json) {
+/* --- Check if the given signature is correct or not --- */
+const checkSignature = function(json) {
   let temp = JSON.parse(JSON.stringify(json));
-  console.log(`verifyCode ${JSON.stringify(temp)}`);
+  console.log(`checkSignature ${JSON.stringify(temp)}`);
   if (typeof temp.hmac === UNDEFINED) return false;
   let sig = temp.hmac;
   delete temp.hmac; 
-  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
-  //console.log(`verifyCode ${msg}`);
+  let signarure = createSignature(temp);
+  //console.log(`checkSignature ${signarure}`);
+  return signarure === sig ? true : false;
+};
+
+/* --- --- */
+const createSignature = function(json) {
+  let msg = Object.entries(json).sort().map(e => e.join('=')).join('&');
+  //console.log(`createSignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
-  let signarure = hmac.digest('hex');
-  //console.log(`verifyCode ${signarure}`);
-  return signarure === sig ? true : false;
+  return hmac.digest('hex');
 };
 
 const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN) {
