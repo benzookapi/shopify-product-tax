@@ -108,27 +108,8 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
-    shop_data = await(getDB(shop)); 
-    console.log(`${JSON.stringify(shop_data)}`);
-    var api_req = {};
-    api_req.query = `{
-      shop {
-        products(first: 5) {
-          edges {
-            node {
-              id
-              handle
-            }
-          }
-          pageInfo {
-            hasNextPage
-          }
-        }
-      }
-    }`.replace(/\n/g, '');
-    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
-    console.log(`${JSON.stringify(api_res)}`);
-    ctx.body = JSON.stringify(api_res);
+    ctx.redirect(`https://${shop}/admin/apps/producttaxreflection`);
+    //ctx.status = 307;   
   } else {
     ctx.status = 500;
   }  
