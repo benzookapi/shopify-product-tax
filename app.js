@@ -4,6 +4,7 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const koaRequest = require('koa-http-request');
+const views = require('koa-views');
 
 const crypto = require('crypto');
 
@@ -20,6 +21,12 @@ app.use(koaRequest({
   
 }));
 
+app.use(views(__dirname + '/views', {
+  map: {
+    html: 'underscore'
+  }
+}));
+
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
@@ -27,6 +34,8 @@ const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
 const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
+
+const MY_APP_NAME = 'producttaxreflection';
 
 const UNDEFINED = 'undefined';
 
@@ -77,7 +86,16 @@ router.get('/',  async (ctx, next) => {
     }`.replace(/\n/g, '');
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
     console.log(`${JSON.stringify(api_res)}`);
-    ctx.body = JSON.stringify(api_res);
+    //ctx.body = `Your locale: ${locale} ${JSON.stringify(api_res)}`;
+
+    ctx.state = {
+      session: this.session,
+      title: `${MY_APP_NAME}`
+    };
+  
+    await ctx.render('top', {
+      name: `${api_res.shop.products.edges[0].node.handle}`
+    });
   }
 
 });
@@ -108,7 +126,7 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
-    ctx.redirect(`https://${shop}/admin/apps/producttaxreflection`);
+    ctx.redirect(`https://${shop}/admin/apps/${MY_APP_NAME}`);
     //ctx.status = 307;   
   } else {
     ctx.status = 500;
