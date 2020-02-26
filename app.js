@@ -25,7 +25,6 @@ const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
 const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
-const CONTENT_TYPE_GRAPHQL = 'application/graphql';
 
 const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
 
@@ -128,7 +127,7 @@ const verifyCode = function(json) {
 };
 
 /* ---  --- */
-const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_GRAPHQL, method = 'POST') {
+const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_JSON, method = 'POST') {
   console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)} ${token} ${content_type} ${method}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
