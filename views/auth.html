@@ -12,14 +12,16 @@
         var actions = AppBridge.actions;
         var Redirect = actions.Redirect;
         
-        const apiKey = '<% = api_key %>';
-        const redirectUri = '<% = callback %>';
+        const apiKey = '<%= api_key %>';
+        const redirectUri = '<%= callback %>';
         const permissionUrl =
           '/oauth/authorize?client_id=' +
           apiKey +
           '&scope=read_products,read_content&redirect_uri=' +
           redirectUri;
+
         const shopOrigin = '<%= shop %>';
+        const locale = '<%= locale %>';
 
         console.log(permissionUrl);
         
