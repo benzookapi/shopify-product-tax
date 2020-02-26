@@ -47,6 +47,15 @@ const MONGO_COLLECTION = 'shops';
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
 
+
+router.get('/script_auth',  async (ctx, next) => { 
+  await ctx.render('auth', {
+    shop: `${ctx.session.shop}`,
+    locale: `${ctx.session.locale}`,
+    callback: `${ctx.session.callback}`
+  });
+}
+
 /*
  *
  * --- Top ---
@@ -86,6 +95,9 @@ router.get('/',  async (ctx, next) => {
     /*ctx.state = {
       session: this.session
     }; */ 
+    ctx.session.shop = shop;
+    ctx.session.locale = locale;
+    ctx.session.callback = `${ctx.request.url}/callback`;
     await ctx.render('top', {
       name: `${api_res.data.shop.products.edges[0].node.handle}`,
       locale: `${locale}`
@@ -167,7 +179,7 @@ const verifyCode = function(json) {
   return signarure === sig ? true : false;
 };
 
-const callGraphql = function(ctx, shop, ql, path = GRAPHQL_PATH_ADMIN, token = null) {
+const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
     api_req.query = ql.replace(/\n/g, '');
