@@ -61,8 +61,11 @@ router.get('/callback',  async (ctx, next) => {
 
   let res = await(accessEndpoint(ctx, `https://${shop}/admin/oauth/access_token`, req, null, CONTENT_TYPE_FORM)); 
   if (res.access_token !== UNDEFINED) {
-    await(insertDB(shop, res));  
-    let shop_data = await(getDB(shop)); 
+    var shop_data = await(getDB(shop)); 
+    if (shop_data == null) {
+      await(insertDB(shop, res));  
+      shop_data = await(getDB(shop)); 
+    }   
     console.log(`${JSON.stringify(shop_data)}`);
     var api_req = `{
       shop {
