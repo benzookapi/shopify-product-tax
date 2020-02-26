@@ -84,7 +84,7 @@ router.get('/callback',  async (ctx, next) => {
         }
       }
     }`.replace(/\n/g, '');
-    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
+    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.access_token)); 
     console.log(`${JSON.stringify(api_res)}`);
     ctx.body = JSON.stringify(api_res);
     ctx.status = 200;
@@ -199,7 +199,7 @@ const getDB = function(key) {
     console.log(`getDB findOne, _id:${key}`);
     dbo.collection(MONGO_COLLECTION).findOne({"_id": `${key}`}).then(function(res){
       db.close();
-      return resolve(res);
+      return resolve(res.data);
     }).catch(function(e){
       console.log(`getDB Error ${e}`);
     });
@@ -215,7 +215,7 @@ const setDB = function(key, update_data) {
     var dbo = db.db(MONGO_DB_NAME);    
     //console.log(`setDB Used ${MONGO_DB_NAME}`);
     console.log(`setDB findOneAndUpdate, _id:${key}`);
-    dbo.collection(MONGO_COLLECTION).findOneAndUpdate({"_id": `${key}`}, {$set: update_data}, {new: true}).then(function(res){
+    dbo.collection(MONGO_COLLECTION).findOneAndUpdate({"_id": `${key}`}, {$set: {"data": data}}, {new: true}).then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
