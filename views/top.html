@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@shopify/polaris@4.13.1/styles.min.css"
+  />
 </head>
 <body>
   <p><%= name %></p>
@@ -10,8 +14,6 @@
   <div id="app"></div>
 
   <script>
-    import '@shopify/polaris/styles.css';
-
     import enTranslations from '@shopify/polaris/locales/en.json';
     import {AppProvider, Page, Card, Button} from '@shopify/polaris';
 
