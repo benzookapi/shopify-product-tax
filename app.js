@@ -50,7 +50,7 @@ router.get('/callback',  async (ctx, next) => {
   req.client_secret = API_SECRET;
   req.code = ctx.request.query.code;
 
-  let res = await(accessEndpoint(ctx, `https://${ctx.request.query.shop}/admin/oauth/access_token`, req, 'POST', '')); 
+  let res = await(accessEndpoint(ctx, `https://${ctx.request.query.shop}/admin/oauth/access_token`, req, 'POST', 'application/x-www-form-urlencoded')); 
 
   logJson(res);
 
