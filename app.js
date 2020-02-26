@@ -67,7 +67,7 @@ router.get('/callback',  async (ctx, next) => {
       shop_data = await(getDB(shop)); 
     }   
     console.log(`${JSON.stringify(shop_data)}`);
-    var api_req = `{
+    var api_req = JSON.parse(`{
       shop {
         products(first: 5) {
           edges {
@@ -81,7 +81,7 @@ router.get('/callback',  async (ctx, next) => {
           }
         }
       }
-    }`;
+    }`);
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
     console.log(`${api_res}`);
   }
