@@ -50,7 +50,7 @@ router.get('/callback',  async (ctx, next) => {
   req.client_secret = API_SECRET;
   req.code = ctx.request.query.code;
 
-  let res = await(accessEndpoint(ctx, `POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
+  let res = await(accessEndpoint(ctx, `POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req, 'POST', '')); 
 
   logJson(res);
 
@@ -98,32 +98,34 @@ const verifyCode = function(json) {
 };
 
 /* ---  --- */
-const accessEndpoint = function(ctx, endpoint, req, method = "POST") {   
-    return new Promise(function(resolve, reject) { 
-      // Success callback
-      var then_func = function(res){
-        return resolve(res);
-      };
-      // Failure callback
-      var catch_func = function(e){
-        console.log(`ERROR: ${e}`);
-        return resolve(e);      
-      };
-      if (method == "GET") {
-        ctx.get(endpoint, req, {
-          'Content-Type': CONTENT_TYPE
-        }).then(then_func).catch(catch_func);
-      } else if (method == "PATCH") {
-        ctx.patch(endpoint, req, {
-          'Content-Type': CONTENT_TYPE,
-        }).then(then_func).catch(catch_func);
-      } else { // Default POST
-        ctx.post(endpoint, req, {
-          'Content-Type': CONTENT_TYPE,
-        }).then(then_func).catch(catch_func);
-      }    
-    });
-  };    
+const accessEndpoint = function(ctx, endpoint, req, method = "POST", content_type = CONTENT_TYPE) {
+  console.log(`accessEndpoint　${endpoint}`);
+  logJson(req, "accessEndpoint");
+  return new Promise(function(resolve, reject) { 
+    // Success callback
+    var then_func = function(res){
+      return resolve(res);
+    };
+    // Failure callback
+    var catch_func = function(e){
+      console.log(`ERROR: ${e}`);
+      return resolve(e);      
+    };
+    if (method == "GET") {
+      ctx.get(endpoint, req, {
+        'Content-Type': content_type
+      }).then(then_func).catch(catch_func);
+    } else if (method == "PATCH") {
+      ctx.patch(endpoint, req, {
+        'Content-Type': content_type,
+      }).then(then_func).catch(catch_func);
+    } else { // Default POST
+      ctx.post(endpoint, req, {
+        'Content-Type': content_type,
+      }).then(then_func).catch(catch_func);
+    }    
+  });
+};    
 
 /* --- Check if the given signarure is corect or not for Webhook --- */
 const checkWebhookSignature = function(ctx, secret) {
