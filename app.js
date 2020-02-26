@@ -24,7 +24,7 @@ const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
 const CONTENT_TYPE = 'application/json';
-const HMAC_SECRET = 'hush';
+const HMAC_SECRET = API_SECRET;
 
 // Mongo URL and DB name for date store
 const MONGO_URL = `${process.env.SHOPIFY_MONGO_URL}`;
