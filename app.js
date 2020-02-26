@@ -85,10 +85,12 @@ router.get('/callback',  async (ctx, next) => {
       }
     }`.replace(/\n/g, '');
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
-    console.log(`${api_res}`);
-  }
-
-  ctx.status = 200;
+    console.log(`${JSON.stringify(api_res)}`);
+    ctx.body = JSON.stringify(api_res);
+    ctx.status = 200;
+  } else {
+    ctx.status = 500;
+  }  
 });
 
 /* 
