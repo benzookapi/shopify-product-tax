@@ -63,11 +63,14 @@ router.get('/callback',  async (ctx, next) => {
   if (res.access_token !== UNDEFINED) {
     var shop_data = await(getDB(shop)); 
     if (shop_data == null) {
-      await(insertDB(shop, res));  
-      shop_data = await(getDB(shop)); 
-    }   
+      await(insertDB(shop, res));        
+    } else {
+      await(setDB(shop, res));  
+    }
+    shop_data = await(getDB(shop)); 
     console.log(`${JSON.stringify(shop_data)}`);
-    var api_req = JSON.parse(`{
+    var api_req = {};
+    api_req.query = `{
       shop {
         products(first: 5) {
           edges {
@@ -81,7 +84,7 @@ router.get('/callback',  async (ctx, next) => {
           }
         }
       }
-    }`);
+    }`;
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
     console.log(`${api_res}`);
   }
@@ -148,7 +151,7 @@ const accessEndpoint = function(ctx, endpoint, req, token = null, content_type =
     } else if (method == "PATCH") {
       ctx.patch(endpoint, req, headers).then(then_func).catch(catch_func);
     } else { // Default POST
-      ctx.post(endpoint, req,headers).then(then_func).catch(catch_func);
+      ctx.post(endpoint, req, headers).then(then_func).catch(catch_func);
     }    
   });
 };    
