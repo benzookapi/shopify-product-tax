@@ -80,7 +80,7 @@ router.get('/',  async (ctx, next) => {
     ctx.body = JSON.stringify(api_res);
   }
 
-}
+});
 
 /* 
  *
