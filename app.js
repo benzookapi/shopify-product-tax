@@ -29,10 +29,10 @@ const HMAC_SECRET = 'hush';
 // Mongo URL and DB name for date store
 const MONGO_URL = `${process.env.SHOPIFY_MONGO_URL}`;
 const MONGO_DB_NAME = `${process.env.SHOPIFY_MONGO_DB_NAME}`;
+const MONGO_COLLECTION = 'shops';
 
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
-
 
 /* 
  *
@@ -145,7 +145,7 @@ const insertDB = function(key, data) {
     var dbo = db.db(MONGO_DB_NAME);    
     console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
     console.log("[MONGO DB] insertOne, _id:"  + key);
-    dbo.collection("references").insertOne({"_id": key, "data": data}).then(function(res){
+    dbo.collection(MONGO_COLLECTION).insertOne({"_id": key, "data": data}).then(function(res){
       db.close();
       return resolve(0);
     }).catch(function(e){
@@ -163,7 +163,7 @@ const getDB = function(key) {
     var dbo = db.db(MONGO_DB_NAME);    
     console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
     console.log("[MONGO DB] findOne, _id:"  + key);
-    dbo.collection("references").findOne({"_id": `${key}`}).then(function(res){
+    dbo.collection(MONGO_COLLECTION).findOne({"_id": `${key}`}).then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
@@ -181,7 +181,7 @@ const setDB = function(key, update_data) {
     var dbo = db.db(MONGO_DB_NAME);    
     console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
     console.log("[MONGO DB] findOneAndUpdate, _id:"  + key);
-    dbo.collection("references").findOneAndUpdate({"_id": `${key}`}, {$set: update_data}, {new: true}).then(function(res){
+    dbo.collection(MONGO_COLLECTION).findOneAndUpdate({"_id": `${key}`}, {$set: update_data}, {new: true}).then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
@@ -199,7 +199,7 @@ const searchDB = function(condition) {
     var dbo = db.db(MONGO_DB_NAME);    
     console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
     console.log("[MONGO DB] find:"  + JSON.stringify(condition));
-    dbo.collection("references").find(condition).toArray().then(function(res){
+    dbo.collection(MONGO_COLLECTION).find(condition).toArray().then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
