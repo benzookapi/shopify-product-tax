@@ -50,7 +50,7 @@ router.get('/callback',  async (ctx, next) => {
   req.client_secret = API_SECRET;
   req.code = ctx.request.query.code;
 
-  let res = await(accessEndpoint(`POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
+  let res = await(accessEndpoint(ctx, `POST https://${ctx.request.query.shop}.myshopify.com/admin/oauth/access_token`, req)); 
 
   logJson(res);
 
@@ -89,16 +89,16 @@ const verifyCode = function(json) {
   let sig = temp.hmac;
   delete temp.hmac; 
   let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
-  console.log(msg, "verifyCode");
+  //console.log(`verifyCode ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure = hmac.digest('hex');
-  console.log(signarure, "verifyCode");
+  //console.log(`verifyCode ${signarure}`);
   return signarure === sig ? true : false;
 };
 
 /* ---  --- */
-const accessEndpoint = function(endpoint, req, method = "POST") {   
+const accessEndpoint = function(ctx, endpoint, req, method = "POST") {   
     return new Promise(function(resolve, reject) { 
       // Success callback
       var then_func = function(res){
