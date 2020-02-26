@@ -199,6 +199,7 @@ const getDB = function(key) {
     console.log(`getDB findOne, _id:${key}`);
     dbo.collection(MONGO_COLLECTION).findOne({"_id": `${key}`}).then(function(res){
       db.close();
+      if (res == null) return resolve(null);
       return resolve(res.data);
     }).catch(function(e){
       console.log(`getDB Error ${e}`);
@@ -227,7 +228,7 @@ const setDB = function(key, update_data) {
 };
 
 /* ---  --- */
-const searchDB = function(condition) {
+/*const searchDB = function(condition) {
   return new Promise(function(resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
     //console.log(`searchDB Connected ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
@@ -242,7 +243,7 @@ const searchDB = function(condition) {
   }).catch(function(e){
     console.log(`searchDB Error ${e}`);
   });});
-};
+};*/
 
 app.use(router.routes());
 app.use(router.allowedMethods());
