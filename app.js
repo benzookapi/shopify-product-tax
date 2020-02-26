@@ -210,7 +210,7 @@ const getDB = function(key) {
 };
 
 /* ---  --- */
-const setDB = function(key, update_data) {
+const setDB = function(key, data) {
   return new Promise(function(resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
     //console.log(`setDB Connected ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
