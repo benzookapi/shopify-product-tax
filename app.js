@@ -23,8 +23,14 @@ app.use(koaRequest({
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
-const CONTENT_TYPE = 'application/json';
+const CONTENT_TYPE_JSON = 'application/json';
+const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
+const CONTENT_TYPE_GRAPHQL = 'application/graphql';
+
+const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
+
 const UNDEFINED = 'undefined';
+
 const HMAC_SECRET = API_SECRET;
 
 // Mongo URL and DB name for date store
@@ -53,9 +59,28 @@ router.get('/callback',  async (ctx, next) => {
 
   let shop = ctx.request.query.shop;
 
-  let res = await(accessEndpoint(ctx, `https://${shop}/admin/oauth/access_token`, req, 'POST', 'application/x-www-form-urlencoded')); 
+  let res = await(accessEndpoint(ctx, `https://${shop}/admin/oauth/access_token`, req, null, CONTENT_TYPE_FORM)); 
   if (res.access_token !== UNDEFINED) {
     await(insertDB(shop, res));  
+    let shop_data = await(getDB(shop)); 
+    console.log(`${JSON.stringify(shop_data)}`);
+    var api_req = `{
+      shop {
+        products(first: 5) {
+          edges {
+            node {
+              id
+              handle
+            }
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+    }`;
+    var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
+    console.log(`${api_res}`);
   }
 
   ctx.status = 200;
@@ -97,7 +122,7 @@ const verifyCode = function(json) {
 };
 
 /* ---  --- */
-const accessEndpoint = function(ctx, endpoint, req, method = "POST", content_type = CONTENT_TYPE) {
+const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_GRAPHQL, method = 'POST') {
   console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
@@ -110,18 +135,17 @@ const accessEndpoint = function(ctx, endpoint, req, method = "POST", content_typ
       console.log(`accessEndpoint Error: ${e}`);
       return resolve(e);      
     };
+    let headers = {};
+    headers['Content-Type'] = content_type;
+    if (token != null) {
+      headers['X-Shopify-Access-Token'] = token;
+    }
     if (method == "GET") {
-      ctx.get(endpoint, req, {
-        'Content-Type': content_type
-      }).then(then_func).catch(catch_func);
+      ctx.get(endpoint, req, headers).then(then_func).catch(catch_func);
     } else if (method == "PATCH") {
-      ctx.patch(endpoint, req, {
-        'Content-Type': content_type,
-      }).then(then_func).catch(catch_func);
+      ctx.patch(endpoint, req, headers).then(then_func).catch(catch_func);
     } else { // Default POST
-      ctx.post(endpoint, req, {
-        'Content-Type': content_type,
-      }).then(then_func).catch(catch_func);
+      ctx.post(endpoint, req,headers).then(then_func).catch(catch_func);
     }    
   });
 };    
