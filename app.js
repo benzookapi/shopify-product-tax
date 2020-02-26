@@ -84,7 +84,7 @@ router.get('/callback',  async (ctx, next) => {
           }
         }
       }
-    }`;
+    }`.replace(/\n/g, '');
     var api_res = await(accessEndpoint(ctx, `https://${shop}/${GRAPHQL_PATH_ADMIN}`, api_req, shop_data.data.access_token)); 
     console.log(`${api_res}`);
   }
@@ -129,7 +129,7 @@ const verifyCode = function(json) {
 
 /* ---  --- */
 const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_GRAPHQL, method = 'POST') {
-  console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)}`);
+  console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)} ${token} ${content_type} ${method}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
     var then_func = function(res){
