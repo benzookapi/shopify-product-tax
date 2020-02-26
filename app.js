@@ -87,7 +87,8 @@ router.get('/',  async (ctx, next) => {
       session: this.session
     }; */ 
     await ctx.render('top', {
-      name: `${api_res.data.shop.products.edges[0].node.handle}`
+      name: `${api_res.data.shop.products.edges[0].node.handle}`,
+      locale: `${locale}`
     });
   }
 
