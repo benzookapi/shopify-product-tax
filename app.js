@@ -24,6 +24,7 @@ const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
 const CONTENT_TYPE = 'application/json';
+const UNDEFINED = 'undefined';
 const HMAC_SECRET = API_SECRET;
 
 // Mongo URL and DB name for date store
@@ -50,9 +51,12 @@ router.get('/callback',  async (ctx, next) => {
   req.client_secret = API_SECRET;
   req.code = ctx.request.query.code;
 
-  let res = await(accessEndpoint(ctx, `https://${ctx.request.query.shop}/admin/oauth/access_token`, req, 'POST', 'application/x-www-form-urlencoded')); 
+  let shop = ctx.request.query.shop;
 
-  logJson(res);
+  let res = await(accessEndpoint(ctx, `https://${shop}/admin/oauth/access_token`, req, 'POST', 'application/x-www-form-urlencoded')); 
+  if (res.access_token !== UNDEFINED) {
+    await(insertDB(shop, res));  
+  }
 
   ctx.status = 200;
 });
@@ -76,16 +80,11 @@ router.post('/webhook', async (ctx, next) => {
   ctx.status = 200;
 });
 
-/* --- --- */
-const logJson = function(d, header = "") {
-    console.log(`${header} ${JSON.stringify(d)}`);
-}
-
 /* --- Check if the given code is correct or not --- */
 const verifyCode = function(json) {
   let temp = JSON.parse(JSON.stringify(json));
-  logJson(temp, "verifyCode");
-  if (typeof temp.hmac === 'undefined') return false;
+  console.log(`verifyCode ${JSON.stringify(temp)}`);
+  if (typeof temp.hmac === UNDEFINED) return false;
   let sig = temp.hmac;
   delete temp.hmac; 
   let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
@@ -99,16 +98,16 @@ const verifyCode = function(json) {
 
 /* ---  --- */
 const accessEndpoint = function(ctx, endpoint, req, method = "POST", content_type = CONTENT_TYPE) {
-  console.log(`accessEndpoint　${endpoint}`);
-  logJson(req, "accessEndpoint");
+  console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
     var then_func = function(res){
-      return resolve(res);
+      console.log(`accessEndpoint Success: ${res}`);
+      return resolve(JSON.parse(res));
     };
     // Failure callback
     var catch_func = function(e){
-      console.log(`ERROR: ${e}`);
+      console.log(`accessEndpoint Error: ${e}`);
       return resolve(e);      
     };
     if (method == "GET") {
@@ -130,14 +129,14 @@ const accessEndpoint = function(ctx, endpoint, req, method = "POST", content_typ
 /* --- Check if the given signarure is corect or not for Webhook --- */
 const checkWebhookSignature = function(ctx, secret) {
   return new Promise(function (resolve, reject) {
-    console.log("[Shopify checkWebhookSignature] Headers: " + JSON.stringify(ctx.headers));
+    console.log(`checkWebhookSignature Headers ${ctx.headers}`);
     let receivedSig = ctx.headers["x-shopify-hmac-sha256"];
-    console.log("[Shopify checkWebhookSignature] Given: " + receivedSig);
+    console.log(`checkWebhookSignature Given ${receivedSig}`);
     if (receivedSig == null) return resolve(false);
     const hmac = crypto.createHmac('sha256', secret);
     hmac.update(Buffer.from(ctx.request.rawBody, 'utf8').toString('utf8'));
     let signarure = hmac.digest('base64');
-    console.log("[Shopify checkWebhookSignature] Created: " + signarure);
+    console.log(`checkWebhookSignature Created: ${signarure}`);
     return resolve(receivedSig === signarure ? true : false);    
   });  
 };
@@ -145,72 +144,72 @@ const checkWebhookSignature = function(ctx, secret) {
 /* ---  --- */
 const insertDB = function(key, data) {
   return new Promise(function (resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
-    console.log("[MONGO DB] Connected: " + MONGO_URL);
+    //console.log(`insertDB Connected: ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
-    console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
-    console.log("[MONGO DB] insertOne, _id:"  + key);
+    //console.log(`insertDB Used: ${MONGO_DB_NAME}`);
+    console.log(`insertDB insertOne, _id:${key}`);
     dbo.collection(MONGO_COLLECTION).insertOne({"_id": key, "data": data}).then(function(res){
       db.close();
       return resolve(0);
     }).catch(function(e){
-      console.log("[MONGO DB] Error:" + e);
+      console.log(`insertDB Error ${e}`);
     });
   }).catch(function(e){
-    console.log("[MONGO DB] Error:" + e);
+    console.log(`insertDB Error ${e}`);
   });});
 };
 
 /* ---  --- */
 const getDB = function(key) {
   return new Promise(function(resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
-    console.log("[MONGO DB] Connected: " + MONGO_URL);
+    //console.log(`getDB Connected ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
-    console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
-    console.log("[MONGO DB] findOne, _id:"  + key);
+    //console.log(`getDB Used ${MONGO_DB_NAME}`);
+    console.log(`getDB findOne, _id:${key}`);
     dbo.collection(MONGO_COLLECTION).findOne({"_id": `${key}`}).then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
-      console.log("[MONGO DB] Error: " + e);
+      console.log(`getDB Error ${e}`);
     });
   }).catch(function(e){
-    console.log("[MONGO DB] Error: " + e);
+    console.log(`getDB Error ${e}`);
   });});
 };
 
 /* ---  --- */
 const setDB = function(key, update_data) {
   return new Promise(function(resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
-    console.log("[MONGO DB] Connected: " + MONGO_URL);
+    //console.log(`setDB Connected ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
-    console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
-    console.log("[MONGO DB] findOneAndUpdate, _id:"  + key);
+    //console.log(`setDB Used ${MONGO_DB_NAME}`);
+    console.log(`setDB findOneAndUpdate, _id:${key}`);
     dbo.collection(MONGO_COLLECTION).findOneAndUpdate({"_id": `${key}`}, {$set: update_data}, {new: true}).then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
-      console.log("[MONGO DB] Error: " + e);
+      console.log(`setDB Error ${e}`);
     });
   }).catch(function(e){
-    console.log("[MONGO DB] Error: " + e);
+    console.log(`setDB Error ${e}`);
   });});
 };
 
 /* ---  --- */
 const searchDB = function(condition) {
   return new Promise(function(resolve, reject) { mongo.MongoClient.connect(MONGO_URL).then(function(db){
-    console.log("[MONGO DB] Connected: " + MONGO_URL);
+    //console.log(`searchDB Connected ${MONGO_URL}`);
     var dbo = db.db(MONGO_DB_NAME);    
-    console.log("[MONGO DB] Used: " + MONGO_DB_NAME);
-    console.log("[MONGO DB] find:"  + JSON.stringify(condition));
+    //console.log(`searchDB Used ${MONGO_DB_NAME}`);
+    console.log(`searchDB find ${JSON.stringify(condition)}`);
     dbo.collection(MONGO_COLLECTION).find(condition).toArray().then(function(res){
       db.close();
       return resolve(res);
     }).catch(function(e){
-      console.log("[MONGO DB] Error: " + e);
+      console.log(`searchDB Error ${e}`);
     });
   }).catch(function(e){
-    console.log("[MONGO DB] Error: " + e);
+    console.log(`searchDB Error ${e}`);
   });});
 };
 
