@@ -23,7 +23,7 @@ app.use(koaRequest({
 
 app.use(views(__dirname + '/views', {
   map: {
-    html: 'nunjucks'
+    html: 'underscore'
   }
 }));
 
