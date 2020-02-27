@@ -2,59 +2,18 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Top</title>  
-</head>
-<!-- Non Shopify ones -->
-<script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
-　<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
-  <script src="https://unpkg.com/babel-core@5.2.17/browser.min.js"></script>
-  <!-- Shopify ones -->
+  <title>Top</title>
   <script src="https://unpkg.com/@shopify/app-bridge"></script>
-  <script type="module" src="https://unpkg.com/@shopify/app-bridge/actions"></script>
-  <!--<script type="text/babel" src="https://unpkg.com/@shopify/polaris/index.js"></script>-->
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
+  />
+</head>
 <body>
   <p><%= name %></p> 
-  <script type="text/babel">
 
-const app = createApp({
-  apiKey: '<%= api_key %>',
-  shopOrigin: '<%= shop %>'
-});
-
-const breadcrumb = Button.create(app, { label: 'My breadcrumb' });
-breadcrumb.subscribe(Button.Action.CLICK, () => {
-  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
-});
-
-const titleBarOptions = {
-  title: 'My page title',
-  breadcrumbs: breadcrumb
-};
-
-const myTitleBar = TitleBar.create(app, titleBarOptions);
+  <!-- https://polaris.shopify.com/components/actions/button#all-examples -->
+  <button class="Polaris-Button">Example button</button>
   
-  /*
-    import React from 'react';
-    import ReactDOM from 'react-dom';
-    
-    import {AppProvider, Card} from '@shopify/polaris';
-  import {Provider, Loading} from '@shopify/app-bridge-react';*/
-
-  /*  function MyApp() {
-      const config = {apiKey: '<%= api_key %>', shopOrigin: '<%= shop %>'};
-      return (
-        <AppProvider>
-          <Provider config={config}>
-            <Loading />
-            <Card />
-          </Provider>
-        </AppProvider>
-      );
-    }
-    const root = document.createElement('div');
-    document.body.appendChild(root);
-    ReactDOM.render(<MyApp />, root);*/
-  </script>
 </body>
 </html>
