@@ -47,20 +47,18 @@ const MONGO_COLLECTION = 'shops';
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
 
-
+/*
+ *
+ * --- Auth by frontend App Bridge ---
+ *
+*/
 router.get('/auth',  async (ctx, next) => { 
   console.log("+++++++++ /auth ++++++++++");
-  if (!checkSignature(ctx.request.query)) {
-    ctx.status = 400;
-    return;
-  }
   let shop = ctx.request.query.shop;
-  let locale = ctx.request.query.locale;
   await ctx.render('auth', {
     api_key: API_KEY,
     callback: `https://${ctx.request.hostname}/callback`,
-    shop: shop,
-    locale: locale    
+    shop: shop
   });
 });
 
@@ -83,7 +81,7 @@ router.get('/',  async (ctx, next) => {
   if (shop_data == null) {
     ctx.body = "No shop data";
   } else {
-    var ql = `{
+    let api_res = await(callGraphql(ctx, shop, `{
       shop {
         products(first: 5) {
           edges {
@@ -97,8 +95,7 @@ router.get('/',  async (ctx, next) => {
           }
         }
       }
-    }`;
-    let api_res = await(callGraphql(ctx, shop, ql));
+    }`));
     console.log(`${JSON.stringify(api_res)}`);
     /*ctx.state = {
       session: this.session
@@ -106,14 +103,9 @@ router.get('/',  async (ctx, next) => {
     await ctx.render('top', {
       name: api_res.data.shop.products.edges[0].node.handle,
       shop: shop,
-      locale: locale,
-      hmac: createSignature({
-        "shop": shop,
-        "locale": locale
-      })
+      locale: locale
     });
   }
-
 });
 
 /* 
@@ -142,12 +134,11 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
-    var ql = `{
+    let api_res = await(callGraphql(ctx, shop, `{
       app {
         handle
       }
-    }`;
-    let api_res = await(callGraphql(ctx, shop, ql));
+    }`));
     ctx.redirect(`https://${shop}/admin/apps/${api_res.data.app.handle}`);  
   } else {
     ctx.status = 500;
@@ -168,8 +159,7 @@ router.post('/webhook', async (ctx, next) => {
     ctx.status = 200;
     return;
   }  
-  let webhook_body = ctx.request.body;  
-  
+  let webhook_body = ctx.request.body;    
   ctx.status = 200;
 });
 
@@ -194,10 +184,16 @@ const createSignature = function(json) {
   return hmac.digest('hex');
 };
 
-const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN) {
+/* --- --- */
+const callGraphql = function(ctx, shop, ql, query = true, token = null, path = GRAPHQL_PATH_ADMIN) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
-    api_req.query = ql.replace(/\n/g, '');
+    // Set Gqphql string into query or mutation field of the JSON  as string
+    if (query) {
+      api_req.query = ql.replace(/\n/g, '');
+    } else { // mutation
+      api_req.mutation = ql.replace(/\n/g, '');
+    } 
     var access_token = token;
     if (access_token == null) {
       getDB(shop).then(function(shop_data){

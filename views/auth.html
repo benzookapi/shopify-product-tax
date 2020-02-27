@@ -21,7 +21,6 @@
           redirectUri;
 
         const shopOrigin = '<%= shop %>';
-        const locale = '<%= locale %>';
 
         //alert(permissionUrl);
         
@@ -39,6 +38,5 @@
           Redirect.create(app).dispatch(Redirect.Action.ADMIN_PATH, permissionUrl);
         }
      </script>
-
 </body>
 </html>
