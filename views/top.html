@@ -8,6 +8,8 @@
     rel="stylesheet"
     href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
   />
+  <!-- My own -->
+  <script src="/public/i18n.js"></script>
 </head>
 <body>
   <p><%= name %></p> 
@@ -16,29 +18,28 @@
   <button class="Polaris-Button">Example button</button>
 
   <script>
-    // https://shopify.dev/tools/app-bridge/getting-started
+    // https://shopify.dev/tools/app-bridge/getting-started    
     var AppBridge = window['app-bridge'];
     var createApp = AppBridge.default;
+    // App instance
     var app = createApp({
       apiKey: '<%= api_key %>',
       shopOrigin: '<%= shop %>'
     });
-
+    // Create title sub menu
     var actions = AppBridge.actions;
     var TitleBar = actions.TitleBar;
     var Button = actions.Button;
     var Redirect = actions.Redirect;
-
-    var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
+    // Add event
+    var breadcrumb = Button.create(app, { label: LANG.breadcrumb['<% = locale %>'] });
     breadcrumb.subscribe(Button.Action.CLICK, function() {
-      app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+      app.dispatch(Redirect.toApp({ path: '/auth' }));
     });
-
     var titleBarOptions = {
-      title: 'My page title',
+      title: LANG.top.title['<% = locale %>'],
       breadcrumbs: breadcrumb
     };
-    
     var myTitleBar = TitleBar.create(app, titleBarOptions);
   </script>
   

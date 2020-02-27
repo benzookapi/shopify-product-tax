@@ -5,6 +5,7 @@ const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const koaRequest = require('koa-http-request');
 const views = require('koa-views');
+const serve = require('koa-static');
 
 const crypto = require('crypto');
 
@@ -27,6 +28,8 @@ app.use(views(__dirname + '/views', {
   }
 }));
 
+app.use(serve(__dirname + '/public'));
+
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 
@@ -47,7 +50,7 @@ const MONGO_COLLECTION = 'shops';
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
 
-
+/* Test frontend React */
 router.get('/react',  async (ctx, next) => { 
   console.log("+++++++++ /react ++++++++++");
   let shop = ctx.request.query.shop;
