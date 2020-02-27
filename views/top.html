@@ -10,18 +10,18 @@
   <script src="https://unpkg.com/babel-core@5.2.17/browser.min.js"></script>　
   <!-- Shopify ones -->
   <script src="https://unpkg.com/@shopify/app-bridge-react"></script>
-  <script src="https://unpkg.com/@shopify/polaris"></script>
+  <script type="text/babel" src="https://unpkg.com/@shopify/polaris"></script>
 </head>
 <body>
   <p><%= name %></p> 
   <script type="text/babel">
-  import {AppProvider, Card} from '@shopify/polaris';
-  import {Provider, Loading} from '@shopify/app-bridge-react';
+  
   
     import React from 'react';
     import ReactDOM from 'react-dom';
     
-    
+    import {AppProvider, Card} from '@shopify/polaris';
+  import {Provider, Loading} from '@shopify/app-bridge-react';
 
     function MyApp() {
       const config = {apiKey: '<%= api_key %>', shopOrigin: '<%= shop %>'};
