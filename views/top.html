@@ -5,10 +5,11 @@
   <title>Document</title>
   <!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
   <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
-  <link
+  <script src="https://unpkg.com/@shopify/polaris"></script>
+  <!--<link
     rel="stylesheet"
-    href="https://unpkg.com/@shopify/polaris@4.13.1/styles.min.css"
-  />
+    href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
+  />-->
   <!--<script src="https://unpkg.com/@shopify/app-bridge"></script>-->
 </head>
 <body>
@@ -17,17 +18,21 @@
   
   <div id="app"></div>
 
-  <script>
+  <script type="module">
+    import '@shopify/polaris/styles.css';
     import enTranslations from '@shopify/polaris/locales/en.json';
-    import {AppProvider, Button} from '@shopify/polaris';
+    import {AppProvider, Page, Card, Button} from '@shopify/polaris';
 
-    const app = (
+    ReactDOM.render(
       <AppProvider i18n={enTranslations}>
-        <Button onClick={() => alert('Button clicked!')}>Example button</Button>
-      </AppProvider>
+       <Page title="Example app">
+        <Card sectioned>
+          <Button onClick={() => alert('Button clicked!')}>Example button</Button>
+        </Card>
+       </Page>
+      </AppProvider>,
+      document.querySelector('#app'),
     );
-
-    ReactDOM.render(app, document.querySelector("#app"));
   </script>
 </body>
 </html>
