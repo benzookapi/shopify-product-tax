@@ -47,6 +47,16 @@ const MONGO_COLLECTION = 'shops';
 // Set Timezone Japan
 process.env.TZ = 'Asia/Tokyo'; 
 
+
+router.get('/react',  async (ctx, next) => { 
+  console.log("+++++++++ /react ++++++++++");
+  let shop = ctx.request.query.shop;
+  await ctx.render('react', {
+    api_key: API_KEY,
+    shop: shop
+  });
+});
+
 /*
  *
  * --- Auth by frontend App Bridge ---
