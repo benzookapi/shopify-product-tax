@@ -14,6 +14,34 @@
 
   <!-- https://polaris.shopify.com/components/actions/button#all-examples -->
   <button class="Polaris-Button">Example button</button>
+
+  <script>
+    // https://shopify.dev/tools/app-bridge/getting-started
+    var AppBridge = window['app-bridge'];
+    var createApp = AppBridge.default;
+    var app = createApp({
+      apiKey: '<%= api_key %>',
+      shopOrigin: '<%= shop %>'
+    });
+
+    var actions = AppBridge.actions;
+    var TitleBar = actions.TitleBar;
+    var Button = actions.Button;
+    var Redirect = actions.Redirect;
+
+    var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
+    breadcrumb.subscribe(Button.Action.CLICK, function() {
+      app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+    });
+
+    var titleBarOptions = {
+      title: 'My page title',
+      breadcrumbs: breadcrumb
+    };
+    
+    var myTitleBar = TitleBar.create(app, titleBarOptions);
+  </script>
+  
   
 </body>
 </html>
