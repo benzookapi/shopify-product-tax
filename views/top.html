@@ -32,12 +32,12 @@
     var Button = actions.Button;
     var Redirect = actions.Redirect;
     // Add event
-    var breadcrumb = Button.create(app, { label: LANG.breadcrumb['<% = locale %>'] });
+    var breadcrumb = Button.create(app, { label: LANG.breadcrumb['<%= locale %>'] });
     breadcrumb.subscribe(Button.Action.CLICK, function() {
-      app.dispatch(Redirect.toApp({ path: '/auth' }));
+      app.dispatch(Redirect.toApp({ path: '/auth?shop=<%= shop %>' }));
     });
     var titleBarOptions = {
-      title: LANG.top.title['<% = locale %>'],
+      title: LANG.top.title['<%= locale %>'],
       breadcrumbs: breadcrumb
     };
     var myTitleBar = TitleBar.create(app, titleBarOptions);
