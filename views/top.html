@@ -3,37 +3,31 @@
 <head>
   <meta charset="UTF-8">
   <title>Document</title>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+  <!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>-->
   <link
     rel="stylesheet"
     href="https://unpkg.com/@shopify/polaris@4.13.1/styles.min.css"
   />
-  <script src="https://unpkg.com/@shopify/app-bridge"></script>
+  <!--<script src="https://unpkg.com/@shopify/app-bridge"></script>-->
 </head>
 <body>
   <p><%= name %></p>
   
+  
   <div id="app"></div>
 
   <script>
-    var AppBridge = window['app-bridge'];
-    var actions = AppBridge.actions;
-    var TitleBar = actions.TitleBar;
-    var Button = actions.Button;
-    var Redirect = actions.Redirect;
+    import enTranslations from '@shopify/polaris/locales/en.json';
+    import {AppProvider, Button} from '@shopify/polaris';
 
-    var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
-    breadcrumb.subscribe(Button.Action.CLICK, function() {
-      app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
-    });
+    const app = (
+      <AppProvider i18n={enTranslations}>
+        <Button onClick={() => alert('Button clicked!')}>Example button</Button>
+      </AppProvider>
+    );
 
-    var titleBarOptions = {
-      title: 'My page title',
-      breadcrumbs: breadcrumb
-    };
-
-    var myTitleBar = TitleBar.create(app, titleBarOptions);
+    ReactDOM.render(app, document.querySelector("#app"));
   </script>
 </body>
 </html>
