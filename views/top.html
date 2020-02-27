@@ -10,14 +10,14 @@
     rel="stylesheet"
     href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
   />-->
-  <script crossorigin src="https://unpkg.com/@shopify/app-bridge"></script>
+  <script crossorigin src="https://unpkg.com/@shopify/app-bridge-react"></script>
 </head>
 <body>
   <p><%= name %></p> 
   <script type="text/babel">
     import React from 'react';
     import ReactDOM from 'react-dom';
-    import {Provider, Loading} from '@shopify/app-bridge';
+    import {Provider, Loading} from '@shopify/app-bridge-react';
     import {AppProvider, Card} from '@shopify/polaris';
 
     function MyApp() {
