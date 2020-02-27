@@ -3,14 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <title>Top</title>
-  <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
-  <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
-  <script crossorigin type="text/babel" src="https://unpkg.com/@shopify/polaris"></script>
-  <!--<link
-    rel="stylesheet"
-    href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
-  />-->
-  <script crossorigin src="https://unpkg.com/@shopify/app-bridge-react"></script>
+  <!-- Non Shopify ones -->
+  <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+　<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+　<script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+  <!-- Shopify ones -->
+  <script src="https://unpkg.com/@shopify/app-bridge-react"></script>
+  <script src="https://unpkg.com/@shopify/polaris"></script>  
 </head>
 <body>
   <p><%= name %></p> 
@@ -31,7 +30,6 @@
         </AppProvider>
       );
     }
-
     const root = document.createElement('div');
     document.body.appendChild(root);
     ReactDOM.render(<MyApp />, root);
