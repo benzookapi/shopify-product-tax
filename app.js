@@ -103,7 +103,8 @@ router.get('/',  async (ctx, next) => {
     await ctx.render('top', {
       name: api_res.data.shop.products.edges[0].node.handle,
       shop: shop,
-      locale: locale
+      locale: locale,
+      api_key: API_KEY
     });
   }
 });
