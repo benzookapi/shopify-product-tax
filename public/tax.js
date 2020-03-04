@@ -19,9 +19,10 @@ while (n) {
     text += n.nodeValue;
     n = text_nodes.iterateNext();
 }
-text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
-if (text != "") {
-    document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = `${text}  税込：${formatter.format(parseInt(text) * tax)}`;
+var text_value = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+if (text_value != "") {
+    document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+      `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
 }
 
 /* -- Product page -- */
@@ -34,9 +35,10 @@ if (window.location.pathname.endsWith(product_path)) {
         text += n.nodeValue;
         n = text_nodes.iterateNext();
     }
-    text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
-    if (text != "") {
-        document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = `${text}  税込：${formatter.format(parseInt(text) * tax)}`;
+    text_value = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+    if (text_value != "") {
+        document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+          `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
     }
 }
 
