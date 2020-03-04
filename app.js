@@ -177,7 +177,7 @@ router.get('/callback',  async (ctx, next) => {
 */
 router.get('/proxy',  async (ctx, next) => {
   console.log("---------- /proxy ------------");
-  if (!checkSignature(ctx.request.query)) {
+  if (!checkAppProxySignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
@@ -209,30 +209,44 @@ router.post('/webhook', async (ctx, next) => {
 const checkSignature = function(json) {
   let temp = JSON.parse(JSON.stringify(json));
   console.log(`checkSignature ${JSON.stringify(temp)}`);
-  var sig = null;
-  if (typeof temp.hmac === UNDEFINED) {
-    if (typeof temp.signature === UNDEFINED) {
-      return false;
-    } else {
-      sig = temp.signature;
-      delete temp.signature; 
-    }
-  } else {
-    sig = temp.hmac;
-    delete temp.hmac; 
-  }  
-  let signarure = createSignature(temp);
-  console.log(`checkSignature ${signarure}`);
+  if (typeof temp.hmac === UNDEFINED) return false;
+  let sig = temp.hmac;
+  delete temp.hmac; 
+  let msg = Object.entries(json).sort().map(e => e.join('=')).join('&');
+  const hmac = crypto.createHmac('sha256', HMAC_SECRET);
+  hmac.update(msg);
+  let signarure =  hmac.digest('hex');
+  //console.log(`checkSignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
-/* --- --- */
-const createSignature = function(json) {
-  let msg = Object.entries(json).sort().map(e => e.join('=')).join('&');
-  //console.log(`createSignature ${msg}`);
+const checkAppProxySignature = function(json) {
+  let temp = JSON.parse(JSON.stringify(json));
+  console.log(`checkAppProxySignature ${JSON.stringify(temp)}`);
+  if (typeof temp.signarure === UNDEFINED) return false;
+  let sig = temp.signarure;
+  delete temp.signarure; 
+  let msg = Object.entries(json).sort().map(e => e.join('=')).join('');
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
-  return hmac.digest('hex');
+  let signarure = hmac.digest('hex');
+  //console.log(`checkAppProxySignature ${signarure}`);
+  return signarure === sig ? true : false;
+};
+
+/* --- Check if the given signarure is corect or not for Webhook --- */
+const checkWebhookSignature = function(ctx, secret) {
+  return new Promise(function (resolve, reject) {
+    console.log(`checkWebhookSignature Headers ${ctx.headers}`);
+    let receivedSig = ctx.headers["x-shopify-hmac-sha256"];
+    console.log(`checkWebhookSignature Given ${receivedSig}`);
+    if (receivedSig == null) return resolve(false);
+    const hmac = crypto.createHmac('sha256', secret);
+    hmac.update(Buffer.from(ctx.request.rawBody, 'utf8').toString('utf8'));
+    let signarure = hmac.digest('base64');
+    console.log(`checkWebhookSignature Created: ${signarure}`);
+    return resolve(receivedSig === signarure ? true : false);    
+  });  
 };
 
 /* --- --- */
@@ -328,21 +342,6 @@ const accessEndpoint = function(ctx, endpoint, req, token = null, content_type =
     }    
   });
 };    
-
-/* --- Check if the given signarure is corect or not for Webhook --- */
-const checkWebhookSignature = function(ctx, secret) {
-  return new Promise(function (resolve, reject) {
-    console.log(`checkWebhookSignature Headers ${ctx.headers}`);
-    let receivedSig = ctx.headers["x-shopify-hmac-sha256"];
-    console.log(`checkWebhookSignature Given ${receivedSig}`);
-    if (receivedSig == null) return resolve(false);
-    const hmac = crypto.createHmac('sha256', secret);
-    hmac.update(Buffer.from(ctx.request.rawBody, 'utf8').toString('utf8'));
-    let signarure = hmac.digest('base64');
-    console.log(`checkWebhookSignature Created: ${signarure}`);
-    return resolve(receivedSig === signarure ? true : false);    
-  });  
-};
 
 /* ---  --- */
 const insertDB = function(key, data) {
