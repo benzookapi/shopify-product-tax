@@ -1,25 +1,23 @@
-const formatter = new Intl.NumberFormat('ja-JP', {
-    style: 'currency',
-    currency: 'JPY'
-});
-
 const textToValue = function(text) {
-    return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
-  //return text.replace(/\n/g, '').replace(/\t/g, '').replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+  return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
 };
 
 const accessProxy = function(callback) {
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-      if (this.readyState == 4 && this.status == 200) {
-        callback(JSON.parse(this.responseText));
-      }
-    };
-    xhttp.open("GET", "apps/tax", true);
-    xhttp.send();
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      callback(JSON.parse(this.responseText));
+    }
+  };
+  xhttp.open("GET", "apps/tax", true);
+  xhttp.send();
 };
 
 const renderTax = function(proxy_res) {
+  let formatter = new Intl.NumberFormat(proxy_res.locale, {
+    style: 'currency',
+    currency: proxy_res.currency
+  });
   var product_path = null;
   var prduct_price = null;
   var tax = -1;
