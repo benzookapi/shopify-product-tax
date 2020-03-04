@@ -234,7 +234,7 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.currency = api_res.data.shop.currencyCode;
 
-    const formatter = new Intl.NumberFormat(res.locale, {
+    let formatter = new Intl.NumberFormat(res.locale, {
       style: 'currency',
       currency: res.currency
     });
