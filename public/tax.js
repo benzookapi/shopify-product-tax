@@ -1,5 +1,5 @@
 var txt = "";
-let nodes = document.evaluate("//a[contains(@href, '/products/%E5%95%86%E5%93%81%EF%BC%91')]//*[contains(text(), '¥1,000']/text()", 
+let nodes = document.evaluate("//a[contains(@href, '/products/%E5%95%86%E5%93%81%EF%BC%91')]//*[contains(text(), '¥1,000']", 
   document, null, XPathResult.ANY_TYPE, null );
 var result = nodes.iterateNext();
         while (result) {
