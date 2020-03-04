@@ -212,7 +212,7 @@ const checkSignature = function(json) {
   if (typeof temp.hmac === UNDEFINED) return false;
   let sig = temp.hmac;
   delete temp.hmac; 
-  let msg = Object.entries(json).sort().map(e => e.join('=')).join('&');
+  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
   console.log(`checkSignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
@@ -227,7 +227,7 @@ const checkAppProxySignature = function(json) {
   if (typeof temp.signature === UNDEFINED) return false;
   let sig = temp.signature;
   delete temp.signature; 
-  let msg = Object.entries(json).sort().map(e => e.join('=')).join('');
+  let msg = Object.entries(temp).sort().map(e => e.join('=')).join('');
   console.log(`checkAppProxySignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
