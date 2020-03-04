@@ -19,6 +19,7 @@ xhttp.onreadystatechange = function() {
     var text_value = null;
     var label = proxy_res.locale == 'ja-JP' ? '税込' : 'Tax included';
     proxy_res.products.forEach(p => {
+        console.log(JSON.stringify(p));
       /* -- Key data for products -- */
       product_path = `/products/${p.handle}`;
       prduct_price = `${p.price}`;
