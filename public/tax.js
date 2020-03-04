@@ -5,6 +5,11 @@ var product_path = '/products/%E5%95%86%E5%93%81%EF%BC%91';
 var prduct_price = '¥1,000';
 var tax = 1 + (parseInt('10') * 0.01);
 
+const formatter = new Intl.NumberFormat('ja-JP', {
+    style: 'currency',
+    currency: 'JPY'
+  })
+
 /* -- Top page -- */
 var root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
 var text = "";
@@ -16,7 +21,7 @@ while (n) {
 }
 text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
 if (text != "") {
-    document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = parseInt(text) * tax;
+    document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = `${text}  税込：${formatter(parseInt(text) * tax)}`;
 }
 
 /* -- Product page -- */
@@ -31,7 +36,7 @@ if (window.location.pathname.endsWith(product_path)) {
     }
     text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
     if (text != "") {
-        document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = parseInt(text) * tax;
+        document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = `${text}  税込：${formatter(parseInt(text) * tax)}`;
     }
 }
 
