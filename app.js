@@ -224,9 +224,9 @@ const checkSignature = function(json) {
 const checkAppProxySignature = function(json) {
   let temp = JSON.parse(JSON.stringify(json));
   console.log(`checkAppProxySignature ${JSON.stringify(temp)}`);
-  if (typeof temp.signarure === UNDEFINED) return false;
-  let sig = temp.signarure;
-  delete temp.signarure; 
+  if (typeof temp.signature === UNDEFINED) return false;
+  let sig = temp.signature;
+  delete temp.signature; 
   let msg = Object.entries(json).sort().map(e => e.join('=')).join('');
   console.log(`checkAppProxySignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
