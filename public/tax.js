@@ -47,12 +47,11 @@ for (let i = 0; i < 1; i++) {
       while (n) {
           text += n.nodeValue;
           n = text_nodes.iterateNext();
-          console.log(`BBBBB${text}BBBBB`);
       }
       text_value = textToValue(text);
       if (text_value != "") {
-         // document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-          //  `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
+         document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+           `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
       }
   }
 }
