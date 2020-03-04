@@ -233,10 +233,10 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.currency = api_res.data.shop.currencyCode;
 
-    api_res.data.shop.products.array.forEach(p => {
-      res[encodeURIComponent(p.edges[0].node.handle)] = {
-        "price": p.edges[0].node.variants.edges[0].node.price,
-        "taxable": p.edges[0].node.variants.edges[0].node.taxable
+    api_res.data.shop.products.edges.forEach(e => {
+      res[encodeURIComponent(e.node.handle)] = {
+        "price": e.node.variants.edges[0].node.price,
+        "taxable": e.node.variants.edges[0].node.taxable
       };
     });
   }
