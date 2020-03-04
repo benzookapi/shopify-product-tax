@@ -50,7 +50,7 @@ for (let i = 0; i < 1; i++) {
       }
       text_value = textToValue(text);
       console.log(`AAA${text_value}AAA`);
-      console.log(ext_value != "");
+      console.log(text_value != "");
       if (text_value != "") {
           //document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
           //  `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
