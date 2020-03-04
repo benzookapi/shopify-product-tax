@@ -1,7 +1,3 @@
-const textToValue = function(text) {
-  return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
-};
-
 const accessProxy = function(callback) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -18,6 +14,9 @@ const renderTax = function(proxy_res) {
     style: 'currency',
     currency: proxy_res.currency
   });
+  let textToValue = function(text) {
+    return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+  };  
   var product_path = null;
   var prduct_price = null;
   var tax = -1;
