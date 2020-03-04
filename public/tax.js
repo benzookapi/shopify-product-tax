@@ -10,6 +10,10 @@ const formatter = new Intl.NumberFormat('ja-JP', {
     currency: 'JPY'
 });
 
+const textToValue = function(text) {
+  return text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+};
+
 /* -- Top page -- */
 var root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
 var text = "";
@@ -19,7 +23,7 @@ while (n) {
     text += n.nodeValue;
     n = text_nodes.iterateNext();
 }
-var text_value = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+var text_value = textToValue(text);
 if (text_value != "") {
     document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
       `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
@@ -35,7 +39,7 @@ if (window.location.pathname.endsWith(product_path)) {
         text += n.nodeValue;
         n = text_nodes.iterateNext();
     }
-    text_value = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+    text_value = textToValue(text);
     if (text_value != "") {
         document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
           `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
