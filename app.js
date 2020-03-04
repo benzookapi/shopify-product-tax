@@ -38,6 +38,7 @@ const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
 const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
+const RESTAPI_PATH_ADMIN = '/admin/api/2020-01/';
 
 const UNDEFINED = 'undefined';
 
@@ -148,12 +149,23 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
-    let api_res = await(callGraphql(ctx, shop, `{
+    // Get app handle by GraphQL
+    var api_res = await(callGraphql(ctx, shop, `{
       app {
         handle
       }
     }`));
-    ctx.redirect(`https://${shop}/admin/apps/${api_res.data.app.handle}`);  
+    let redirect_url = `https://${shop}/admin/apps/${api_res.data.app.handle}`;
+    // Insert my own JavaScript by REST API
+    (ctx, shop, sub_path, json, method = POST, token = null, path = RESTAPI_PATH_ADMIN)
+    api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
+      "script_tag": {
+        "event": "onload",
+        "src": `https://${ctx.request.hostname}/tax.js`
+      }
+    }));
+    console.log(`${JSON.stringify(api_res)}`);
+    ctx.redirect(redirect_url);  
   } else {
     ctx.status = 500;
   }  
@@ -225,6 +237,35 @@ const callGraphql = function(ctx, shop, ql, query = true, token = null, path = G
       });     
     } else {
       accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token).then(function(api_res){
+        return resolve(api_res);
+      }).catch(function(e){
+        console.log(`callGraphql ${e}`);
+        return reject(e);
+      }); 
+    }   
+  });
+};
+
+/* --- --- */
+const callRESTAPI = function(ctx, shop, sub_path, json, method = POST, token = null, path = RESTAPI_PATH_ADMIN) {
+  return new Promise(function (resolve, reject) {
+    var access_token = token;
+    if (access_token == null) {
+      getDB(shop).then(function(shop_data){
+        if (shop_data == null) return resolve(null);
+        access_token = shop_data.access_token;         
+        accessEndpoint(ctx, `https://${shop}/${path}/${sub_path}.json`, json, access_token, CONTENT_TYPE_JSON, method).then(function(api_res){
+          return resolve(api_res);
+        }).catch(function(e){
+          console.log(`callGraphql ${e}`);
+          return reject(e);
+        }); 
+      }).catch(function(e){
+        console.log(`callGraphql ${e}`);
+        return reject(e);
+      });     
+    } else {
+      accessEndpoint(ctx, `https://${shop}/${path}/${sub_path}.json`, json, access_token, CONTENT_TYPE_JSON, method).then(function(api_res){
         return resolve(api_res);
       }).catch(function(e){
         console.log(`callGraphql ${e}`);
