@@ -190,21 +190,7 @@ router.get('/proxy',  async (ctx, next) => {
   if (shop_data == null) {
     ctx.body = "No shop data";
   } else {
-    let api_res = await(callGraphql(ctx, shop, `{
-      shop {
-        products(first: 5) {
-          edges {
-            node {
-              id
-              handle
-            }
-          }
-          pageInfo {
-            hasNextPage
-          }
-        }
-      }
-    }`));
+    let api_res = await(callRESTAPI(ctx, shop, 'countries', null, 'GET'));
     console.log(`${JSON.stringify(api_res)}`);
     res = api_res;
   }
