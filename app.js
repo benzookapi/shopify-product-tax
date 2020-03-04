@@ -32,6 +32,7 @@ app.use(serve(__dirname + '/public'));
 
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
+const API_PERMISSION = `${process.env.SHOPIFY_API_PERMISSION}`;
 
 const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
@@ -55,8 +56,6 @@ router.get('/react',  async (ctx, next) => {
   console.log("+++++++++ /react ++++++++++");
   let shop = ctx.request.query.shop;
   await ctx.render('react', {
-    api_key: API_KEY,
-    shop: shop
   });
 });
 
@@ -70,6 +69,7 @@ router.get('/auth',  async (ctx, next) => {
   let shop = ctx.request.query.shop;
   await ctx.render('auth', {
     api_key: API_KEY,
+    api_permission: API_PERMISSION,
     callback: `https://${ctx.request.hostname}/callback`,
     shop: shop
   });

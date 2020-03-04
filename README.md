@@ -12,3 +12,8 @@ OR
 
 `https://shopify-product-tax.herokuapp.com/auth?shop=junichiokamurasptest1.myshopify.com` 
 (By CDN Appbridge. See `https://shopify.dev/tools/app-bridge/getting-started`)
+
+# TIPS
+## how to be multilingiual app
+Simply use `locale` parameter give by Shopify admin and how to be multilingual is totally up to you. 
+In this sample, see `/i18n.js` and use `top.html`
