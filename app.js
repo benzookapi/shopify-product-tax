@@ -158,18 +158,25 @@ router.get('/callback',  async (ctx, next) => {
     }`));
     let redirect_url = `https://${shop}/admin/apps/${api_res.data.app.handle}`;
 
-    
+    let src_url = `https://${ctx.request.hostname}/tax.js`;
+
+    // Get and delete the current my own JavaScript by REST API
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', null, 'GET'));
-    console.log(`${JSON.stringify(api_res)}`);
+    if (api_res.script_tags !== UNDEFINED) {
+      api_res.script_tags.forEach(s => {
+        if (s.src == src_url) await(callRESTAPI(ctx, shop, `script_tags/${s.id}`, null, 'DELETE'));
+      })
+    }
+    //console.log(`${JSON.stringify(api_res)}`);
 
     // Insert my own JavaScript by REST API
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
       "script_tag": {
         "event": "onload",
-        "src": `https://${ctx.request.hostname}/tax.js`
+        "src": src_url
       }
     }));
-    console.log(`${JSON.stringify(api_res)}`);
+    //console.log(`${JSON.stringify(api_res)}`);
 
 
     ctx.redirect(redirect_url);  
