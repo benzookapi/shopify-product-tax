@@ -14,7 +14,7 @@ while (n) {
     text += n.nodeValue;
     n = text_nodes.iterateNext();
 }
-text = price_text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
 if (text != "") {
     document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = parseInt(text) * tax;
 }
@@ -29,7 +29,7 @@ if (window.location.pathname.endsWith(product_path)) {
         text += n.nodeValue;
         n = text_nodes.iterateNext();
     }
-    text = price_text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+    text = text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
     if (text != "") {
         document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = parseInt(text) * tax;
     }
