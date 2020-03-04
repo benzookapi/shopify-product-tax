@@ -1,14 +1,3 @@
-let accessProxy = function(callback) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      callback(JSON.parse(this.responseText));
-    }
-  };
-  xhttp.open("GET", "apps/tax", true);
-  xhttp.send();
-};
-
 const renderTax = function(proxy_res) {
   let formatter = new Intl.NumberFormat(proxy_res.locale, {
     style: 'currency',
@@ -67,6 +56,17 @@ const renderTax = function(proxy_res) {
   });
 };
 
-accessProxy(renderTax);
+
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
+        renderTax(JSON.parse(this.responseText));
+      }
+    };
+    xhttp.open("GET", "apps/tax", true);
+    xhttp.send();
+
+
+
 
 
