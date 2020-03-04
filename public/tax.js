@@ -10,7 +10,7 @@ xhttp.onreadystatechange = function() {
     });
 
     let textToValue = function(text) {
-      return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+      return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/\$/g, '').replace(/,/g, '');
     };  
 
     var product_path = null;
@@ -28,7 +28,7 @@ xhttp.onreadystatechange = function() {
       /* -- Key data for products -- */
       product_path = `/products/${p.handle}`;
       prduct_price = `${p.price}`;
-      tax = 1 + parseInt(proxy_res.tax);
+      tax = 1 + parseFloat(proxy_res.tax);
 
       console.log(JSON.stringify(product_path));
       console.log(JSON.stringify(prduct_price));
@@ -46,7 +46,7 @@ xhttp.onreadystatechange = function() {
       text_value = textToValue(text);
       if (text_value != "") {
         document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-          `${text} ${label}: ${formatter.format(parseInt(text_value) * tax)}`;
+          `${text} ${label}: ${formatter.format(parseFloat(text_value) * tax)}`;
       }
         
       /* -- Product page -- */
@@ -62,7 +62,7 @@ xhttp.onreadystatechange = function() {
         text_value = textToValue(text);
         if (text_value != "") {
           document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-            `${text} ${label}: ${formatter.format(parseInt(text_value) * tax)}`;
+            `${text} ${label}: ${formatter.format(parseFloat(text_value) * tax)}`;
         }
       }
 
