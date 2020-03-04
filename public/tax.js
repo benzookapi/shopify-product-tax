@@ -33,7 +33,7 @@ for (let i = 0; i < 1; i++) {
   }
   text_value = textToValue(text);
   if (text_value != "") {
-      document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+      document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().nodeValue = 
         `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
   }
 
