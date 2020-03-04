@@ -21,14 +21,15 @@ for (let i = 0; i < 1; i++) {
   product_path = '/products/%E5%95%86%E5%93%81%EF%BC%91';
   prduct_price = '¥1,000';
   tax = 1 + (parseInt('10') * 0.01);
-  
+
   /* -- Top page -- */
   root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
   text = "";
   text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
   n = text_nodes.iterateNext();
-  if (n) {
-      text = n.nodeValue;
+  while (n) {
+      text += n.nodeValue;
+      n = text_nodes.iterateNext();
   }
   text_value = textToValue(text);
   if (text_value != "") {
@@ -42,8 +43,9 @@ for (let i = 0; i < 1; i++) {
       text = "";
       text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
       n = text_nodes.iterateNext();
-      if (n) {
-          text = n.nodeValue;
+      while (n) {
+          text += n.nodeValue;
+          n = text_nodes.iterateNext();
       }
       text_value = textToValue(text);
       if (text_value != "") {
