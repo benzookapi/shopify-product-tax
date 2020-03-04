@@ -195,6 +195,7 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.tax = api_res.countries[0].tax;
     res.country = api_res.countries[0].code;
+    res.locale = res.country == 'JP' ? 'ja-JP' : 'en-US';
 
     api_res = await(callGraphql(ctx, shop, `{
       shop {
@@ -233,11 +234,19 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.currency = api_res.data.shop.currencyCode;
 
+    const formatter = new Intl.NumberFormat(res.locale, {
+      style: 'currency',
+      currency: res.currency
+    });
+
+    res.products = [];
     api_res.data.shop.products.edges.forEach(e => {
-      res[encodeURIComponent(e.node.handle)] = {
-        "price": e.node.variants.edges[0].node.price,
-        "taxable": e.node.variants.edges[0].node.taxable
-      };
+      if (e.node.variants.edges[0].node.taxable == true) {
+        res.products.push({
+          "handle": encodeURIComponent(e.node.handle),
+          "price": formatter.format(e.node.variants.edges[0].node.price)
+        });
+      }      
     });
   }
   ctx.body = res;
