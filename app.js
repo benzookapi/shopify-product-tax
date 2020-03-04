@@ -209,9 +209,18 @@ router.post('/webhook', async (ctx, next) => {
 const checkSignature = function(json) {
   let temp = JSON.parse(JSON.stringify(json));
   console.log(`checkSignature ${JSON.stringify(temp)}`);
-  if (typeof temp.hmac === UNDEFINED) return false;
-  let sig = temp.hmac;
-  delete temp.hmac; 
+  var sig = null;
+  if (typeof temp.hmac === UNDEFINED) {
+    if (typeof temp.signature === UNDEFINED) {
+      return false;
+    } else {
+      sig = temp.signature;
+      delete temp.signature; 
+    }
+  } else {
+    sig = temp.hmac;
+    delete temp.hmac; 
+  }  
   let signarure = createSignature(temp);
   //console.log(`checkSignature ${signarure}`);
   return signarure === sig ? true : false;
