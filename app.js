@@ -213,6 +213,7 @@ const checkSignature = function(json) {
   let sig = temp.hmac;
   delete temp.hmac; 
   let msg = Object.entries(json).sort().map(e => e.join('=')).join('&');
+  console.log(`checkSignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure =  hmac.digest('hex');
@@ -227,10 +228,11 @@ const checkAppProxySignature = function(json) {
   let sig = temp.signarure;
   delete temp.signarure; 
   let msg = Object.entries(json).sort().map(e => e.join('=')).join('');
+  console.log(`checkAppProxySignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure = hmac.digest('hex');
-  //console.log(`checkAppProxySignature ${signarure}`);
+  console.log(`checkAppProxySignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
