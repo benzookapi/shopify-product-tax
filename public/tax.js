@@ -40,7 +40,7 @@ for (let i = 0; i < 1; i++) {
 
   /* -- Product page -- */
   if (window.location.pathname.endsWith(product_path)) {
-      root_query = `//*[contains(., '${prduct_price}')]`;
+      root_query = `//span[contains(., '${prduct_price}')]`;
       text = "";
       text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
       n = text_nodes.iterateNext();
