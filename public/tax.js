@@ -45,7 +45,8 @@ for (let i = 0; i < 1; i++) {
       n = text_nodes.iterateNext();
       while (n) {
           text += n.nodeValue;
-          n = text_nodes.iterateNext();
+          //n = text_nodes.iterateNext();
+          n = false;
       }
       text_value = textToValue(text);
       if (text_value != "") {
