@@ -4,8 +4,6 @@ xhttp.onreadystatechange = function() {
 
     let proxy_res = JSON.parse(this.responseText);
 
-    console.log(JSON.stringify(proxy_res.tax));
-
     let formatter = new Intl.NumberFormat(proxy_res.locale, {
       style: 'currency',
       currency: proxy_res.currency
@@ -26,12 +24,15 @@ xhttp.onreadystatechange = function() {
     var label = proxy_res.locale == 'ja-JP' ? '税込' : 'Tax included';
 
     proxy_res.products.forEach(p => {
-      console.log(JSON.stringify(p));
 
       /* -- Key data for products -- */
       product_path = `/products/${p.handle}`;
       prduct_price = `${p.price}`;
       tax = 1 + parseInt(proxy_res.tax);
+
+      console.log(JSON.stringify(product_path));
+      console.log(JSON.stringify(prduct_price));
+      console.log(JSON.stringify(tax));
         
       /* -- Top page -- */
       root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
