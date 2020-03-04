@@ -6,7 +6,7 @@ var prduct_price = '¥1,000';
 var tax = 1 + (parseInt('10') * 0.01);
 
 /* -- Top page -- */
-var root_query = `//a[contains(@href, ${product_path})]//*[contains(., ${prduct_price})]`;
+var root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
 var text = "";
 var text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
 var n = text_nodes.iterateNext();
@@ -21,7 +21,7 @@ if (text != "") {
 
 /* -- Product page -- */
 if (window.location.pathname.endsWith(product_path)) {
-    root_query = "//*[@id='ProductPrice']";
+    root_query = `//*[@id='ProductPrice']`;
     text = "";
     text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
     n = text_nodes.iterateNext();
