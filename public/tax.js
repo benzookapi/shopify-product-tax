@@ -49,6 +49,7 @@ for (let i = 0; i < 1; i++) {
           if (textToValue(text) != "") break;
       }
       text_value = textToValue(text);
+      alert(text_value);
       if (text_value != "") {
           //document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
           //  `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
