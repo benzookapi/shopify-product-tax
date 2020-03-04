@@ -5,7 +5,7 @@ const formatter = new Intl.NumberFormat('ja-JP', {
 });
 
 const textToValue = function(text) {
-  return text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
+  return text.replace(/\n/g, '').replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
 };
 
 var product_path = null;
