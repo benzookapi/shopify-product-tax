@@ -48,7 +48,7 @@ const MONGO_DB_NAME = `${process.env.SHOPIFY_MONGO_DB_NAME}`;
 const MONGO_COLLECTION = 'shops';
 
 // Set Timezone Japan
-process.env.TZ = 'Asia/Tokyo'; 
+//process.env.TZ = 'Asia/Tokyo'; 
 
 /* Test frontend React */
 router.get('/react',  async (ctx, next) => { 
