@@ -149,6 +149,7 @@ router.get('/callback',  async (ctx, next) => {
     } else {
       await(setDB(shop, res));  
     }
+
     // Get app handle by GraphQL
     var api_res = await(callGraphql(ctx, shop, `{
       app {
@@ -156,6 +157,11 @@ router.get('/callback',  async (ctx, next) => {
       }
     }`));
     let redirect_url = `https://${shop}/admin/apps/${api_res.data.app.handle}`;
+
+    
+    api_res = await(callRESTAPI(ctx, shop, 'script_tags', null, 'GET'));
+    console.log(`${JSON.stringify(api_res)}`);
+
     // Insert my own JavaScript by REST API
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
       "script_tag": {
@@ -164,7 +170,10 @@ router.get('/callback',  async (ctx, next) => {
       }
     }));
     console.log(`${JSON.stringify(api_res)}`);
+
+
     ctx.redirect(redirect_url);  
+
   } else {
     ctx.status = 500;
   }  

@@ -1,14 +1,18 @@
 var xhttp = new XMLHttpRequest();
 xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
+
     let proxy_res = JSON.parse(this.responseText);
+
     let formatter = new Intl.NumberFormat(proxy_res.locale, {
       style: 'currency',
       currency: proxy_res.currency
     });
+
     let textToValue = function(text) {
       return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
     };  
+
     var product_path = null;
     var prduct_price = null;
     var tax = -1;
@@ -18,8 +22,10 @@ xhttp.onreadystatechange = function() {
     var n = null;
     var text_value = null;
     var label = proxy_res.locale == 'ja-JP' ? '税込' : 'Tax included';
+
     proxy_res.products.forEach(p => {
-        console.log(JSON.stringify(p));
+      console.log(JSON.stringify(p));
+
       /* -- Key data for products -- */
       product_path = `/products/${p.handle}`;
       prduct_price = `${p.price}`;
@@ -56,10 +62,12 @@ xhttp.onreadystatechange = function() {
             `${text} ${label}: ${formatter.format(parseInt(text_value) * tax)}`;
         }
       }
+      
     });        
+
   }
 };
-xhttp.open("GET", "/apps/tax", false);
+xhttp.open("GET", "/apps/tax", true);
 xhttp.send();
 
 
