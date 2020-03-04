@@ -38,7 +38,7 @@ const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
 const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
-const RESTAPI_PATH_ADMIN = '/admin/api/2020-01/';
+const RESTAPI_PATH_ADMIN = 'admin/api/2020-01/';
 
 const UNDEFINED = 'undefined';
 
@@ -181,9 +181,34 @@ router.get('/proxy',  async (ctx, next) => {
     ctx.status = 400;
     return;
   }
-  console.log(JSON.stringify(ctx.request.query));
-  console.log(JSON.stringify(ctx.request.body));
-  ctx.status = 200;
+
+  let shop = ctx.request.query.shop;
+
+  var res = {};
+
+  var shop_data = await(getDB(shop)); 
+  if (shop_data == null) {
+    ctx.body = "No shop data";
+  } else {
+    let api_res = await(callGraphql(ctx, shop, `{
+      shop {
+        products(first: 5) {
+          edges {
+            node {
+              id
+              handle
+            }
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+    }`));
+    console.log(`${JSON.stringify(api_res)}`);
+    res = api_res;
+  }
+  ctx.body = res;
 });
 
 
@@ -213,7 +238,7 @@ const checkSignature = function(json) {
   let sig = temp.hmac;
   delete temp.hmac; 
   let msg = Object.entries(temp).sort().map(e => e.join('=')).join('&');
-  console.log(`checkSignature ${msg}`);
+  //console.log(`checkSignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure =  hmac.digest('hex');
@@ -228,11 +253,11 @@ const checkAppProxySignature = function(json) {
   let sig = temp.signature;
   delete temp.signature; 
   let msg = Object.entries(temp).sort().map(e => e.join('=')).join('');
-  console.log(`checkAppProxySignature ${msg}`);
+  //console.log(`checkAppProxySignature ${msg}`);
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure = hmac.digest('hex');
-  console.log(`checkAppProxySignature ${signarure}`);
+  //console.log(`checkAppProxySignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
