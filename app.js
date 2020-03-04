@@ -97,7 +97,7 @@ router.get('/',  async (ctx, next) => {
   } else {
     let api_res = await(callGraphql(ctx, shop, `{
       shop {
-        products(first: 5) {
+        products(first: 100) {
           edges {
             node {
               id
@@ -190,9 +190,55 @@ router.get('/proxy',  async (ctx, next) => {
   if (shop_data == null) {
     ctx.body = "No shop data";
   } else {
-    let api_res = await(callRESTAPI(ctx, shop, 'countries', null, 'GET'));
+    var api_res = await(callRESTAPI(ctx, shop, 'countries', null, 'GET'));
     console.log(`${JSON.stringify(api_res)}`);
-    res = api_res;
+
+    res.tax = api_res.countries[0].tax;
+    res.country = api_res.countries[0].code;
+
+    api_res = await(callGraphql(ctx, shop, `{
+      shop {
+        currencyCode
+        currencyFormats {
+          moneyWithCurrencyFormat
+        }
+        
+        products(first: 100) {
+          edges {
+            node {
+              id
+              handle
+              ... on Product {
+                variants(first: 1) {
+                  edges {
+                    node {
+                      ... on ProductVariant {
+                        price
+                        taxable
+                      }
+                    }
+                  }
+                }
+              }
+              
+            }
+          }
+          pageInfo {
+            hasNextPage
+          }
+        }
+      }
+    }`));
+    console.log(`${JSON.stringify(api_res)}`);
+
+    res.currency = api_res.shop.currencyCode;
+
+    api_res.data.shop.products.array.forEach(p => {
+      res[encodeURIComponent(p.edges[0].node.handle)] = {
+        "price": p.edges[0].node.variants.edges[0].node.price,
+        "taxable": p.edges[0].node.variants.edges[0].node.taxable
+      };
+    });
   }
   ctx.body = res;
 });
