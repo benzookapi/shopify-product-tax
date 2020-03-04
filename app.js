@@ -157,7 +157,6 @@ router.get('/callback',  async (ctx, next) => {
     }`));
     let redirect_url = `https://${shop}/admin/apps/${api_res.data.app.handle}`;
     // Insert my own JavaScript by REST API
-    (ctx, shop, sub_path, json, method = POST, token = null, path = RESTAPI_PATH_ADMIN)
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
       "script_tag": {
         "event": "onload",
