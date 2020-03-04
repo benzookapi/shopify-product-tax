@@ -231,7 +231,7 @@ router.get('/proxy',  async (ctx, next) => {
     }`));
     console.log(`${JSON.stringify(api_res)}`);
 
-    res.currency = api_res.shop.currencyCode;
+    res.currency = api_res.data.shop.currencyCode;
 
     api_res.data.shop.products.array.forEach(p => {
       res[encodeURIComponent(p.edges[0].node.handle)] = {
