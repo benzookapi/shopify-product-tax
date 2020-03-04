@@ -19,8 +19,6 @@ const accessProxy = function(callback) {
     xhttp.send();
 };
 
-accessProxy(renderTax);
-
 const renderTax = function(proxy_res) {
   var product_path = null;
   var prduct_price = null;
@@ -72,5 +70,6 @@ const renderTax = function(proxy_res) {
   });
 };
 
+accessProxy(renderTax);
 
 
