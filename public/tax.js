@@ -46,7 +46,7 @@ xhttp.onreadystatechange = function() {
       text_value = textToValue(text);
       if (text_value != "") {
         document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-          `${text} ${label}: ${formatter.format(parseFloat(text_value) * tax)}`;
+          `${text} (${label}: ${formatter.format(parseFloat(text_value) * tax)})`;
       }
         
       /* -- Product page -- */
@@ -62,7 +62,7 @@ xhttp.onreadystatechange = function() {
         text_value = textToValue(text);
         if (text_value != "") {
           document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-            `${text} ${label}: ${formatter.format(parseFloat(text_value) * tax)}`;
+            `${text} (${label}: ${formatter.format(parseFloat(text_value) * tax)})`;
         }
       }
 
