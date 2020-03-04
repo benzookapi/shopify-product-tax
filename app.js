@@ -246,7 +246,7 @@ const callGraphql = function(ctx, shop, ql, query = true, token = null, path = G
 };
 
 /* --- --- */
-const callRESTAPI = function(ctx, shop, sub_path, json, method = POST, token = null, path = RESTAPI_PATH_ADMIN) {
+const callRESTAPI = function(ctx, shop, sub_path, json, method = 'POST', token = null, path = RESTAPI_PATH_ADMIN) {
   return new Promise(function (resolve, reject) {
     var access_token = token;
     if (access_token == null) {
