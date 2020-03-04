@@ -8,7 +8,7 @@ while (n) {
     price_text += n.nodeValue;
     n = text_nodes.iterateNext();
 }
-price_text = price_text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '');
+price_text = price_text.replace(/' '/g, '').replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/,/g, '');
 alert(price_text);
 
 document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = parseInt(price_text) + 333;
