@@ -59,7 +59,7 @@ xhttp.onreadystatechange = function() {
     });        
   }
 };
-xhttp.open("GET", "/apps/tax", true);
+xhttp.open("GET", "/apps/tax", false);
 xhttp.send();
 
 
