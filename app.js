@@ -222,7 +222,7 @@ const checkSignature = function(json) {
     delete temp.hmac; 
   }  
   let signarure = createSignature(temp);
-  //console.log(`checkSignature ${signarure}`);
+  console.log(`checkSignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
