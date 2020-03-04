@@ -35,7 +35,7 @@ for (let i = 0; i < 1; i++) {
   text_value = textToValue(text);
   if (text_value != "") {
       document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-        `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
+        `${text}  税込: ${formatter.format(parseInt(text_value) * tax)}`;
   }
 
   /* -- Product page -- */
@@ -51,7 +51,7 @@ for (let i = 0; i < 1; i++) {
       text_value = textToValue(text);
       if (text_value != "") {
          document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-           `${text}  税込：${formatter.format(parseInt(text_value) * tax)}`;
+           `${text}  税込: ${formatter.format(parseInt(text_value) * tax)}`;
       }
   }
 }

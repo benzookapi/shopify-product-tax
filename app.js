@@ -172,6 +172,23 @@ router.get('/callback',  async (ctx, next) => {
 
 /* 
  * 
+ * --- App proxy  ---
+ * 
+*/
+router.get('/proxy',  async (ctx, next) => {
+  console.log("---------- /proxy ------------");
+  if (!checkSignature(ctx.request.query)) {
+    ctx.status = 400;
+    return;
+  }
+  console.log(JSON.stringify(ctx.request.query));
+  console.log(JSON.stringify(ctx.request.body));
+  ctx.status = 200;
+});
+
+
+/* 
+ * 
  * --- Webhook  ---
  * 
 */
