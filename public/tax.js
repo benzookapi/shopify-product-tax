@@ -4,6 +4,8 @@ xhttp.onreadystatechange = function() {
 
     let proxy_res = JSON.parse(this.responseText);
 
+    console.log(JSON.stringify(proxy_res.tax));
+
     let formatter = new Intl.NumberFormat(proxy_res.locale, {
       style: 'currency',
       currency: proxy_res.currency
@@ -62,7 +64,7 @@ xhttp.onreadystatechange = function() {
             `${text} ${label}: ${formatter.format(parseInt(text_value) * tax)}`;
         }
       }
-      
+
     });        
 
   }
