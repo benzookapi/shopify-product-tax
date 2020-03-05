@@ -49,7 +49,7 @@ xhttp.onreadystatechange = function() {
           try {
             f = parseFloat(textToValue(t));
           } catch(error) {
-            console.error(error);
+            console.error(`error ${error}`);
           } 
           n = nodes.iterateNext();
         }
