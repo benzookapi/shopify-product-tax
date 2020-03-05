@@ -72,8 +72,8 @@ const addTax = function(proxy_res) {
             }
           }          
         }
-        console.log(`Afer: ${JSON.stringify(meta)}`);*/
-      }
+        console.log(`Afer: ${JSON.stringify(meta)}`);
+      }*/
     }   
   }    
 };
