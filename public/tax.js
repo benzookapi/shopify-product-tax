@@ -31,7 +31,7 @@ xhttp.onreadystatechange = function() {
       /* -- Top/Collection/Product page -- */
       console.log(window.location.pathname);   
       if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.endsWith(`/products/${p.handle}`)) {
-        xpath = `//*[contains(., '${p.price}')]/text()`;
+        xpath = `//p[contains(., '${p.price}')]/text()|//span[contains(., '${p.price}')]/text()`;
         console.log(xpath);
         f = -1;
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
