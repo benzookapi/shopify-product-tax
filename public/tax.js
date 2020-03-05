@@ -21,12 +21,15 @@ xhttp.onreadystatechange = function() {
     let current_path = window.location.pathname;
     console.log(current_path);
 
+    var p = null;
     var xpath = null;
     var nodes = null;    
     var f = -1;
     var t = "";
     var n = null;
-    proxy_res.products.forEach(p => {
+    let size = proxy_res.products.length;
+    for (let i=0; i<size; i++) {
+      p = proxy_res.products[i];
       console.log(p.handle);
       console.log(p.price);       
       /* -- Top/Collection/Product page -- */
@@ -53,7 +56,7 @@ xhttp.onreadystatechange = function() {
           n = nodes.iterateNext();
         }
       }
-    });        
+    }       
 
   }
 };
