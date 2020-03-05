@@ -40,17 +40,31 @@
   </script>
 
 <!-- https://polaris.shopify.com/components/forms/radio-button#navigation -->
-<div style="--top-bar-background:#00848e; --top-bar-background-lighter:#1d9ba4; --top-bar-color:#f9fafb;">
+<div class="Polaris-Stack--alignmentCenter">
   <div class="Polaris-Stack Polaris-Stack--vertical">
     <div class="Polaris-Stack__Item">
-      <div><label class="Polaris-Choice" for="disabled"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="disabled" name="accounts" type="radio" class="Polaris-RadioButton__Input" aria-describedby="disabledHelpText" value="" checked=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">Accounts are disabled</span></label>
-        <div class="Polaris-Choice__Descriptions">
+      <div>
+        <label class="Polaris-Choice" for="disabled">
+        <span class="Polaris-Choice__Control"><span class="Polaris-RadioButton">
+          <input id="disabled" name="accounts" type="radio" class="Polaris-RadioButton__Input" aria-describedby="disabledHelpText" value="" checked="">
+          <span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span>
+        </span></span>
+        <span class="Polaris-Choice__Label">Accounts are disabled</span>
+        </label>
+      <div class="Polaris-Choice__Descriptions">
           <div class="Polaris-Choice__HelpText" id="disabledHelpText">Customers will only be able to check out as guests.</div>
-        </div>
       </div>
     </div>
+    </div>
     <div class="Polaris-Stack__Item">
-      <div><label class="Polaris-Choice" for="optional"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="optional" name="accounts" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">Accounts are optional</span></label>
+      <div>
+        <label class="Polaris-Choice" for="optional">
+          <span class="Polaris-Choice__Control"><span class="Polaris-RadioButton">
+            <input id="optional" name="accounts" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="">
+            <span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span>
+          </span></span>
+          <span class="Polaris-Choice__Label">Accounts are optional</span>
+        </label>
         <div class="Polaris-Choice__Descriptions">
           <div class="Polaris-Choice__HelpText" id="optionalHelpText">Customers will be able to check out with a customer account or as a guest.</div>
         </div>
