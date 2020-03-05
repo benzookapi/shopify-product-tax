@@ -82,10 +82,15 @@ if (!stored_res) {
 }
 
 /* -- For variant option change -- */
+var path = window.location.pathname;
 window.document.querySelectorAll(".single-option-selector").forEach(s => {
   s.addEventListener(
     'change',
-    function() { /*window.location.reload();*/ },
+    function() { 
+      if (window.location.pathname != path) {
+        window.location.reload();
+      }
+     },
     false
   );
 });
