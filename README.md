@@ -24,7 +24,7 @@ SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YO
 
 -- OR --
 
-`https://OUR_APP_DOMAIN_LIKE_HEROKU/auth?shop=YOUR_SHOP_DOAMIN` 
+`https://YOUR_APP_DOMAIN_LIKE_HEROKU/auth?shop=YOUR_SHOP_DOAMIN` 
 
 (By CDN App Bridge. See `https://shopify.dev/tools/app-bridge/getting-started`)
 
