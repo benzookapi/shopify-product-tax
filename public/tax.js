@@ -1,6 +1,6 @@
 const DATA_KEY = 'ShopifyProductTaxAppDSata';
 
-const addTax = function(proxy_res) {
+let addTax = function(proxy_res) {
   let formatter = new Intl.NumberFormat(proxy_res.locale, {
     style: 'currency',
     currency: proxy_res.currency
