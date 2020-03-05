@@ -56,13 +56,13 @@ const addTax = function(proxy_res) {
   }    
 };
 
-let stored_res = sessionStorage.getItem(DATA_KEY);
+let stored_res = localStorage.getItem(DATA_KEY);
 if (!stored_res) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       let res = JSON.parse(this.responseText);
-      sessionStorage.setItem(DATA_KEY, JSON.stringify(res));
+      localStorage.setItem(DATA_KEY, JSON.stringify(res));
       addTax(res); 
     }
   };
