@@ -48,13 +48,12 @@ xhttp.onreadystatechange = function() {
           console.log(textToValue(t));
           try {
             f = parseFloat(textToValue(t));
-            n.textContent = `${formatter.format(f * tax)} (${label})`;
-            break;
           } catch(error) {
             console.error(error);
           } 
           n = nodes.iterateNext();
         }
+        n.textContent = `${formatter.format(f * tax)} (${label})`;
       }
     }       
 
