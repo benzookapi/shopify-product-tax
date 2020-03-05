@@ -82,12 +82,12 @@ if (!stored_res) {
 }
 
 /* -- For variant option change -- */
-var path = window.location.pathname;
+var q = window.location.search;
 window.document.querySelectorAll(".single-option-selector").forEach(s => {
   s.addEventListener(
     'change',
     function() { 
-      if (window.location.pathname != path) {
+      if (window.location.search != q) {
         window.location.reload();
       }
      },
