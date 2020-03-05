@@ -143,7 +143,7 @@ router.get('/callback',  async (ctx, next) => {
   let shop = ctx.request.query.shop;
 
   let res = await(accessEndpoint(ctx, `https://${shop}/admin/oauth/access_token`, req, null, CONTENT_TYPE_FORM)); 
-  if (res.access_token !== UNDEFINED) {
+  if (typeof res.access_token !== UNDEFINED) {
     var shop_data = await(getDB(shop)); 
     if (shop_data == null) {
       await(insertDB(shop, res));        
@@ -163,7 +163,7 @@ router.get('/callback',  async (ctx, next) => {
 
     // Get and delete the current my own JavaScript by REST API
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', null, 'GET'));
-    if (api_res.script_tags !== UNDEFINED) {
+    if (typeof api_res.script_tags !== UNDEFINED) {
       //forEach doesn't support async and await!
       let size = api_res.script_tags.length;
       for (let i=0; i<size; i++) {
@@ -268,6 +268,7 @@ router.get('/proxy',  async (ctx, next) => {
       for (let i =0; i<pSize; i++) {
         let p = api_res.data.shop.products.edges[i];
         let d = {
+          "id": p.node.id.split('/')[p.node.id.split('/').length-1],
           "handle": encodeURIComponent(p.node.handle),
           "variants": []
         };

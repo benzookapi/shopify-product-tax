@@ -18,8 +18,6 @@ const addTax = function(proxy_res) {
   let current_path = window.location.pathname;
   console.log(current_path);
 
-  console.log(JSON.stringify(meta));
-
   var p = null;
   var v = null;
   var xpath = null;
@@ -35,6 +33,7 @@ const addTax = function(proxy_res) {
     vSize = p.variants.length;
     for (let k =0; k<vSize; k++) {
       v = p.variants[k];
+      console.log(v.id);
       console.log(v.price);
       /* -- Top/Collection/Product page -- */  
       if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.indexOf('products/') > 0) {
@@ -58,6 +57,21 @@ const addTax = function(proxy_res) {
             console.error(`error ${error}`);
           } 
         }           
+      }
+      /* -- meta json for variants -- */
+      if (meta) {
+        console.log(JSON.stringify(meta));
+        if (typeof meta.product !== 'undefined' && typeof meta.product.variants !== 'undefined'){
+          if (meta.product.id == p.id) {
+            console.log(JSON.stringify(meta.product));
+            let mSize = meta.product.variants.length;
+            for (let l=0; l<mSize; l++) {
+              if (meta.product.variants[l].id == v.id) {
+                meta.product.variants[l].price = (parseFloat(meta.product.variants[l].price) * tax) * 100;
+              }
+            }
+          }          
+        }
       }
     }   
   }    
