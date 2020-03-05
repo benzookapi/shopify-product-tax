@@ -50,6 +50,11 @@ const MONGO_URL = `${process.env.SHOPIFY_MONGO_URL}`;
 const MONGO_DB_NAME = `${process.env.SHOPIFY_MONGO_DB_NAME}`;
 const MONGO_COLLECTION = 'shops';
 
+const METAFIELD_NAMESPACE = 'ProductTaxRefApp';
+const METAFIELD_KEY_INSERT_MODE = 'insertMode';
+const METAFIELD_MODE_LOAD = 'load';
+const METAFIELD_MODE_PASTE = 'paste';
+
 // Set Timezone Japan
 //process.env.TZ = 'Asia/Tokyo'; 
 
@@ -98,25 +103,34 @@ router.get('/',  async (ctx, next) => {
   } else {
     let api_res = await(callGraphql(ctx, shop, `{
       shop {
-        products(first: 100) {
+        privateMetafields(first:5, namespace:"${METAFIELD_NAMESPACE}") {
           edges {
+            cursor
             node {
-              id
-              handle
+              ... on PrivateMetafield {
+                namespace
+                id
+                key
+                value
+                valueType
+              }
             }
-          }
-          pageInfo {
-            hasNextPage
-          }
+          }      
         }
-      }
+      }    
     }`));
     console.log(`${JSON.stringify(api_res)}`);
-    /*ctx.state = {
-      session: this.session
-    }; */ 
+
+    let eSize = api_res.data.shop.privateMetafields.edges.length;
+    var mode = METAFIELD_MODE_PASTE;
+    for (let i=0; i<eSize; i++) {
+      if (api_res.data.shop.privateMetafields.edges[i].node.key == METAFIELD_KEY_INSERT_MODE) {
+        mode = api_res.data.shop.privateMetafields.edges[i].node.value;
+        break;
+      }
+    }
     await ctx.render('top', {
-      name: api_res.data.shop.products.edges[0].node.handle,
+      mode: mode,
       shop: shop,
       locale: locale,
       api_key: API_KEY
@@ -216,6 +230,7 @@ router.get('/proxy',  async (ctx, next) => {
     res.country = api_res.countries[0].code;
     res.locale = res.country === 'JP' ? 'ja-JP' : 'en-US';
 
+    /* -- TODO Pagenation  https://shopify.dev/concepts/graphql/pagination -- */
     api_res = await(callGraphql(ctx, shop, `{
       shop {
         currencyCode
