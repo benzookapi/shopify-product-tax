@@ -85,7 +85,7 @@ if (!stored_res) {
 window.document.querySelectorAll(".single-option-selector").forEach(s => {
   s.addEventListener(
     'change',
-    function() { window.location.reload(); },
+    function() { /*window.location.reload();*/ },
     false
   );
 });
