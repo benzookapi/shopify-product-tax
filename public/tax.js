@@ -18,6 +18,8 @@ const addTax = function(proxy_res) {
   let current_path = window.location.pathname;
   console.log(current_path);
 
+  console.log(JSON.stringify(meta));
+
   var p = null;
   var v = null;
   var xpath = null;
