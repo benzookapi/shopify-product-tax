@@ -63,7 +63,8 @@ if (!stored_res) {
     if (this.readyState == 4 && this.status == 200) {
       let res = JSON.parse(this.responseText);
       sessionStorage.setItem(DATA_KEY, JSON.stringify(res));
-      addTax(res); 
+      //addTax(res); 
+      window.location.reload();
     }
   };
   /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
