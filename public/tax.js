@@ -67,7 +67,7 @@ const addTax = function(proxy_res) {
             let mSize = meta.product.variants.length;
             for (let l=0; l<mSize; l++) {
               if (meta.product.variants[l].id == v.id) {
-                meta.product.variants[l].price = (parseFloat(meta.product.variants[l].price) * tax) * 100;
+                meta.product.variants[l].price = `${parseInt(meta.product.variants[l].price) * tax}`;
               }
             }
           }          
