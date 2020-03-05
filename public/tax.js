@@ -68,24 +68,13 @@ xhttp.onreadystatechange = function() {
         f = -1;
         nodes = document.evaluate(`${xpath}/text()`, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
-        while (n) {
-          console.log(n.nodeType);
-          console.log(n.textContent);
-          console.log(n.nodeName);
-          text += n.nodeValue;
+        if (n) {
           try {
-            f = parseFloat(textToValue(text));
-            break;
-          }
-          catch(error) {
-            //console.error(error);
-            console.log(text);
+            f = parseFloat(textToValue(n.textContent));
+            n.textContent = `${formatter.format(f * tax)} (${label})`;
+          } catch(error) {
+            console.error(error);
           } 
-          n = nodes.iterateNext();
-        }
-        if (f != -1) {
-          document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-            `${formatter.format(f * tax)} (${label})`;
         }
       }
 
