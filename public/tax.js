@@ -48,10 +48,12 @@ xhttp.onreadystatechange = function() {
           try {
             f = parseFloat(textToValue(t));
             n.nodeValue = `${formatter.format(f * tax)} (${label})`;
+            break;
           } catch(error) {
             console.error(`error ${error}`);
           } 
         }
+       
         if (f != -1) {
          // document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).textContent = `${formatter.format(f * tax)} (${label})`;
         }        
