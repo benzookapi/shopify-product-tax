@@ -22,8 +22,8 @@ xhttp.onreadystatechange = function() {
     var n = null;
     var f = null;
     proxy_res.products.forEach(p => {
-      console.log(JSON.stringify(product_path));
-      console.log(JSON.stringify(prduct_price));       
+      console.log(p.handle);
+      console.log(p.price);       
       /* -- Top/Collection/Product page -- */
       if (window.location.pathname == "" || window.location.pathname.indexOf('collections/') > 0 || 
         window.location.pathname.endsWith(`/products/${p.handle}`)) {
