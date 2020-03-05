@@ -38,7 +38,7 @@ xhttp.onreadystatechange = function() {
         xpath = `//span[contains(., '${prduct_price}')]`;
         text = "";
         f = -1;
-        nodes = document.evaluate(`${xpath}`, document, null, XPathResult.ANY_TYPE, null);
+        nodes = document.evaluate(`${xpath}/`, document, null, XPathResult.ANY_TYPE, null);
         console.log(JSON.stringify(nodes));
         n = nodes.iterateNext();        
         while (n) {
