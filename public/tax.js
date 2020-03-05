@@ -31,7 +31,7 @@ const addTax = function(proxy_res) {
     console.log(p.price);       
     /* -- Top/Collection/Product page -- */
     console.log(window.location.pathname);   
-    if (current_path == '/' || current_path.indexOf('/collections/') > 0 || current_path.indexOf('/products/') > 0) {
+    if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.indexOf('products/') > 0) {
       xpath = `//p[contains(., '${p.price}')]/text()|//span[contains(., '${p.price}')]/text()`;
       console.log(xpath);
       f = -1;
