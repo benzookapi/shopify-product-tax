@@ -39,7 +39,7 @@ xhttp.onreadystatechange = function() {
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
         while (n) {
-          t += n.textContent;
+          t += n.nodeValue;
           console.log(t);
           console.log(textToValue(t));
           try {
