@@ -222,7 +222,7 @@ router.get('/proxy',  async (ctx, next) => {
         currencyFormats {
           moneyWithCurrencyFormat
         }
-        
+        taxesIncluded
         products(first: 100) {
           edges {
             node {
@@ -252,6 +252,7 @@ router.get('/proxy',  async (ctx, next) => {
     console.log(`${JSON.stringify(api_res)}`);
 
     res.currency = api_res.data.shop.currencyCode;
+    res.tax_included = api_res.data.shop.taxesIncluded;
 
     let formatter = new Intl.NumberFormat(res.locale, {
       style: 'currency',
@@ -259,14 +260,17 @@ router.get('/proxy',  async (ctx, next) => {
     });
 
     res.products = [];
-    api_res.data.shop.products.edges.forEach(e => {
-      if (e.node.variants.edges[0].node.taxable == true) {
-        res.products.push({
-          "handle": encodeURIComponent(e.node.handle),
-          "price": formatter.format(e.node.variants.edges[0].node.price)
-        });
-      }      
-    });
+    if (res.tax_included = false) {
+      api_res.data.shop.products.edges.forEach(e => {
+        if (e.node.variants.edges[0].node.taxable == true) {
+          res.products.push({
+            "handle": encodeURIComponent(e.node.handle),
+            "price": formatter.format(e.node.variants.edges[0].node.price)
+          });
+        }      
+      });
+    }
+
   }
   ctx.body = res;
 });
