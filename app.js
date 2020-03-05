@@ -276,6 +276,7 @@ router.get('/proxy',  async (ctx, next) => {
           let v = p.node.variants.edges[k];
           if (v.node.taxable == true) {
             d.variants.push({
+              "id": v.node.id.split('/')[v.node.id.split('/').length-1],
               "price": formatter.format(v.node.price)
             });
           }
