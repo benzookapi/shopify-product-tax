@@ -33,12 +33,13 @@ app.use(serve(__dirname + '/public'));
 const API_KEY = `${process.env.SHOPIFY_API_KEY}`;
 const API_SECRET = `${process.env.SHOPIFY_API_SECRET}`;
 const API_PERMISSION = `${process.env.SHOPIFY_API_PERMISSION}`;
+const API_VERSION = `${process.env.SHOPIFY_API_VERSION}`
 
 const CONTENT_TYPE_JSON = 'application/json';
 const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
-const GRAPHQL_PATH_ADMIN = 'admin/api/2020-01/graphql.json';
-const RESTAPI_PATH_ADMIN = 'admin/api/2020-01/';
+const GRAPHQL_PATH_ADMIN = `admin/api/${API_VERSION}/graphql.json`;
+const RESTAPI_PATH_ADMIN = `admin/api/${API_VERSION}`;
 
 const UNDEFINED = 'undefined';
 
