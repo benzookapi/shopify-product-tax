@@ -1,21 +1,5 @@
 const DATA_KEY = 'shopify.productTaxApp.data';
 
-let stored_res = sessionStorage.getItem(DATA_KEY);
-if (!stored_res) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      sessionStorage.setItem(DATA_KEY, JSON.parse(this.responseText));
-      window.location.reload();
-    }
-  };
-  /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
-  xhttp.open("GET", "/apps/tax", true);
-  xhttp.send();
-} else {
-  addTax(stored_res);
-}
-
 const addTax = function(proxy_res) {
   let formatter = new Intl.NumberFormat(proxy_res.locale, {
     style: 'currency',
@@ -71,6 +55,24 @@ const addTax = function(proxy_res) {
     }
   }       
 };
+
+let stored_res = sessionStorage.getItem(DATA_KEY);
+if (!stored_res) {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      sessionStorage.setItem(DATA_KEY, JSON.parse(this.responseText));
+      window.location.reload();
+    }
+  };
+  /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
+  xhttp.open("GET", "/apps/tax", true);
+  xhttp.send();
+} else {
+  addTax(stored_res);
+}
+
+
 
 
 
