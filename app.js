@@ -420,10 +420,14 @@ const accessEndpoint = function(ctx, endpoint, req, token = null, content_type =
     if (token != null) {
       headers['X-Shopify-Access-Token'] = token;
     }
-    if (method == "GET") {
+    if (method == 'GET') {
       ctx.get(endpoint, req, headers).then(then_func).catch(catch_func);
-    } else if (method == "PATCH") {
+    } else if (method == 'PATCH') {
       ctx.patch(endpoint, req, headers).then(then_func).catch(catch_func);
+    } else if (method == 'PUT') {
+      ctx.put(endpoint, req, headers).then(then_func).catch(catch_func);
+    } else if (method == 'DELETE') {
+      ctx.delete(endpoint, req, headers).then(then_func).catch(catch_func);
     } else { // Default POST
       ctx.post(endpoint, req, headers).then(then_func).catch(catch_func);
     }    
