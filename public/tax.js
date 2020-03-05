@@ -61,7 +61,7 @@ if (!stored_res) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      sessionStorage.setItem(DATA_KEY, JSON.parse(this.responseText));
+      sessionStorage.setItem(DATA_KEY, JSON.stringify(JSON.parse(this.responseText)));
       window.location.reload();
     }
   };
@@ -69,8 +69,8 @@ if (!stored_res) {
   xhttp.open("GET", "/apps/tax", true);
   xhttp.send();
 } else {
-  console.log(JSON.stringify(stored_res));
-  addTax(stored_res);
+  console.log(stored_res);
+  addTax(JSON.parse(stored_res));
 }
 
 
