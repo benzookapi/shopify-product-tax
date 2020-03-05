@@ -69,7 +69,7 @@ if (!stored_res) {
   xhttp.open("GET", "/apps/tax", true);
   xhttp.send();
 } else {
-  onsole.log(JSON.stringify(stored_res));
+  console.log(JSON.stringify(stored_res));
   addTax(stored_res);
 }
 
