@@ -163,6 +163,7 @@ router.get('/callback',  async (ctx, next) => {
     // Get and delete the current my own JavaScript by REST API
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', null, 'GET'));
     if (api_res.script_tags !== UNDEFINED) {
+      //forEach doesn't support async and await!
       let size = api_res.script_tags.length;
       for (let i=0; i<size; i++) {
         if (api_res.script_tags[i].src == src_url) await(callRESTAPI(ctx, shop, `script_tags/${api_res.script_tags[i].id}`, null, 'DELETE'));
