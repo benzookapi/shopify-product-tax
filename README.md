@@ -5,7 +5,6 @@ also works as developer tutorial sample as all-in-one code not only for the app 
 # How to run
 Just pushing to heroku with the following system variables is the easiest way to run, or npm start locally maybe.
 
-`
 SHOPIFY_API_KEY:        YOUR_API_KEY
 
 SHOPIFY_API_PERMISSION: read_products,write_products,read_script_tags,write_script_tags
@@ -17,7 +16,6 @@ SHOPIFY_API_VERSION:    2020-01
 SHOPIFY_MONGO_DB_NAME:  YOUR_DB_NAME
 
 SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YOUR_DB_NAME
-`
 
 # Installation Endpoint
 `https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=ead_products,write_products,read_script_tags,write_script_tags&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
@@ -28,7 +26,7 @@ SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YO
 
 `https://OUR_APP_DOMAIN_LIKE_HEROKU/auth?shop=YOUR_SHOP_DOAMIN` 
 
-(By CDN Appbridge. See `https://shopify.dev/tools/app-bridge/getting-started`)
+(By CDN App Bridge. See `https://shopify.dev/tools/app-bridge/getting-started`)
 
 # TIPS
 ## how to be multilingiual app
