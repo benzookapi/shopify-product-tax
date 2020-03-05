@@ -66,8 +66,6 @@ xhttp.onreadystatechange = function() {
         text = "";
         f = -1;
         nodes = document.evaluate(`${xpath}/*`, document, null, XPathResult.ANY_TYPE, null);
-        console.log(nodes.resultType);
-        console.log(nodes.snapshotLength);
         n = nodes.iterateNext();
         while (n) {
           console.log(JSON.stringify(n.nodeType));
