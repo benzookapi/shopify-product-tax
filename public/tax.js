@@ -22,9 +22,10 @@ xhttp.onreadystatechange = function() {
     console.log(current_path);
 
     var xpath = null;
-    var nodes = null;
+    var nodes = null;    
+    var f = -1;
+    var t = "";
     var n = null;
-    var f = null;
     proxy_res.products.forEach(p => {
       console.log(p.handle);
       console.log(p.price);       
@@ -34,17 +35,21 @@ xhttp.onreadystatechange = function() {
         xpath = `//p[contains(., '${p.price}')]/text()|//span[contains(., '${p.price}')]/text()`;
         console.log(xpath);
         f = -1;
+        t = "";
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
-        if (n) {
-          console.log(n.textContent);
-          console.log(textToValue(n.textContent));
+        while (n) {
+          t += n.textContent;
+          console.log(t);
+          console.log(textToValue(t));
           try {
-            f = parseFloat(textToValue(n.textContent));
+            f = parseFloat(textToValue(t));
             n.textContent = `${formatter.format(f * tax)} (${label})`;
+            break;
           } catch(error) {
             console.error(error);
           } 
+          n = nodes.iterateNext();
         }
       }
     });        
