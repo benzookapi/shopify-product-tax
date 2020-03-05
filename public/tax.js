@@ -55,7 +55,7 @@ xhttp.onreadystatechange = function() {
           n = nodes.iterateNext();
         }
         if (f != -1) {
-          document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+          document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
             `${formatter.format(f * tax)} (${label})`;
         }
       }
@@ -82,7 +82,7 @@ xhttp.onreadystatechange = function() {
           n = nodes.iterateNext();
         }
         if (f != -1) {
-          document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+          document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
             `${formatter.format(f * tax)} (${label})`;
         }
       }
