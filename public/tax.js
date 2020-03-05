@@ -30,7 +30,7 @@ xhttp.onreadystatechange = function() {
       console.log(p.price);       
       /* -- Top/Collection/Product page -- */
       console.log(window.location.pathname);   
-      if (current_path == "" || current_path.indexOf('collections/') > 0 || current_path.endsWith(`/products/${p.handle}`)) {
+      if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.endsWith(`/products/${p.handle}`)) {
         xpath = `//span[contains(., '${p.price}')]/text()`;
         console.log(xpath);
         f = -1;
