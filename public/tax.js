@@ -58,22 +58,6 @@ const addTax = function(proxy_res) {
           } 
         }           
       }
-      /* -- meta json for variants -- */
-      /*if (meta) {
-        console.log(JSON.stringify(meta));
-        if (typeof meta.product !== 'undefined' && typeof meta.product.variants !== 'undefined'){
-          if (meta.product.id == p.id) {
-            console.log(JSON.stringify(meta.product));
-            let mSize = meta.product.variants.length;
-            for (let l=0; l<mSize; l++) {
-              if (meta.product.variants[l].id == v.id) {
-                meta.product.variants[l].price = `${Math.round((parseInt(meta.product.variants[l].price)/100 * tax)*100)}`;
-              }
-            }
-          }          
-        }
-        console.log(`Afer: ${JSON.stringify(meta)}`);
-      }*/
     }   
   }    
 };
@@ -97,6 +81,14 @@ if (!stored_res) {
   addTax(JSON.parse(stored_res));  
 }
 
+/* -- For variant option change -- */
+window.document.querySelectorAll(".single-option-selector").forEach(s => {
+  s.addEventListener(
+    'change',
+    function() { window.location.reload(); },
+    false
+  );
+});
 
 
 
