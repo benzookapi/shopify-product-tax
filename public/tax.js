@@ -54,10 +54,7 @@ xhttp.onreadystatechange = function() {
           } catch(error) {
             console.error(`error ${error}`);
           } 
-        }       
-        if (f != -1) {
-         // document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).textContent = `${formatter.format(f * tax)} (${label})`;
-        }        
+        }           
       }
     }       
 

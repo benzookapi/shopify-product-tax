@@ -1,19 +1,26 @@
-# Shopify product tax reflection app
+# Shopify product tax reflection app as developer tutorial
+This is Shoppify app for adding total price to the product top pages including tax which is not supported by Shopify natively, and 
+also works as developer tutorial sample as all-in-one code not only for the app fucntion above but for other major API/SDK/Theme usage.
 
 # How to run
-TBD
-
+Just push to heroku with the following system variables.
+`
+SHOPIFY_API_KEY:        YOUR_API_KEY
+SHOPIFY_API_PERMISSION: read_products,write_products,read_script_tags,write_script_tags
+SHOPIFY_API_SECRET:     YOUR_API_SECRET
+SHOPIFY_API_VERSION:    2020-01
+SHOPIFY_MONGO_DB_NAME:  YOUR_DB_NAME
+SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YOUR_DB_NAME
+`
 
 # Installation Endpoint
-`https://junichiokamurasptest1.myshopify.com/admin/oauth/authorize?client_id=232caee10aace6b3f04bee91a4b5e3d0&scope=read_products&redirect_uri=https://shopify-product-tax.herokuapp.com/callback&state=&grant_options[]=` 
+`https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=ead_products,write_products,read_script_tags,write_script_tags&redirect_uri=https://shopify-product-tax.herokuapp.com/callback&state=&grant_options[]=` 
 (By OAoth endpopint described in the developer contents. See `https://shopify.dev/tutorials/authenticate-with-oauth`)
-
-OR
-
-`https://shopify-product-tax.herokuapp.com/auth?shop=junichiokamurasptest1.myshopify.com` 
+-- OR --
+`https://shopify-product-tax.herokuapp.com/auth?shop=YOUR_SHOP_DOAMIN` 
 (By CDN Appbridge. See `https://shopify.dev/tools/app-bridge/getting-started`)
 
 # TIPS
 ## how to be multilingiual app
 Simply use `locale` parameter give by Shopify admin and how to be multilingual is totally up to you. 
-In this sample, see `/i18n.js` and use `top.html`
+In this sample, see `/i18n.js` and use `top.html`.
