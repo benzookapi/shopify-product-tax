@@ -37,6 +37,8 @@ xhttp.onreadystatechange = function() {
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
         if (n) {
+          console.log(n.textContent);
+          console.log(textToValue(n.textContent));
           try {
             f = parseFloat(textToValue(n.textContent));
             n.textContent = `${formatter.format(f * tax)} (${label})`;
