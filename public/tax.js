@@ -40,8 +40,7 @@ xhttp.onreadystatechange = function() {
         f = -1;
         t = "";
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
-        n = nodes.iterateNext();
-        while (n) {
+        while (n = nodes.iterateNext()) {
           console.log(`Node: ${n}`);
           t += n.nodeValue;
           console.log(t);
@@ -52,7 +51,6 @@ xhttp.onreadystatechange = function() {
           } catch(error) {
             console.error(`error ${error}`);
           } 
-          n = nodes.iterateNext();
         }
         if (f != -1) {
          // document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).textContent = `${formatter.format(f * tax)} (${label})`;
