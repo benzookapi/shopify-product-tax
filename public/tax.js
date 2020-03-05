@@ -59,7 +59,7 @@ const addTax = function(proxy_res) {
         }           
       }
       /* -- meta json for variants -- */
-      if (meta) {
+      /*if (meta) {
         console.log(JSON.stringify(meta));
         if (typeof meta.product !== 'undefined' && typeof meta.product.variants !== 'undefined'){
           if (meta.product.id == p.id) {
@@ -72,7 +72,7 @@ const addTax = function(proxy_res) {
             }
           }          
         }
-        console.log(`Afer: ${JSON.stringify(meta)}`);
+        console.log(`Afer: ${JSON.stringify(meta)}`);*/
       }
     }   
   }    
