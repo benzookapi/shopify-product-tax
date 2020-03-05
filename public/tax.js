@@ -49,6 +49,7 @@ xhttp.onreadystatechange = function() {
 
   }
 };
+/* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
 xhttp.open("GET", "/apps/tax", true);
 xhttp.send();
 
