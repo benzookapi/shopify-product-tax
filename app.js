@@ -214,7 +214,7 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.tax = api_res.countries[0].tax;
     res.country = api_res.countries[0].code;
-    res.locale = res.country == 'JP' ? 'ja-JP' : 'en-US';
+    res.locale = res.country === 'JP' ? 'ja-JP' : 'en-US';
 
     api_res = await(callGraphql(ctx, shop, `{
       shop {
@@ -260,7 +260,7 @@ router.get('/proxy',  async (ctx, next) => {
     });
 
     res.products = [];
-    if (res.tax_included = false) {
+    if (res.tax_included == false) {
       api_res.data.shop.products.edges.forEach(e => {
         if (e.node.variants.edges[0].node.taxable == true) {
           res.products.push({

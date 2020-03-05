@@ -21,7 +21,7 @@ xhttp.onreadystatechange = function() {
     var text_nodes = null;
     var n = null;
     var text_value = null;
-    var label = proxy_res.locale == 'ja-JP' ? '税込' : 'Tax included';
+    var label = proxy_res.locale === 'ja-JP' ? '税込' : 'Tax included';
 
     proxy_res.products.forEach(p => {
 
