@@ -164,7 +164,9 @@ router.get('/callback',  async (ctx, next) => {
     api_res = await(callRESTAPI(ctx, shop, 'script_tags', null, 'GET'));
     if (api_res.script_tags !== UNDEFINED) {
       api_res.script_tags.forEach(s => {
-        if (s.src == src_url) await(callRESTAPI(ctx, shop, `script_tags/${s.id}`, null, 'DELETE'));
+        if (s.src == src_url) {
+          var tmp = await(callRESTAPI(ctx, shop, `script_tags/${s.id}`, null, 'DELETE'));
+        }
       })
     }
     //console.log(`${JSON.stringify(api_res)}`);
