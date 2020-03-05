@@ -19,40 +19,45 @@ const addTax = function(proxy_res) {
   console.log(current_path);
 
   var p = null;
+  var v = null;
   var xpath = null;
   var nodes = null;    
   var f = -1;
   var t = "";
   var n = null;
-  let size = proxy_res.products.length;
-  for (let i=0; i<size; i++) {
+  let pSize = proxy_res.products.length;
+  var vSize = -1;
+  for (let i=0; i<pSize; i++) {
     p = proxy_res.products[i];
     console.log(p.handle);
-    console.log(p.price);       
-    /* -- Top/Collection/Product page -- */
-    console.log(window.location.pathname);   
-    if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.indexOf('products/') > 0) {
-      xpath = `//p[contains(., '${p.price}')]/text()|//span[contains(., '${p.price}')]/text()`;
-      console.log(xpath);
-      f = -1;
-      t = "";
-      nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
-      while (n = nodes.iterateNext()) {
-        console.log(`Node: ${n}`);
-        t += n.nodeValue;
-        console.log(t);
-        console.log(textToValue(t));
-        try {
-          f = parseFloat(textToValue(t));
-          if(!isNaN(f)) {
-            n.nodeValue = `${formatter.format(f * tax)} (${label})`;
-            break;
-          }            
-        } catch(error) {
-          console.error(`error ${error}`);
-        } 
-      }           
-    }
+    vSize = p.variants.length;
+    for (let k =0; k<vSize; k++) {
+      v = p.variants[k];
+      console.log(v.price);
+      /* -- Top/Collection/Product page -- */  
+      if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.indexOf('products/') > 0) {
+        xpath = `//p[contains(., '${v.price}')]/text()|//span[contains(., '${v.price}')]/text()`;
+        console.log(xpath);
+        f = -1;
+        t = "";
+        nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+        while (n = nodes.iterateNext()) {
+          console.log(`Node: ${n}`);
+          t += n.nodeValue;
+          console.log(t);
+          console.log(textToValue(t));
+          try {
+            f = parseFloat(textToValue(t));
+            if(!isNaN(f)) {
+              n.nodeValue = `${formatter.format(f * tax)} (${label})`;
+              break;
+            }            
+          } catch(error) {
+            console.error(`error ${error}`);
+          } 
+        }           
+      }
+    }   
   }    
 };
 

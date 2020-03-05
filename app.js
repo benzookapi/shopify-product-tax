@@ -225,14 +225,17 @@ router.get('/proxy',  async (ctx, next) => {
         taxesIncluded
         products(first: 100) {
           edges {
+            cursor
             node {
               id
               handle
               ... on Product {
-                variants(first: 1) {
+                variants(first: 5) {
                   edges {
+                    cursor
                     node {
                       ... on ProductVariant {
+                        id
                         price
                         taxable
                       }
@@ -261,14 +264,24 @@ router.get('/proxy',  async (ctx, next) => {
 
     res.products = [];
     if (res.tax_included == false) {
-      api_res.data.shop.products.edges.forEach(e => {
-        if (e.node.variants.edges[0].node.taxable == true) {
-          res.products.push({
-            "handle": encodeURIComponent(e.node.handle),
-            "price": formatter.format(e.node.variants.edges[0].node.price)
-          });
-        }      
-      });
+      let pSize = api_res.data.shop.products.edges.length;
+      for (let i =0; i<pSize; i++) {
+        let p = api_res.data.shop.products.edges[i];
+        let d = {
+          "handle": encodeURIComponent(p.node.handle),
+          "variants": []
+        };
+        let vSize = p.node.variants.edges.length;
+        for (let k =0; k<vSize; k++) {
+          let v = p.node.variants.edges[k];
+          if (v.node.taxable == true) {
+            d.variants.push({
+              "price": formatter.format(v.node.price)
+            });
+          }
+        }
+        res.products.push(d);
+      }      
     }
 
   }
