@@ -6,7 +6,7 @@ if (!stored_res) {
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
       sessionStorage.setItem(DATA_KEY, JSON.stringify(JSON.parse(this.responseText)));
-      //window.location.reload();
+      window.location.reload();
     }
   };
   /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
