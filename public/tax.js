@@ -57,7 +57,6 @@ const addTax = function(proxy_res) {
 };
 
 let stored_res = sessionStorage.getItem(DATA_KEY);
-console.log(stored_res);
 if (!stored_res) {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
@@ -70,7 +69,8 @@ if (!stored_res) {
   xhttp.open("GET", "/apps/tax", true);
   xhttp.send();
 } else {
-  addTax(JSON.parse(stored_res));
+  onsole.log(JSON.stringify(stored_res));
+  addTax(stored_res);
 }
 
 
