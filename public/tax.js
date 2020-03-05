@@ -13,56 +13,77 @@ xhttp.onreadystatechange = function() {
       return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/\$/g, '').replace(/,/g, '');
     };  
 
-    var product_path = null;
-    var prduct_price = null;
-    var tax = -1;
-    var root_query = null;
-    var text = null;
-    var text_nodes = null;
-    var n = null;
-    var text_value = null;
-    var label = proxy_res.locale === 'ja-JP' ? '税込' : 'Tax included';
+    let tax = 1 + parseFloat(proxy_res.tax);
+    console.log(JSON.stringify(tax));
+    let label = proxy_res.locale === 'ja-JP' ? '税込' : 'Tax included';
 
+    var product_path = null;
+    var prduct_price = null;    
+    var xpath = null;
+    var text = null;
+    var nodes = null;
+    var n = null;
+    var f = null;
     proxy_res.products.forEach(p => {
 
       /* -- Key data for products -- */
       product_path = `/products/${p.handle}`;
-      prduct_price = `${p.price}`;
-      tax = 1 + parseFloat(proxy_res.tax);
+      prduct_price = `${p.price}`;      
 
       console.log(JSON.stringify(product_path));
-      console.log(JSON.stringify(prduct_price));
-      console.log(JSON.stringify(tax));
+      console.log(JSON.stringify(prduct_price));      
         
       /* -- Top page -- */
-      root_query = `//a[contains(@href, '${product_path}')]//*[contains(., '${prduct_price}')]`;
-      text = "";
-      text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
-      n = text_nodes.iterateNext();
-      while (n) {
-        text += n.nodeValue;
-        n = text_nodes.iterateNext();
-      }
-      text_value = textToValue(text);
-      if (text_value != "") {
-        document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-          `${formatter.format(parseFloat(text_value) * tax)} (${label})`;
+      if (window.location.pathname == "" || window.location.pathname.indexOf('collections/') > 0) {
+        xpath = `//span[contains(., '${prduct_price}')]`;
+        text = "";
+        f = -1;
+        nodes = document.evaluate(`${root_query}`, document, null, XPathResult.ANY_TYPE, null);
+        console.log(JSON.stringify(nodes));
+        n = nodes.iterateNext();        
+        while (n) {
+          console.log(JSON.stringify(n));
+          text += n.childNodes[0].nodeValue;
+          try {
+            f = parseFloat(textToValue(text));
+            break;
+          }
+          catch(error) {
+            //console.error(error);
+            console.log(text);
+          }         
+          n = nodes.iterateNext();
+        }
+        if (f != -1) {
+          document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
+            `${formatter.format(f * tax)} (${label})`;
+        }
       }
         
       /* -- Product page -- */
       if (window.location.pathname.endsWith(product_path)) {
-        root_query = `//span[contains(., '${prduct_price}')]`;
+        xpath = `//span[contains(., '${prduct_price}')]`;
         text = "";
-        text_nodes = document.evaluate(`${root_query}/text()`, document, null, XPathResult.ANY_TYPE, null);
-        n = text_nodes.iterateNext();
+        f = -1;
+        nodes = document.evaluate(`${root_query}`, document, null, XPathResult.ANY_TYPE, null);
+        console.log(JSON.stringify(nodes));
+        n = nodes.iterateNext();
         while (n) {
-          text += n.nodeValue;
-          n = text_nodes.iterateNext();
+          console.log(JSON.stringify(n));
+          text += n.childNodes[0].nodeValue;
+          try {
+            f = parseFloat(textToValue(text));
+            break;
+          }
+          catch(error) {
+            //console.error(error);
+            console.log(text);
+          } 
+          n = nodes.iterateNext();
         }
-        text_value = textToValue(text);
-        if (text_value != "") {
+        if (f != -1) {
           document.evaluate(root_query, document, null, XPathResult.ANY_TYPE, null).iterateNext().textContent = 
-            `${formatter.format(parseFloat(text_value) * tax)} (${label})`;
+            `${formatter.format(f * tax)} (${label})`;
         }
       }
 
