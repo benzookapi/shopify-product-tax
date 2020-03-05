@@ -36,7 +36,7 @@ const addTax = function(proxy_res) {
       console.log(xpath);
       f = -1;
       t = "";
-      nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+      nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
       while (n = nodes.iterateNext()) {
         console.log(`Node: ${n}`);
         t += n.nodeValue;
