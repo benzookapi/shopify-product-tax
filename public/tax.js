@@ -54,7 +54,7 @@ xhttp.onreadystatechange = function() {
           n = nodes.iterateNext();
         }
         if (f != -1) {
-          n.textContent = `${formatter.format(f * tax)} (${label})`;
+          document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null).textContent = `${formatter.format(f * tax)} (${label})`;
         }        
       }
     }       
