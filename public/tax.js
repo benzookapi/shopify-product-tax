@@ -14,8 +14,12 @@ xhttp.onreadystatechange = function() {
     };  
 
     let tax = 1 + parseFloat(proxy_res.tax);
-    console.log(JSON.stringify(tax));
+    console.log(tax);
+
     let label = proxy_res.locale === 'ja-JP' ? '税込' : 'Tax included';
+
+    let current_path = window.location.pathname;
+    console.log(current_path);
 
     var xpath = null;
     var nodes = null;
@@ -25,8 +29,8 @@ xhttp.onreadystatechange = function() {
       console.log(p.handle);
       console.log(p.price);       
       /* -- Top/Collection/Product page -- */
-      if (window.location.pathname == "" || window.location.pathname.indexOf('collections/') > 0 || 
-        window.location.pathname.endsWith(`/products/${p.handle}`)) {
+      console.log(window.location.pathname);   
+      if (current_path == "" || current_path.indexOf('collections/') > 0 || current_path.endsWith(`/products/${p.handle}`)) {
         xpath = `//span[contains(., '${p.price}')]/text()`;
         console.log(xpath);
         f = -1;
