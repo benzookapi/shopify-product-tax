@@ -63,14 +63,15 @@ xhttp.onreadystatechange = function() {
       /* -- Product page -- */
       if (window.location.pathname.endsWith(product_path)) {
         xpath = `//span[contains(., '${prduct_price}')]`;
+        console.log(xpath);
         text = "";
         f = -1;
-        nodes = document.evaluate(`${xpath}/*`, document, null, XPathResult.ANY_TYPE, null);
+        nodes = document.evaluate(`${xpath}/text()`, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
         while (n) {
-          console.log(JSON.stringify(n.nodeType));
-          console.log(JSON.stringify(n.textContent));
-          console.log(JSON.stringify(n.nodeName));
+          console.log(n.nodeType);
+          console.log(n.textContent);
+          console.log(n.nodeName);
           text += n.nodeValue;
           try {
             f = parseFloat(textToValue(text));
