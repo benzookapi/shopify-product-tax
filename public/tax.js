@@ -42,7 +42,7 @@ xhttp.onreadystatechange = function() {
         nodes = document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
         n = nodes.iterateNext();
         while (n) {
-          console.log(n);
+          console.log(`Node: ${n}`);
           t += n.nodeValue;
           console.log(t);
           console.log(textToValue(t));
@@ -53,7 +53,9 @@ xhttp.onreadystatechange = function() {
           } 
           n = nodes.iterateNext();
         }
-        n.textContent = `${formatter.format(f * tax)} (${label})`;
+        if (f != -1) {
+          n.textContent = `${formatter.format(f * tax)} (${label})`;
+        }        
       }
     }       
 
