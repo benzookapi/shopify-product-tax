@@ -62,17 +62,14 @@ const addTaxForAll = function(proxy_data) {
   let tax = 1 + parseFloat(proxy_data.tax);
   console.log(tax);
 
-  let symbol = proxy_data.symbol};
-  
-  let current_path = window.location.pathname;
-  console.log(current_path);
+  let symbol = proxy_data.symbol;
 
   let searchAndUpdate = function() {
     let xpath = `//p[contains(., '${symbol}')]/text()|//span[contains(., '${symbol}')]/text()|//div[contains(., '${symbol}')]/text()`;
     console.log(xpath);
     var f = -1;
     var t = "";
-    var reg = new RegExp(`${symbol}[0-9,\\.]+`, 'g');
+    var reg = new RegExp(`${symbol}[0-9,\.]+`, 'g');
     var temp = "";
     nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
     while (n = nodes.iterateNext()) {
@@ -86,15 +83,15 @@ const addTaxForAll = function(proxy_data) {
           f = parseFloat(textToValue(r));
           if(!isNaN(f)) {
             console.log(f);
-            temp = temp.replace(r, formatter.format(f * tax));
-            console.log(JSON.stringify(n.nodeValue));
+            temp = temp.replace(r, formatter.format(f * tax));            
           }            
         } catch(error) {
           console.error(`error ${error}`);
         } 
-      }   
+      }
       if (temp != t) {
         n.nodeValue = temp;
+        console.log(JSON.stringify(n.nodeValue));
         return true;
       }
     }
