@@ -18,7 +18,7 @@ const getProxyData = function(data_key, data_id = null) {
       /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
       request.open("GET", `/apps/tax?data_key=${data_key}`, false);      
       request.send();
-      console.log(r`/apps/tax?data_key=${data_key}`);
+      console.log(`/apps/tax?data_key=${data_key}`);
       if (request.status === 200) {
         console.log(request.responseText);
         let res = JSON.parse(request.responseText);
@@ -32,7 +32,7 @@ const getProxyData = function(data_key, data_id = null) {
     if (typeof cached_data[data_id] === 'undefined') {
       request.open("GET", `/apps/tax?data_key=${data_key}&data_id=${data_id}`, false);      
       request.send();
-      console.log(r`/apps/tax?data_key=${data_key}&data_id=${data_id}`);
+      console.log(`/apps/tax?data_key=${data_key}&data_id=${data_id}`);
       if (request.status === 200) {
         console.log(request.responseText);
         let res = JSON.parse(request.responseText);
