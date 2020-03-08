@@ -49,9 +49,9 @@ const getProxyData = function(data_key, data_id = null) {
 const addTaxForAll = function(proxy_data) {
   //if (!proxy_data.isAll) return;
 
-  let formatter = new Intl.NumberFormat(proxy_res.locale, {
+  let formatter = new Intl.NumberFormat(proxy_data.locale, {
     style: 'currency',
-    currency: proxy_res.currency
+    currency: proxy_data.currency
   });
 
   let tax = 1 + parseFloat(proxy_data.tax);
