@@ -93,9 +93,9 @@ const addTaxForAll = function(proxy_data) {
       if (temp != t) {
         console.log(temp);
         //n.nodeValue = temp;
-        n.parentElement.innerText = temp;
+        n.parentNode.textContent = temp;
         //console.log(JSON.stringify(n.nodeValue));
-        console.log(JSON.stringify(n.parentElement));
+        console.log(JSON.stringify(n.parentNode));
         return true;
       }
     }
@@ -107,8 +107,18 @@ const addTaxForAll = function(proxy_data) {
 
   /* -- For variant option change -- */
   let q = window.location.search;  
-  //window.document.querySelectorAll(".single-option-selector").forEach(s => {
-  window.document.querySelectorAll(".variants .clearfix").forEach(s => {
+  window.document.querySelectorAll("[class=^single-option-selector]").forEach(s => {
+    s.addEventListener(
+      'change',
+      function() { 
+        if (window.location.search != q) {
+          window.location.reload();
+        }
+      },
+      false
+    );
+  });
+  window.document.querySelectorAll(".variants").forEach(s => {
     s.addEventListener(
       'change',
       function() { 
