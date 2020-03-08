@@ -102,9 +102,20 @@ const addTaxForAll = function(proxy_data) {
   while (searchAndUpdate()){
   }
 
-  /* -- For variant option change -- */
+  /* -- For variant option change -- */  
   let q = window.location.search;  
   window.document.querySelectorAll(".single-option-selector").forEach(s => {
+    s.addEventListener(
+      'change',
+      function() { 
+        if (window.location.search != q) {
+          window.location.reload();
+        }
+      },
+      false
+    );
+  });
+  window.document.querySelectorAll(".single-option-selector__radio").forEach(s => {
     s.addEventListener(
       'change',
       function() { 
