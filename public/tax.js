@@ -26,22 +26,23 @@ const getProxyData = function(data_key, data_id = null) {
         return res;
       }
     } else {
-      return cached_data;
+      return JSON.parse(cached_data);
     }    
   } else {
-    if (typeof cached_data[data_id] === 'undefined') {
+    let cache = JSON.parse(cached_data);
+    if (typeof cache[data_id] === 'undefined') {
       request.open("GET", `/apps/tax?data_key=${data_key}&data_id=${data_id}`, false);      
       request.send();
       console.log(`/apps/tax?data_key=${data_key}&data_id=${data_id}`);
       if (request.status === 200) {
         console.log(request.responseText);
-        let res = JSON.parse(request.responseText);
-        cached_data[data_id] = res;
-        sessionStorage.setItem(data_key, cached_data);
-        return cached_data[data_id];
+        let res = JSON.parse(request.responseText);        
+        cache[data_id] = res;
+        sessionStorage.setItem(data_key, JSON.stringify(cache));
+        return cache[data_id];
       }
     } else {
-      return cached_data[data_id];
+      return cache[data_id];
     }
   }
 };
