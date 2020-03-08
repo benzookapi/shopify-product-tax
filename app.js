@@ -191,12 +191,12 @@ router.get('/callback',  async (ctx, next) => {
     //console.log(`${JSON.stringify(api_res)}`);
 
     // Insert my own JavaScript by REST API
-    /*api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
+    api_res = await(callRESTAPI(ctx, shop, 'script_tags', {
       "script_tag": {
         "event": "onload",
         "src": src_url
       }
-    }));*/
+    }));
     //console.log(`${JSON.stringify(api_res)}`);
 
 
