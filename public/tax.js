@@ -79,9 +79,9 @@ const addTaxForAll = function(proxy_data) {
       console.log(textToValue(t));
       temp = t;
       while ((r = reg.exec(t)) != null) {
-        console.log(r);
+        console.log(r[0]);
         try {
-          f = parseFloat(textToValue(r));
+          f = parseFloat(textToValue(r[0]));
           if(!isNaN(f)) {
             console.log(f);
             temp = temp.replace(r, formatter.format(f * tax));            
