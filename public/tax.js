@@ -104,9 +104,10 @@ const addTaxForAll = function(proxy_data) {
 
   /* -- For variant option change -- */
   let q = window.location.search;  
-  window.document.querySelectorAll(".single-option-selector").forEach(s => {
+  //window.document.querySelectorAll(".single-option-selector").forEach(s => {
+  window.document.querySelectorAll(".variants .clearfix").forEach(s => {
     s.addEventListener(
-      'click',
+      'change',
       function() { 
         if (window.location.search != q) {
           window.location.reload();
