@@ -252,6 +252,7 @@ router.get('/proxy',  async (ctx, next) => {
     console.log(`${JSON.stringify(api_res)}`);  
     res.currency = api_res.data.shop.currencyCode;
     res.tax_included = api_res.data.shop.taxesIncluded;
+    res.symbol = res.currency === 'JPY' ? '¥' : '$';
   } else {
     if (typeof data_id === UNDEFINED || data_id == null) {
       ctx.status = 400;

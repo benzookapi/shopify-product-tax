@@ -62,31 +62,41 @@ const addTaxForAll = function(proxy_data) {
   let tax = 1 + parseFloat(proxy_data.tax);
   console.log(tax);
 
+  let symbol = proxy_data.symbol};
+  
   let current_path = window.location.pathname;
   console.log(current_path);
 
   let searchAndUpdate = function() {
-    let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|//div[contains(., '¥')]/text()`;
+    let xpath = `//p[contains(., '${symbol}')]/text()|//span[contains(., '${symbol}')]/text()|//div[contains(., '${symbol}')]/text()`;
     console.log(xpath);
     var f = -1;
     var t = "";
+    var reg = new RegExp(`${symbol}[0-9,\\.]+`, 'g');
+    var temp = "";
     nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
     while (n = nodes.iterateNext()) {
       console.log(`Node: ${JSON.stringify(n)}`);
       t = n.nodeValue;
       console.log(t);
       console.log(textToValue(t));
-      try {
-        f = parseFloat(textToValue(t));
-        if(!isNaN(f)) {
-          console.log(f);
-          n.nodeValue = t.replace(/¥[0-9,]+/g, formatter.format(f * tax));
-          console.log(JSON.stringify(n.nodeValue));
-          return true;
-        }            
-      } catch(error) {
-        console.error(`error ${error}`);
-      } 
+      temp = t;
+      while ((r = reg.exec(t)) != null) {
+        try {
+          f = parseFloat(textToValue(r));
+          if(!isNaN(f)) {
+            console.log(f);
+            temp = temp.replace(r, formatter.format(f * tax));
+            console.log(JSON.stringify(n.nodeValue));
+          }            
+        } catch(error) {
+          console.error(`error ${error}`);
+        } 
+      }   
+      if (temp != t) {
+        n.nodeValue = temp;
+        return true;
+      }
     }
     return false;  
   };
