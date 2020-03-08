@@ -92,8 +92,8 @@ const addTaxForAll = function(proxy_data) {
       }
       if (temp != t) {
         console.log(temp);
-        n.nodeValue = temp;
-        n.textContent = temp;
+        n.nodeValue = temp.trim();
+        n.textContent = temp.trim();
         console.log(JSON.stringify(n.nodeValue));
         return true;
       }
