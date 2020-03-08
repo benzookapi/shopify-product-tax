@@ -97,7 +97,7 @@ const addTaxForAll = function(proxy_data) {
         console.log(JSON.stringify(n.nodeValue));
         console.log(JSON.stringify(n.parentElement.localName));
         console.log(JSON.stringify(n.parentElement));
-        n.parentElement.addEventListener(
+        n.addEventListener(
           'change',
           function() { 
             if (window.location.search != q) {
