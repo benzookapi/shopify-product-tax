@@ -65,7 +65,7 @@ const addTaxForAll = function(proxy_data) {
   let current_path = window.location.pathname;
   console.log(current_path);
   
-  let xpath = `//p[contains(., '¥1,000')]/text()|//span[contains(., '¥1,000')]/text()|//div[contains(., '¥1,000')]/text()`;
+  let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|//div[contains(., '¥')]/text()`;
   console.log(xpath);
   var f = -1;
   var t = "";
@@ -81,7 +81,7 @@ const addTaxForAll = function(proxy_data) {
           console.log(f);
           n.nodeValue = formatter.format(f * tax);
           console.log(JSON.stringify(n.nodeValue));
-          break;
+          //break;
       }            
     } catch(error) {
         console.error(`error ${error}`);
