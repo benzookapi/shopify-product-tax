@@ -12,6 +12,7 @@ const textToNumber = function(text) {
 
 const getProxyData = function(data_key, data_id = null) {
   let cached_data = sessionStorage.getItem(data_key);
+  var request = new XMLHttpRequest();
   if (data_id == null) {
     if (!cached_data) {
       /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
