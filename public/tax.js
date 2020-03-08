@@ -64,8 +64,6 @@ const addTaxForAll = function(proxy_data) {
 
   let symbol = proxy_data.symbol;
 
-  let q = window.location.search;
-
   let searchAndUpdate = function() {
     let xpath = `//p[contains(., '${symbol}')]/text()|//span[contains(., '${symbol}')]/text()|//div[contains(., '${symbol}')]/text()`;
     console.log(xpath);
@@ -95,17 +93,6 @@ const addTaxForAll = function(proxy_data) {
       if (temp != t) {
         n.nodeValue = temp;
         console.log(JSON.stringify(n.nodeValue));
-        console.log(JSON.stringify(n.parentElement.localName));
-        console.log(JSON.stringify(n.parentElement));
-        n.addEventListener(
-          'change',
-          function() { 
-            if (window.location.search != q) {
-              window.location.reload();
-            }
-           },
-          false
-        );
         return true;
       }
     }
@@ -116,11 +103,10 @@ const addTaxForAll = function(proxy_data) {
   }
 
   /* -- For variant option change -- */
-  
-  
-  /*window.document.querySelectorAll(".single-option-selector").forEach(s => {
+  let q = window.location.search;  
+  window.document.querySelectorAll(".single-option-selector").forEach(s => {
     s.addEventListener(
-      'change',
+      'click',
       function() { 
         if (window.location.search != q) {
           window.location.reload();
@@ -128,7 +114,7 @@ const addTaxForAll = function(proxy_data) {
        },
       false
     );
-  });*/
+  });
 
 };
 
