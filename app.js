@@ -55,6 +55,10 @@ const METAFIELD_KEY_INSERT_MODE = 'insertMode';
 const METAFIELD_MODE_LOAD = 'load';
 const METAFIELD_MODE_PASTE = 'paste';
 
+const PROXY_KEY_SHOP = 'ShopifyProductTaxAppShop';
+const PROXY_KEY_PRODUCTS = 'ShopifyProductTaxAppProducts';
+const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
+
 // Set Timezone Japan
 //process.env.TZ = 'Asia/Tokyo'; 
 
@@ -217,91 +221,74 @@ router.get('/proxy',  async (ctx, next) => {
 
   let shop = ctx.request.query.shop;
 
+  let data_key = ctx.request.query.data_key;
+  let data_id = ctx.request.query.data_id;
+
   var res = {};
 
   var shop_data = await(getDB(shop)); 
   if (shop_data == null) {
     ctx.body = "No shop data";
-  } else {
+    ctx.status = 400;
+    return;
+  }
+
+  if (data_key == PROXY_KEY_SHOP) {
     var api_res = await(callRESTAPI(ctx, shop, 'countries', null, 'GET'));
     console.log(`${JSON.stringify(api_res)}`);
-
     res.tax = api_res.countries[0].tax;
     res.country = api_res.countries[0].code;
     res.locale = res.country === 'JP' ? 'ja-JP' : 'en-US';
-
-    /* -- TODO Pagenation  https://shopify.dev/concepts/graphql/pagination -- */
+    /* --  https://shopify.dev/concepts/graphql/pagination -- */
     api_res = await(callGraphql(ctx, shop, `{
       shop {
         currencyCode
         currencyFormats {
           moneyWithCurrencyFormat
         }
-        taxesIncluded
-        products(first: 100) {
-          edges {
-            cursor
-            node {
-              id
-              handle
-              ... on Product {
-                variants(first: 5) {
-                  edges {
-                    cursor
-                    node {
-                      ... on ProductVariant {
-                        id
-                        price
-                        taxable
-                      }
-                    }
-                  }
-                }
-              }
-              
-            }
-          }
-          pageInfo {
-            hasNextPage
-          }
-        }
+        taxesIncluded          
       }
     }`));
-    console.log(`${JSON.stringify(api_res)}`);
-
+    console.log(`${JSON.stringify(api_res)}`);  
     res.currency = api_res.data.shop.currencyCode;
     res.tax_included = api_res.data.shop.taxesIncluded;
-
-    let formatter = new Intl.NumberFormat(res.locale, {
-      style: 'currency',
-      currency: res.currency
-    });
-
-    res.products = [];
-    if (res.tax_included == false) {
-      let pSize = api_res.data.shop.products.edges.length;
-      for (let i =0; i<pSize; i++) {
-        let p = api_res.data.shop.products.edges[i];
-        let d = {
-          "id": p.node.id.split('/')[p.node.id.split('/').length-1],
-          "handle": encodeURIComponent(p.node.handle),
-          "variants": []
-        };
-        let vSize = p.node.variants.edges.length;
-        for (let k =0; k<vSize; k++) {
-          let v = p.node.variants.edges[k];
-          if (v.node.taxable == true) {
-            d.variants.push({
-              "id": v.node.id.split('/')[v.node.id.split('/').length-1],
-              "price": formatter.format(v.node.price)
-            });
-          }
-        }
-        res.products.push(d);
-      }      
+  } else {
+    if (typeof data_id === UNDEFINED || data_id == null) {
+      ctx.status = 400;
+      return;
     }
-
-  }
+    if (data_key == PROXY_KEY_PRODUCTS) {
+      api_res = await(callGraphql(ctx, shop, `{
+        product(id: "gid://shopify/Product/${data_id}") {
+          title
+          handle
+          totalVariants
+          variants(first:1) {
+            edges {
+              node {
+                id
+                price
+                taxable
+              }
+            }
+          }    
+        }
+      }`));
+      console.log(`${JSON.stringify(api_res)}`);  
+      res.taxable = api_res.data.product.variants.edges[0].node.taxable;
+      res.price = api_res.data.product.variants.edges[0].node.price;
+    } else if (data_key == PROXY_KEY_VARIANTS) {
+      api_res = await(callGraphql(ctx, shop, `{
+        productVariant(id: "gid://shopify/ProductVariant/${data_id}") {
+          price
+          taxable
+        }
+      }`));
+      console.log(`${JSON.stringify(api_res)}`);
+      res.currency = api_res.data.shop.currencyCode;
+      res.tax_included = api_res.data.shop.taxesIncluded;
+    }
+  }  
   ctx.body = res;
 });
 

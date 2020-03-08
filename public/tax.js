@@ -1,104 +1,120 @@
-const DATA_KEY = 'ShopifyProductTaxAppDSata';
+const KEY_SHOP = 'ShopifyProductTaxAppShop';
+const KEY_PRODUCTS = 'ShopifyProductTaxAppProducts';
+const KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
 
-const addTax = function(proxy_res) {
+const textToValue = function(text) {
+  return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/\$/g, '').replace(/,/g, '');
+};  
+
+const textToNumber = function(text) {
+  return parseFloat(textToValue(text));
+}
+
+const getProxyData = function(data_key, data_id = null) {
+  let cached_data = sessionStorage.getItem(data_key);
+  if (data_id == null) {
+    if (!cached_data) {
+      /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
+      request.open("GET", `/apps/tax?data_key=${data_key}`, false);      
+      request.send();
+      console.log(r`/apps/tax?data_key=${data_key}`);
+      if (request.status === 200) {
+        console.log(request.responseText);
+        let res = JSON.parse(request.responseText);
+        sessionStorage.setItem(data_key, JSON.stringify(res));
+        return res;
+      }
+    } else {
+      return cached_data;
+    }    
+  } else {
+    if (typeof cached_data[data_id] === 'undefined') {
+      request.open("GET", `/apps/tax?data_key=${data_key}&data_id=${data_id}`, false);      
+      request.send();
+      console.log(r`/apps/tax?data_key=${data_key}&data_id=${data_id}`);
+      if (request.status === 200) {
+        console.log(request.responseText);
+        let res = JSON.parse(request.responseText);
+        cached_data[data_id] = res;
+        sessionStorage.setItem(data_key, cached_data);
+        return cached_data[data_id];
+      }
+    } else {
+      return cached_data[data_id];
+    }
+  }
+};
+
+const addTaxForAll = function(proxy_data) {
+  if (!proxy_data.isAll) return;
+
   let formatter = new Intl.NumberFormat(proxy_res.locale, {
     style: 'currency',
     currency: proxy_res.currency
   });
 
-  let textToValue = function(text) {
-    return text.trim().replace(/"/g, '').replace(/'/g, '').replace(/¥/g, '').replace(/\$/g, '').replace(/,/g, '');
-  };  
-
-  let tax = 1 + parseFloat(proxy_res.tax);
+  let tax = 1 + parseFloat(proxy_data.tax);
   console.log(tax);
-
-  let label = proxy_res.locale === 'ja-JP' ? '税込' : 'Tax included';
 
   let current_path = window.location.pathname;
   console.log(current_path);
-
-  var p = null;
-  var v = null;
-  var xpath = null;
-  var nodes = null;    
+  
+  let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|div[contains(., '¥')]/text()|`;
+  console.log(xpath);
   var f = -1;
   var t = "";
-  var n = null;
-  let pSize = proxy_res.products.length;
-  var vSize = -1;
-  for (let i=0; i<pSize; i++) {
-    p = proxy_res.products[i];
-    console.log(p.handle);
-    vSize = p.variants.length;
-    for (let k =0; k<vSize; k++) {
-      v = p.variants[k];
-      console.log(v.id);
-      console.log(v.price);
-      /* -- Top/Collection/Product page -- */  
-      if (current_path == '/' || current_path.indexOf('collections/') > 0 || current_path.indexOf('products/') > 0) {
-        xpath = `//p[contains(., '${v.price}')]/text()|//span[contains(., '${v.price}')]/text()`;
-        console.log(xpath);
-        f = -1;
-        t = "";
-        nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
-        while (n = nodes.iterateNext()) {
-          console.log(`Node: ${JSON.stringify(n)}`);
-          t += n.nodeValue;
-          console.log(t);
-          console.log(textToValue(t));
-          try {
-            f = parseFloat(textToValue(t));
-            if(!isNaN(f)) {
-              console.log(f);
-              n.nodeValue = `${formatter.format(f * tax)} (${label})`;
-              console.log(JSON.stringify(n.nodeValue));
-              break;
-            }            
-          } catch(error) {
-            console.error(`error ${error}`);
-          } 
-        }           
-      }
-    }   
-  }    
+  nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+  while (n = nodes.iterateNext()) {
+    console.log(`Node: ${JSON.stringify(n)}`);
+    t = n.nodeValue;
+    console.log(t);
+    console.log(textToValue(t));
+    try {
+      f = parseFloat(textToValue(t));
+      if(!isNaN(f)) {
+          console.log(f);
+          n.nodeValue = formatter.format(f * tax);
+          console.log(JSON.stringify(n.nodeValue));
+          break;
+      }            
+    } catch(error) {
+        console.error(`error ${error}`);
+    } 
+  }  
+
+  /* -- For variant option change -- */
+  var q = window.location.search;
+  window.document.querySelectorAll(".single-option-selector").forEach(s => {
+    s.addEventListener(
+      'change',
+      function() { 
+        if (window.location.search != q) {
+          window.location.reload();
+        }
+       },
+      false
+    );
+  });
+
 };
 
-let stored_res = sessionStorage.getItem(DATA_KEY);
-if (!stored_res) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      let res = JSON.parse(this.responseText);
-      sessionStorage.setItem(DATA_KEY, JSON.stringify(res));
-      addTax(res); 
-      //window.location.reload();
-    }
-  };
-  /* --- Calling App proxies (https://shopify.dev/tutorials/display-data-on-an-online-store-with-an-application-proxy-app-extension) --- */
-  xhttp.open("GET", "/apps/tax", true);
-  xhttp.send();
-} else {
-  console.log(stored_res);
-  addTax(JSON.parse(stored_res));  
-}
+const addTax = function(price, product_id = null, variant_id = null) {
+  let shop_proxy_data = getProxyData(KEY_SHOP);
+  var proxy_data = {};
+  if (product_id != null) {
+    proxy_data = getProxyData(KEY_PRODUCTS, product_id);
+  } else if (product_id != null) {
+    proxy_data = getProxyData(KEY_VARIANTS, variant_id);
+  }
+  if (!proxy_data.taxable) return price;
 
-/* -- For variant option change -- */
-var q = window.location.search;
-window.document.querySelectorAll(".single-option-selector").forEach(s => {
-  s.addEventListener(
-    'change',
-    function() { 
-      if (window.location.search != q) {
-        window.location.reload();
-      }
-     },
-    false
-  );
-});
+  let tax = 1 + parseFloat(shop_proxy_data.tax);
+  console.log(tax);
+  let res = textToNumber(price) * tax;
+  console.log(res);
+  return res;
+};
 
-
-
-
+addTaxForAll(getProxyData(KEY_SHOP));
 
 
