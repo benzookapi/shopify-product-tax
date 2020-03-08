@@ -43,14 +43,16 @@ const addTax = function(proxy_res) {
         t = "";
         nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
         while (n = nodes.iterateNext()) {
-          console.log(`Node: ${n}`);
+          console.log(`Node: ${JSON.stringify(n)}`);
           t += n.nodeValue;
           console.log(t);
           console.log(textToValue(t));
           try {
             f = parseFloat(textToValue(t));
             if(!isNaN(f)) {
+              console.log(f);
               n.nodeValue = `${formatter.format(f * tax)} (${label})`;
+              console.log(JSON.stringify(n.nodeValue));
               break;
             }            
           } catch(error) {
