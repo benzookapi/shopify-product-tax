@@ -50,6 +50,10 @@ const addTaxForAll = function(proxy_data) {
   //if (!proxy_data.isAll) return;
 
   console.log(JSON.stringify(proxy_data));
+  console.log(JSON.stringify(proxy_data.locale));
+  console.log(JSON.stringify(proxy_data.currency));
+
+
 
   let formatter = new Intl.NumberFormat(proxy_data.locale, {
     style: 'currency',
