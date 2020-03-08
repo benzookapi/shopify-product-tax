@@ -104,7 +104,7 @@ const addTaxForAll = function(proxy_data) {
 
   /* -- For variant option change -- */
   let q = window.location.search;  
-  window.document.querySelectorAll("[class=^single-option-selector]").forEach(s => {
+  window.document.querySelectorAll(`[class=^single\-option\-selector]`).forEach(s => {
     s.addEventListener(
       'change',
       function() { 
