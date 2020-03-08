@@ -103,8 +103,12 @@ const addTaxForAll = function(proxy_data) {
   }
 
   /* -- For variant option change -- */
-  var q = window.location.search;
-  window.document.querySelectorAll(".single-option-selector").forEach(s => {
+  //var q = window.location.search;
+  window.addEventListener('popstate', (event) => {
+    console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+  });
+  
+  /*window.document.querySelectorAll(".single-option-selector").forEach(s => {
     s.addEventListener(
       'change',
       function() { 
@@ -114,7 +118,7 @@ const addTaxForAll = function(proxy_data) {
        },
       false
     );
-  });
+  });*/
 
 };
 
