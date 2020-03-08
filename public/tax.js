@@ -64,29 +64,35 @@ const addTaxForAll = function(proxy_data) {
 
   let current_path = window.location.pathname;
   console.log(current_path);
-  
-  let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|//div[contains(., '¥')]/text()`;
-  console.log(xpath);
-  var f = -1;
-  var t = "";
-  nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
-  while (n = nodes.iterateNext()) {
-    console.log(`Node: ${JSON.stringify(n)}`);
-    t = n.nodeValue;
-    console.log(t);
-    console.log(textToValue(t));
-    try {
-      f = parseFloat(textToValue(t));
-      if(!isNaN(f)) {
+
+  let searchAndUpdate = function() {
+    let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|//div[contains(., '¥')]/text()`;
+    console.log(xpath);
+    var f = -1;
+    var t = "";
+    nodes = window.document.evaluate(xpath, document, null, XPathResult.ANY_TYPE, null);
+    while (n = nodes.iterateNext()) {
+      console.log(`Node: ${JSON.stringify(n)}`);
+      t = n.nodeValue;
+      console.log(t);
+      console.log(textToValue(t));
+      try {
+        f = parseFloat(textToValue(t));
+        if(!isNaN(f)) {
           console.log(f);
           n.nodeValue = formatter.format(f * tax);
           console.log(JSON.stringify(n.nodeValue));
-          //break;
-      }            
-    } catch(error) {
+          return true;
+        }            
+      } catch(error) {
         console.error(`error ${error}`);
-    } 
-  }  
+      } 
+    }
+    return false;  
+  };
+  
+  while (searchAndUpdate()){
+  }
 
   /* -- For variant option change -- */
   var q = window.location.search;
