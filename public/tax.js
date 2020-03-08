@@ -93,6 +93,8 @@ const addTaxForAll = function(proxy_data) {
       if (temp != t) {
         n.nodeValue = temp;
         console.log(JSON.stringify(n.nodeValue));
+        console.log(JSON.stringify(n.parentElement.localName));
+        console.log(JSON.stringify(n.parentElement));
         return true;
       }
     }
@@ -104,9 +106,6 @@ const addTaxForAll = function(proxy_data) {
 
   /* -- For variant option change -- */
   //var q = window.location.search;
-  window.addEventListener('popstate', (event) => {
-    console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-  });
   
   /*window.document.querySelectorAll(".single-option-selector").forEach(s => {
     s.addEventListener(
