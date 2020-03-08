@@ -66,7 +66,7 @@ const addTaxForAll = function(proxy_data) {
   let current_path = window.location.pathname;
   console.log(current_path);
   
-  let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥')]/text()|div[contains(., '¥')]/text()|`;
+  let xpath = `//p[contains(., '¥')]/text()|//span[contains(., '¥¥')]/text()|div[contains(., '¥¥')]/text()|`;
   console.log(xpath);
   var f = -1;
   var t = "";
