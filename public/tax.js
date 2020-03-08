@@ -80,7 +80,7 @@ const addTaxForAll = function(proxy_data) {
         f = parseFloat(textToValue(t));
         if(!isNaN(f)) {
           console.log(f);
-          n.nodeValue = formatter.format(f * tax);
+          n.nodeValue = t.replace(/¥[0-9,]+/g, formatter.format(f * tax));
           console.log(JSON.stringify(n.nodeValue));
           return true;
         }            
