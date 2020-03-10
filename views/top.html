@@ -52,7 +52,20 @@
     <div class="Polaris-Stack__Item">
       <div><label class="Polaris-Choice" for="optional"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
         <div class="Polaris-Choice__Descriptions">
-          <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。</div>
+          <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
+            &gt;script id="ProductTaxReflectionApp"&lt;
+              var s = document.createElement('script');
+                 s.type = 'text/javascript';
+                 s.async = false;
+                 s.src = "https:\/\/shopify-product-tax.herokuapp.com\/tax.js";
+                 var x = document.getElementsByTagName('script')[0];
+                 x.parentNode.insertBefore(s, x);
+                 &gt;/script&lt;
+            &gt;/head&lt;
+
+
+
+          </div>
         </div>
       </div>
     </div>
