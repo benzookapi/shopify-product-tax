@@ -51,9 +51,9 @@ const MONGO_DB_NAME = `${process.env.SHOPIFY_MONGO_DB_NAME}`;
 const MONGO_COLLECTION = 'shops';
 
 const METAFIELD_NAMESPACE = 'ProductTaxRefApp';
-const METAFIELD_KEY_INSERT_MODE = 'insertMode';
-const METAFIELD_MODE_LOAD = 'load';
-const METAFIELD_MODE_PASTE = 'paste';
+const METAFIELD_KEY_IS_DYNAMIC = 'isDynamic';
+const METAFIELD_KEY_WITH_TEXT = 'withText';
+const METAFIELD_KEY_REPLACE_ALL = 'replaceAll';
 
 const PROXY_KEY_SHOP = 'ShopifyProductTaxAppShop';
 const PROXY_KEY_PRODUCTS = 'ShopifyProductTaxAppProducts';
@@ -105,8 +105,18 @@ router.get('/',  async (ctx, next) => {
   if (shop_data == null) {
     ctx.body = "No shop data";
   } else {
-    let api_res = await(callGraphql(ctx, shop, `{
+    var api_res = await(callRESTAPI(ctx, shop, 'countries', null, 'GET'));
+    console.log(`${JSON.stringify(api_res)}`);
+    let tax = api_res.countries[0].tax;
+    let country = api_res.countries[0].code;
+
+    api_res = await(callGraphql(ctx, shop, `{
       shop {
+        currencyCode
+        currencyFormats {
+          moneyWithCurrencyFormat
+        }
+        taxesIncluded  
         privateMetafields(first:5, namespace:"${METAFIELD_NAMESPACE}") {
           edges {
             cursor
@@ -124,17 +134,30 @@ router.get('/',  async (ctx, next) => {
       }    
     }`));
     console.log(`${JSON.stringify(api_res)}`);
-
-    let eSize = api_res.data.shop.privateMetafields.edges.length;
-    var mode = METAFIELD_MODE_PASTE;
+    let tax_included = api_res.data.shop.taxesIncluded;
+    var is_dynamic = true;
+    var with_text = false;
+    var replace_all = true;
+    let eSize = api_res.data.shop.privateMetafields.edges.length;    
     for (let i=0; i<eSize; i++) {
-      if (api_res.data.shop.privateMetafields.edges[i].node.key == METAFIELD_KEY_INSERT_MODE) {
-        mode = api_res.data.shop.privateMetafields.edges[i].node.value;
-        break;
+      if (api_res.data.shop.privateMetafields.edges[i].node.key == METAFIELD_KEY_IS_DYNAMIC) {
+        is_dynamic = api_res.data.shop.privateMetafields.edges[i].node.value;
       }
-    }
+      if (api_res.data.shop.privateMetafields.edges[i].node.key == METAFIELD_KEY_WITH_TEXT) {
+        with_text = api_res.data.shop.privateMetafields.edges[i].node.value;
+      }
+      if (api_res.data.shop.privateMetafields.edges[i].node.key == METAFIELD_KEY_REPLACE_ALL) {
+        replace_all = api_res.data.shop.privateMetafields.edges[i].node.value;
+      }
+    }    
+
     await ctx.render('top', {
-      mode: mode,
+      tax: tax,
+      country: country,
+      tax_included: tax_included,     
+      is_dynamic: is_dynamic,
+      with_text: with_text,
+      replace_all: replace_all,       
       shop: shop,
       locale: locale,
       api_key: API_KEY

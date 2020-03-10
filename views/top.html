@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Top</title>
-  <script src="https://unpkg.com/@shopify/app-bridge"></script>
   <link
     rel="stylesheet"
     href="https://unpkg.com/@shopify/polaris@4.14.0/styles.min.css"
@@ -13,44 +12,25 @@
 </head>
 <body>
 
-  <script>
-    // https://shopify.dev/tools/app-bridge/getting-started    
-    var AppBridge = window['app-bridge'];
-    var createApp = AppBridge.default;
-    // App instance
-    var app = createApp({
-      apiKey: '<%= api_key %>',
-      shopOrigin: '<%= shop %>'
-    });
-    // Create title sub menu
-    /*var actions = AppBridge.actions;
-    var TitleBar = actions.TitleBar;
-    var Button = actions.Button;
-    var Redirect = actions.Redirect;
-    // Add event
-    var breadcrumb = Button.create(app, { label: LANG.breadcrumb['<%= locale %>'] });
-    breadcrumb.subscribe(Button.Action.CLICK, function() {
-      app.dispatch(Redirect.toApp({ path: '/auth?shop=<%= shop %>' }));
-    });
-    var titleBarOptions = {
-      title: LANG.top.title['<%= locale %>'],
-      breadcrumbs: breadcrumb
-    };
-    var myTitleBar = TitleBar.create(app, titleBarOptions);*/
-  </script>
+<!-- https://polaris.shopify.com/components/ -->
 
-<!-- https://polaris.shopify.com/components/forms/radio-button#navigation -->
+  <ul class="Polaris-List">
+    <li class="Polaris-List__Item">税込価格表示が必要か？ <p class="Polaris-Caption" id="tax_included"></p>
+    </li>
+    <li class="Polaris-List__Item">税込価格に利用する税率 <p class="Polaris-Caption" id="country_tax"></p>
+    </li>
+  </ul>
 
   <div class="Polaris-Stack Polaris-Stack--vertical">
     <div class="Polaris-Stack__Item">
       <div><label class="Polaris-Choice" for="disabled"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="dynamic" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="disabledHelpText" value="" checked=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">JavaScriptを動的に埋め込む</span></label>
         <div class="Polaris-Choice__Descriptions">
-          <div class="Polaris-Choice__HelpText" id="dynamicHelpText">テーマのコードを編集せずに税金を反映できます。但し、表示が少し遅くなります。</div>
+          <div class="Polaris-Choice__HelpText" id="dynamicHelpText">テーマのコードを編集せずに税金を反映できます。表示が少し遅くなります。</div>
         </div>
       </div>
     </div>
     <div class="Polaris-Stack__Item">
-      <div><label class="Polaris-Choice" for="optional"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
+    <div><label class="Polaris-Choice" for="optional"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value=""><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
         <div class="Polaris-Choice__Descriptions">
           <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
             &lt;script id="ProductTaxReflectionApp"&gt;<br/>
@@ -62,31 +42,31 @@
             &nbsp;&nbsp;&nbsp;&nbsp;x.parentNode.insertBefore(s, x);<br/>
             &lt;/script&gt;<br/>
             &lt;/head&gt;  &lt;- *[テーマ] > [コードの編集] > [theme.liquid]の&lt;/head&gt;の上にこのコードを貼り付けます。
-
-            <pre><code>
-              <script id="ProductTaxReflectionApp">
-                var s = document.createElement('script');
-                   s.type = 'text/javascript';
-                   s.async = false;
-                   s.src = "https:\/\/shopify-product-tax.herokuapp.com\/tax.js";
-                   var x = document.getElementsByTagName('script')[0];
-                   x.parentNode.insertBefore(s, x);
-               </script>
-             </head>
-            </code></pre>
           </div>
         </div>
       </div>
     </div>
-  </div>
-
-  
+  </div> 
 
 
 
-<!-- https://polaris.shopify.com/components/actions/button#all-examples -->
-<button class="Polaris-Button">Example button</button>
-  
+  <!-- https://polaris.shopify.com/components/actions/button#all-examples -->
+  <button class="Polaris-Button">Example button</button>
+
+
+  <script>
+    var tax_included = JSON.parse('<%= tax_included %>');
+    if (tax_included) {
+      document.querySelector('#tax_included').innerHTML = `<span class="Polaris-Badge Polaris-Badge--statusSuccess">
+        <span class="Polaris-VisuallyHidden">Success</span><span class="Polaris-Badge__Content">すでに商品は税込価格の設定ですので対応の必要はありません。</span></span>`;
+    } else {
+      document.querySelector('#tax_included').innerHTML = `<span class="Polaris-Badge Polaris-Badge--statusWarning">
+        <span class="Polaris-VisuallyHidden">Warning</span><span class="Polaris-Badge__Content">商品は税抜き価格の設定ですので対応が必要です。</span></span>`;
+    }
+    var is_dynamic = JSON.parse('<%= is_dynamic %>');
+    var with_text = JSON.parse('<%= with_text %>');
+    var replace_all = JSON.parse('<%= replace_all %>');    
+  </script>
   
 </body>
 </html>
