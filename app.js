@@ -159,8 +159,7 @@ router.get('/',  async (ctx, next) => {
       with_text: with_text,
       replace_all: replace_all,       
       shop: shop,
-      locale: locale,
-      api_key: API_KEY
+      locale: locale
     });
   }
 });
