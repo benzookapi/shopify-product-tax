@@ -25,40 +25,48 @@
           <dd class="Polaris-DescriptionList__Description">The management of products or other resources as they travel between a point of origin and a destination.</dd>
           <dt class="Polaris-DescriptionList__Term">Sole proprietorship</dt>
           <dd class="Polaris-DescriptionList__Description">A business structure where a single individual both owns and runs the company.</dd>
-          <dt class="Polaris-DescriptionList__Term">Discount code</dt>
-          <dd class="Polaris-DescriptionList__Description">A series of numbers and/or letters that an online shopper may enter at checkout to get a discount or special offer.</dd>
         </dl>
     
 
     </li>
-  </ul>
-  
-  <div class="Polaris-Stack Polaris-Stack--vertical">
-    <div class="Polaris-Stack__Item">
-      <div><label class="Polaris-Choice" for="dynamic"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="dynamic" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="staticHelpText" value="0" checked><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">JavaScriptを動的に埋め込む</span></label>
-        <div class="Polaris-Choice__Descriptions">
-          <div class="Polaris-Choice__HelpText" id="dynamicHelpText">テーマのコードを編集せずに税金を反映できます。表示が少し遅くなります。</div>
-        </div>
-      </div>
-    </div>
-    <div class="Polaris-Stack__Item">
-    <div><label class="Polaris-Choice" for="static"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="1"><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
-        <div class="Polaris-Choice__Descriptions">
-          <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
-            <code class="Polaris-TextStyle--variationCode">&lt;script id="ProductTaxReflectionApp"&gt;<br/>
-            &nbsp;&nbsp;var s = document.createElement('script');<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;s.type = 'text/javascript';<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;s.async = false;<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;s.src = "https:\/\/shopify-product-tax.herokuapp.com\/tax.js";<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;var x = document.getElementsByTagName('script')[0];<br/>
-            &nbsp;&nbsp;&nbsp;&nbsp;x.parentNode.insertBefore(s, x);<br/>
-            &lt;/script&gt;</code><br/>
-            &lt;/head&gt;  &lt;- *[テーマ] > [コードの編集] > [theme.liquid]の&lt;/head&gt;の上にこのコードを貼り付けます。
+    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+      <div class="Polaris-Stack Polaris-Stack--vertical">
+        <div class="Polaris-Stack__Item">
+          <div><label class="Polaris-Choice" for="dynamic"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="dynamic" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="staticHelpText" value="0" checked><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">JavaScriptを動的に埋め込む</span></label>
+            <div class="Polaris-Choice__Descriptions">
+              <div class="Polaris-Choice__HelpText" id="dynamicHelpText">テーマのコードを編集せずに税金を反映できます。表示が少し遅くなります。</div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div> 
+        <div class="Polaris-Stack__Item">
+        <div><label class="Polaris-Choice" for="static"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="1"><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
+            <div class="Polaris-Choice__Descriptions">
+              <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
+                <code class="Polaris-TextStyle--variationCode">&lt;script id="ProductTaxReflectionApp"&gt;<br/>
+                &nbsp;&nbsp;var s = document.createElement('script');<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;s.type = 'text/javascript';<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;s.async = false;<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;s.src = "https:\/\/shopify-product-tax.herokuapp.com\/tax.js";<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;var x = document.getElementsByTagName('script')[0];<br/>
+                &nbsp;&nbsp;&nbsp;&nbsp;x.parentNode.insertBefore(s, x);<br/>
+                &lt;/script&gt;</code><br/>
+                &lt;/head&gt;  &lt;- *[テーマ] > [コードの編集] > [theme.liquid]の&lt;/head&gt;の上にこのコードを貼り付けます。
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </li>
+    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    </li>
+    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    </li>
+    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    </li>
+    
+  </ul>
+  
+  
 
 
 
