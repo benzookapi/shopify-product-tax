@@ -22,7 +22,8 @@
           <dt class="Polaris-DescriptionList__Term">初期値</dt>
           <dd class="Polaris-DescriptionList__Description">「設定] > [税金] > [日本] > [国の税率]: 10 % を利用します。</dd>
           <dt class="Polaris-DescriptionList__Term">商品単位</dt>
-          <dd class="Polaris-DescriptionList__Description">商品に<code class="Polaris-TextStyle--variationCode">TAX-8</code>などのタグがついている場合、
+          <dd class="Polaris-DescriptionList__Description">商品に<code class="Polaris-TextStyle--variationCode">TAX-税率の数値</code>
+            （例：<code class="Polaris-TextStyle--variationCode">TAX-8</code>）の書式のタグがついている場合、
             その数値部分を%の税率として計算します（後述のコードの個別編集でのみ有効です。一括置換には使われません）。</dd>
         </dl>
     </li>
@@ -42,7 +43,7 @@
         <div><label class="Polaris-Choice" for="static"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton">
           <input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="1">
           <span class="Polaris-RadioButton__Backdrop"></span>
-          span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
+          <span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
             <div class="Polaris-Choice__Descriptions">
               <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
                 <code class="Polaris-TextStyle--variationCode">&lt;script id="ProductTaxReflectionApp"&gt;<br/>
