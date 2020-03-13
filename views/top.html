@@ -17,29 +17,32 @@
   <ul class="Polaris-List">
     <li class="Polaris-List__Item">税込価格表示が必要か？ <p class="Polaris-Caption" id="tax_included"></p>
     </li>
-    <li class="Polaris-List__Item">税込価格に利用する税率 
-
-     
+    <li class="Polaris-List__Item">税込価格に利用する税率      
         <dl class="Polaris-DescriptionList">
-          <dt class="Polaris-DescriptionList__Term">Logistics</dt>
-          <dd class="Polaris-DescriptionList__Description">The management of products or other resources as they travel between a point of origin and a destination.</dd>
-          <dt class="Polaris-DescriptionList__Term">Sole proprietorship</dt>
-          <dd class="Polaris-DescriptionList__Description">A business structure where a single individual both owns and runs the company.</dd>
+          <dt class="Polaris-DescriptionList__Term">初期値</dt>
+          <dd class="Polaris-DescriptionList__Description">「設定] > [税金] > [日本] > [国の税率]: 10 % を利用します。</dd>
+          <dt class="Polaris-DescriptionList__Term">商品単位</dt>
+          <dd class="Polaris-DescriptionList__Description">商品に<code class="Polaris-TextStyle--variationCode">TAX-8</code>などのタグがついている場合、
+            その数値部分を%の税率として計算します（後述のコードの個別編集でのみ有効です。一括置換には使われません）。</dd>
         </dl>
-    
-
     </li>
-    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    <li class="Polaris-List__Item">税込価格表示のJavaScriptの挿入方法 
       <div class="Polaris-Stack Polaris-Stack--vertical">
         <div class="Polaris-Stack__Item">
-          <div><label class="Polaris-Choice" for="dynamic"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="dynamic" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="staticHelpText" value="0" checked><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">JavaScriptを動的に埋め込む</span></label>
+          <div><label class="Polaris-Choice" for="dynamic"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton">
+            <input id="dynamic" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="staticHelpText" value="0" checked>
+            <span class="Polaris-RadioButton__Backdrop"></span>
+            <span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label">JavaScriptを動的に埋め込む</span></label>
             <div class="Polaris-Choice__Descriptions">
               <div class="Polaris-Choice__HelpText" id="dynamicHelpText">テーマのコードを編集せずに税金を反映できます。表示が少し遅くなります。</div>
             </div>
           </div>
         </div>
         <div class="Polaris-Stack__Item">
-        <div><label class="Polaris-Choice" for="static"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton"><input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="1"><span class="Polaris-RadioButton__Backdrop"></span><span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
+        <div><label class="Polaris-Choice" for="static"><span class="Polaris-Choice__Control"><span class="Polaris-RadioButton">
+          <input id="static" name="javascript" type="radio" class="Polaris-RadioButton__Input" aria-describedby="optionalHelpText" value="1">
+          <span class="Polaris-RadioButton__Backdrop"></span>
+          span class="Polaris-RadioButton__Icon"></span></span></span><span class="Polaris-Choice__Label"> JavaScriptをヘッダに埋め込む</span></label>
             <div class="Polaris-Choice__Descriptions">
               <div class="Polaris-Choice__HelpText" id="staticlHelpText">テーマを以下のように編集して税金を反映します。表示が早くなりますが、テーマごとに編集が必要です。<br/>
                 <code class="Polaris-TextStyle--variationCode">&lt;script id="ProductTaxReflectionApp"&gt;<br/>
@@ -57,11 +60,9 @@
         </div>
       </div> 
     </li>
-    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    <li class="Polaris-List__Item">商品価格の置換方法
     </li>
-    <li class="Polaris-List__Item">税込価格表示が必要か？ 
-    </li>
-    <li class="Polaris-List__Item">税込価格表示が必要か？ 
+    <li class="Polaris-List__Item">商品価格の表示方法
     </li>
     
   </ul>
