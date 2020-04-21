@@ -105,7 +105,7 @@ var Redirect = actions.Redirect;
 
 var breadcrumb = Button.create(AppBridge, { label: 'My breadcrumb' });
 breadcrumb.subscribe(Button.Action.CLICK, function() {
-  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+  AppBridge.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
 });
 
 var titleBarOptions = {
@@ -113,7 +113,7 @@ var titleBarOptions = {
   breadcrumbs: breadcrumb
 };
 
-var myTitleBar = TitleBar.create(app, titleBarOptions);
+var myTitleBar = TitleBar.create(AppBridge, titleBarOptions);
   </script>
   
 </body>
