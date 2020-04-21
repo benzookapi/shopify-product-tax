@@ -325,7 +325,7 @@ router.post('/webhook', async (ctx, next) => {
   console.log("******** webhook ********");
   console.log(JSON.stringify(ctx.request.body));
   /* Check the signature */
-  let valid = await(checkWebhookSignature(ctx, "mysecret"));
+  let valid = await(checkWebhookSignature(ctx, "e5ba7f0a7fa4d480bbe44923feab9c5518ac95a24b0c406d10dcd1acb89dd407"));
   if (!valid) {
     ctx.status = 200;
     return;
