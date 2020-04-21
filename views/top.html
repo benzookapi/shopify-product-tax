@@ -93,7 +93,31 @@
     }
     var is_dynamic = JSON.parse('<%= is_dynamic %>');
     var with_text = JSON.parse('<%= with_text %>');
-    var replace_all = JSON.parse('<%= replace_all %>');    
+    var replace_all = JSON.parse('<%= replace_all %>');   
+    
+    var AppBridge = window['app-bridge'];
+var createApp = AppBridge.default;
+var app = createApp({
+  apiKey: '<%= api_key %>',
+  shopOrigin: '<%= shop %>'
+});
+
+var actions = AppBridge.actions;
+var TitleBar = actions.TitleBar;
+var Button = actions.Button;
+var Redirect = actions.Redirect;
+
+var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
+breadcrumb.subscribe(Button.Action.CLICK, function() {
+  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+});
+
+var titleBarOptions = {
+  title: 'My page title',
+  breadcrumbs: breadcrumb
+};
+
+var myTitleBar = TitleBar.create(app, titleBarOptions);
 
   </script>
   
