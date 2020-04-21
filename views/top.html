@@ -98,14 +98,21 @@
 
 
     var AppBridge = window['app-bridge'];
+var createApp = AppBridge.default;
+var app = createApp({
+  apiKey: '<%= api_key %>',
+  shopOrigin: shopOrigin
+});
+
+
 var actions = AppBridge.actions;
 var TitleBar = actions.TitleBar;
 var Button = actions.Button;
 var Redirect = actions.Redirect;
 
-var breadcrumb = Button.create(AppBridge, { label: 'My breadcrumb' });
+var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
 breadcrumb.subscribe(Button.Action.CLICK, function() {
-  AppBridge.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
 });
 
 var titleBarOptions = {
@@ -113,7 +120,9 @@ var titleBarOptions = {
   breadcrumbs: breadcrumb
 };
 
-var myTitleBar = TitleBar.create(AppBridge, titleBarOptions);
+var myTitleBar = TitleBar.create(app, titleBarOptions);
+
+
   </script>
   
 </body>

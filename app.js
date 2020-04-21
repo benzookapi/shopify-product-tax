@@ -152,6 +152,7 @@ router.get('/',  async (ctx, next) => {
     }    
 
     await ctx.render('top', {
+      api_key: API_KEY,
       tax: tax,
       country: country,
       tax_included: tax_included,     
