@@ -112,7 +112,8 @@ var Redirect = actions.Redirect;
 
 var breadcrumb = Button.create(app, { label: 'My breadcrumb' });
 breadcrumb.subscribe(Button.Action.CLICK, function() {
-  app.dispatch(Redirect.toApp({ path: '/breadcrumb-link' }));
+  alert("Hello");
+  app.dispatch(Redirect.toApp({ path: '/' }));
 });
 
 var titleBarOptions = {
