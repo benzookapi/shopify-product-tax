@@ -4,8 +4,7 @@
     <meta charset="UTF-8" />
     <title>Hello World</title>
     
-    <!--<script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>-->
-    <script crossorigin data-main="https://unpkg.com/react@16/umd/react.development.js" src="/require.js"></script>
+    <script crossorigin src="https://unpkg.com/react@16/umd/react.development.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
 
     <!-- Don't use this in production: -->
@@ -16,15 +15,18 @@
       href="https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css"
     />-->
 
+
+  <script crossorigin src="https://unpkg.com/@shopify/polaris@4.20.1"></script>
+
   </head>
   <body>
     <div id="root"></div>
 
     <script type="text/babel" >
 
-import 'https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css';
-import enTranslations from 'https://unpkg.com/@shopify/polaris@4.20.1/locales/en.json';
-import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1';
+//import 'https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css';
+//import enTranslations from 'https://unpkg.com/@shopify/polaris@4.20.1/locales/en.json';
+//import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1';
 
 /*ReactDOM.render(
   <h1>Hello, world!</h1>,
@@ -32,7 +34,7 @@ import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1';
 );*/
 
 const app = (
-  <AppProvider i18n={enTranslations}>
+  <AppProvider i18n={{}}>
    <Button onClick={() => alert('Button clicked!')}>Example button</Button>
  </AppProvider>
 );
