@@ -32,6 +32,10 @@ import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1/ind
   document.getElementById('root')
 );*/
 
+console.log(enTranslations);
+console.log(AppProvider);
+console.log(Button);
+
 const app = (
   <AppProvider i18n={enTranslations}>
    <Button onClick={() => alert('Button clicked!')}>Example button</Button>
