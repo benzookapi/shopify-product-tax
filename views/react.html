@@ -16,17 +16,16 @@
     />-->
 
 
-  <script crossorigin src="https://unpkg.com/@shopify/polaris@4.20.1"></script>
-
+  
   </head>
   <body>
     <div id="root"></div>
-
+    <script>var exports = {}; var require=()=>React;</script>
     <script type="text/babel" >
 
-//import 'https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css';
-//import enTranslations from 'https://unpkg.com/@shopify/polaris@4.20.1/locales/en.json';
-//import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1';
+import 'https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css';
+import enTranslations from 'https://unpkg.com/@shopify/polaris@4.20.1/locales/en.json';
+import {AppProvider, Button} from 'https://unpkg.com/@shopify/polaris@4.20.1/index.js';
 
 /*ReactDOM.render(
   <h1>Hello, world!</h1>,
@@ -34,7 +33,7 @@
 );*/
 
 const app = (
-  <AppProvider i18n={{}}>
+  <AppProvider i18n={enTranslations}>
    <Button onClick={() => alert('Button clicked!')}>Example button</Button>
  </AppProvider>
 );
