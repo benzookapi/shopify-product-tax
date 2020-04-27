@@ -62,18 +62,6 @@ const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
 // Set Timezone Japan
 //process.env.TZ = 'Asia/Tokyo'; 
 
-/* Test frontend React */
-router.get('/react',  async (ctx, next) => { 
-  console.log("+++++++++ /react ++++++++++");
-  let shop = ctx.request.query.shop;
-  await ctx.render('react', {
-    api_key: API_KEY,
-    api_permission: API_PERMISSION,
-    callback: `https://${ctx.request.hostname}/callback`,
-    shop: shop
-  });
-});
-
 /*
  *
  * --- Auth by frontend App Bridge ---
