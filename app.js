@@ -72,6 +72,7 @@ router.get('/app_bridge',  async (ctx, next) => {
   let shop = ctx.request.query.shop;
   await ctx.render('app_bridge', {
     api_key: API_KEY,
+    id: ctx.request.query.id,
     shop: shop
   });
 });

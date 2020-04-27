@@ -28,6 +28,9 @@
 
         const productPicker = ResourcePicker.create(app, {
           resourceType: ResourcePicker.ResourceType.Product,
+          options: {
+            initialQuery: '<%= id %>'                    
+           }
          });
         productPicker.subscribe(ResourcePicker.Action.SELECT, ({selection}) => {
           alert(JSON.stringify(selection));
