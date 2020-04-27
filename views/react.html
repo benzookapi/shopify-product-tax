@@ -5,21 +5,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
   </head>
   <body>
-    <div id="app"></div><!-- ←ここに埋め込まれる -->
+    <div id="app"></div>
 
-    <!-- 以下、Reactのプログラム -->
-    <!-- (jsxを使っているのでtext/jsxと書く) -->
+    
     <script type="text/jsx">
      var HelloWorld = React.createClass({
-       // <HelloWorld />をレンダリング（表示）
        render: function() {
          return (
-           <p>Hello!World!</p>
+           <p>Hello!World!!!!</p>
          );
        }
      });
-
-     // id='app'に<HelloWorld />を埋め込む（マウント）
      var m = React.render(<HelloWorld />, document.getElementById('app'));
     </script>
   </body>
