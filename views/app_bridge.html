@@ -24,6 +24,14 @@
           resourceType: ResourcePicker.ResourceType.Product,
          });
 
+        productPicker.subscribe(ResourcePicker.Action.SELECT, ({selection}) => {
+          // Do something with `selection`
+        });
+
+        productPicker.subscribe(ResourcePicker.Action.CANCEL, () => {
+          // Picker was cancelled
+        });
+
        
      </script>
 </body>
