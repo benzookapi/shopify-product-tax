@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Auth</title>
+  <script src="https://unpkg.com/@shopify/app-bridge"></script>
+</head>
+<body>
+    <script>
+        var AppBridge = window['app-bridge'];
+        var createApp = AppBridge.createApp;
+        var actions = AppBridge.actions;
+        var ResourcePicker = actions.ResourcePicker;
+        
+        const apiKey = '<%= api_key %>';
+        const shopOrigin = '<%= shop %>';
+
+        const app = createApp({
+            apiKey: apiKey,
+            shopOrigin: shopOrigin
+        });
+
+        const productPicker = ResourcePicker.create(app, {
+          resourceType: ResourcePicker.ResourceType.Product,
+         });
+
+       
+     </script>
+</body>
+</html>

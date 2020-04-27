@@ -64,6 +64,20 @@ const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
 
 /*
  *
+ * --- CDN App Bridge ---
+ *
+*/
+router.get('/app_bridge',  async (ctx, next) => { 
+  console.log("+++++++++ /app_bridge ++++++++++");
+  let shop = ctx.request.query.shop;
+  await ctx.render('app_bridge', {
+    api_key: API_KEY,
+    shop: shop
+  });
+});
+
+/*
+ *
  * --- Auth by frontend App Bridge ---
  *
 */
