@@ -10,43 +10,32 @@
     <!-- Don't use this in production: -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
-    <script>var exports = {}; var require = ()=>React;</script>
-
-    <script src="https://unpkg.com/@shopify/polaris@4.20.1/index.js"></script>
-
     <link
-      rel="stylesheet"
-      href="https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css"
-    />
+    rel="stylesheet"
+    href="https://unpkg.com/@shopify/polaris@4.20.0/styles.min.css"
+  />
 
 
   
   </head>
   <body>
-    <div id="root"></div>
+    <div id="app"></div>
     <script>var exports = {}; var require = ()=>React;</script>
     <script type="text/babel" >
 
-//import 'https://unpkg.com/@shopify/polaris@4.20.1/styles.min.css';
-import enTranslations from 'https://unpkg.com/@shopify/polaris@4.20.1/locales/en.json';
-import AppProvider from 'https://unpkg.com/@shopify/polaris@4.20.1/index.js';
+import enTranslations from '@shopify/polaris/locales/en.json';
+import {AppProvider, Page, Card, Button} from '@shopify/polaris';
 
-/*ReactDOM.render(
-  <h1>Hello, world!</h1>,
-  document.getElementById('root')
-);*/
-
-console.log(enTranslations);
-console.log(AppProvider);
-console.log(Button);
-
-const app = (
+ReactDOM.render(
   <AppProvider i18n={enTranslations}>
-   <Button onClick={() => alert('Button clicked!')}>Example button</Button>
- </AppProvider>
+    <Page title="Example app">
+      <Card sectioned>
+        <Button onClick={() => alert('Button clicked!')}>Example button</Button>
+      </Card>
+    </Page>
+  </AppProvider>,
+  document.querySelector('#app'),
 );
-
-ReactDOM.render(app, document.getElementById('root'));
 
     </script>
 
