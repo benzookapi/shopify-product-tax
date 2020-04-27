@@ -3,20 +3,30 @@
   <head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/@shopify/polaris@4.20.0/styles.min.css"
+    />
   </head>
   <body>
     <div id="app"></div>
 
     
     <script type="text/jsx">
-     var HelloWorld = React.createClass({
-       render: function() {
-         return (
-           <p>Hello!World!!!!</p>
-         );
-       }
-     });
-     var m = React.render(<HelloWorld />, document.getElementById('app'));
+      import enTranslations from '@shopify/polaris/locales/en.json';
+      import {AppProvider, Page, Card, Button} from '@shopify/polaris';
+
+      ReactDOM.render(
+        <AppProvider i18n={enTranslations}>
+          <Page title="Example app">
+            <Card sectioned>
+              <Button onClick={() => alert('Button clicked!')}>Example button</Button>
+            </Card>
+          </Page>
+        </AppProvider>,
+        document.querySelector('#app'),
+      );
+     
     </script>
   </body>
 </html>
