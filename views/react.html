@@ -4,12 +4,8 @@
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/react.js"></script>
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/0.13.3/JSXTransformer.js"></script>
     <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/6.26.0/babel.js"></script>
-    <script crossorigin src="https://unpkg.com/@shopify/polaris@4.20.0//index.js" type="text/babel"></script>
-    <script crossorigin src="https://unpkg.com/@shopify/polaris@4.20.0/locales/en.json"></script>
-    <link
-      rel="stylesheet"
-      href="https://unpkg.com/@shopify/polaris@4.20.0/styles.min.css"
-    />
+
+    <script src="https://unpkg.com/@shopify/app-bridge"></script>
   </head>
   <body>
     <div id="app"></div>
@@ -17,18 +13,27 @@
     
     <script type="text/babel">
      
+      import createApp from '@shopify/app-bridge';
+      import { Redirect } from '@shopify/app-bridge/actions';
       
-
-      ReactDOM.render(
-        <AppProvider i18n={enTranslations}>
-          <Page title="Example app">
-            <Card sectioned>
-              <Button onClick={() => alert('Button clicked!')}>Example button</Button>
-            </Card>
-          </Page>
-        </AppProvider>,
-        document.querySelector('#app'),
-      );
+      const apiKey = '<%= api_key %>';
+      const redirectUri = '<%= callback %>';
+      const shopOrigin = '<%= shop %>';
+      const permissionUrl = `https://${shopOrigin}/admin/oauth/authorize?client_id=${apiKey}&scope=read_products,read_content&redirect_uri=${redirectUri}`;
+      
+      // If the current window is the 'parent', change the URL by setting location.href
+      if (window.top == window.self) {
+        window.location.assign(permissionUrl);
+      
+        // If the current window is the 'child', change the parent's URL with Shopify App Bridge's Redirect action
+      } else {
+        const app = createApp({
+          apiKey: apiKey,
+          shopOrigin: shopOrigin
+        });
+      
+        Redirect.create(app).dispatch(Redirect.Action.REMOTE, permissionUrl);
+      }
      
     </script>
   </body>
