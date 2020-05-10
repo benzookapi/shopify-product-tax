@@ -381,14 +381,14 @@ router.get('/proxy',  async (ctx, next) => {
 */
 router.get('/proxy_liquid',  async (ctx, next) => {
   console.log("---------- /proxy_liquid ------------");
-  /*if (!checkAppProxySignature(ctx.request.query)) {
+  if (!checkAppProxySignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
-*/
 
-  var res = '<p>{{shop.name}}</p>';
-
+  var res = `<p>{{shop.name}}</p><br/>
+  <p>{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</p><br/>
+  <p>{{product.title}}</p>`;
   
   ctx.set('Content-Type','application/liquid');
   ctx.body = res;
