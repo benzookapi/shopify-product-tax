@@ -228,8 +228,40 @@ router.get('/callback',  async (ctx, next) => {
     }));
     //console.log(`${JSON.stringify(api_res)}`);
 
+    // Create reccurring billing by GraphQL
+    var api_res = await(callGraphql(ctx, shop, `{
+      appSubscriptionCreate(
+        name: "Product Tax Reflection Plan"
+        trialDays: 7
+        returnUrl: "${redirect_url}"
+        lineItems: [{
+          plan: {
+            appRecurringPricingDetails: {
+                price: { amount: 10.00, currencyCode: USD }
+            }
+          }
+        }]
+      ) {
+        userErrors {
+          field
+          message
+        }
+        confirmationUrl
+        appSubscription {
+          id
+        }
+      }
+    }`, false));
 
-    ctx.redirect(redirect_url);  
+    let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;
+
+    console.log(confirm_url);
+
+
+    ctx.redirect(confirm_url);
+
+
+    //ctx.redirect(redirect_url);  
 
   } else {
     ctx.status = 500;
