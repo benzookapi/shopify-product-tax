@@ -381,15 +381,11 @@ router.get('/proxy',  async (ctx, next) => {
 */
 router.get('/proxy_liquid',  async (ctx, next) => {
   console.log("---------- /proxy_liquid ------------");
-  if (!checkAppProxySignature(ctx.request.query)) {
+  /*if (!checkAppProxySignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
-
-  let shop = ctx.request.query.shop;
-
-  let data_key = ctx.request.query.data_key;
-  let data_id = ctx.request.query.data_id;
+*/
 
   var res = '<p>{{shop.name}}</p>';
 
