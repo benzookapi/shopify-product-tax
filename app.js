@@ -258,7 +258,7 @@ router.get('/callback',  async (ctx, next) => {
         lineItems: [{
           plan: {
             appRecurringPricingDetails: {
-                price: { amount: 10.00, currencyCode: USD }
+                price: { amount: 99.00, currencyCode: USD }
             }
           }
         }]
