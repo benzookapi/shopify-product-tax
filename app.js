@@ -70,10 +70,12 @@ const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
 router.get('/app_bridge',  async (ctx, next) => { 
   console.log("+++++++++ /app_bridge ++++++++++");
   let shop = ctx.request.query.shop;
+  let locale = ctx.request.query.locale;
   await ctx.render('app_bridge', {
     api_key: API_KEY,
     id: ctx.request.query.id,
-    shop: shop
+    shop: shop,
+    locale: locale
   });
 });
 
@@ -85,11 +87,13 @@ router.get('/app_bridge',  async (ctx, next) => {
 router.get('/auth',  async (ctx, next) => { 
   console.log("+++++++++ /auth ++++++++++");
   let shop = ctx.request.query.shop;
+  let locale = ctx.request.query.locale;
   await ctx.render('auth', {
     api_key: API_KEY,
     api_permission: API_PERMISSION,
     callback: `https://${ctx.request.hostname}/callback`,
-    shop: shop
+    shop: shop,
+    locale: locale
   });
 });
 
