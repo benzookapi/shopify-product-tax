@@ -231,6 +231,7 @@ router.get('/callback',  async (ctx, next) => {
     // Create one time billing by GraphQL mutation
     var api_res = await(callGraphql(ctx, shop, `mutation {
       appPurchaseOneTimeCreate(
+        test: true,
         name: "Product Tax Reflection One time"
         price: { amount: 200.00, currencyCode: USD}
         returnUrl: "${redirect_url}"
@@ -250,6 +251,7 @@ router.get('/callback',  async (ctx, next) => {
     // Create reccurring billing by GraphQL mutation
     /*var api_res = await(callGraphql(ctx, shop, `mutation {
       appSubscriptionCreate(
+        test: true,
         name: "Product Tax Reflection Plan"
         trialDays: 7
         returnUrl: "${redirect_url}"
