@@ -246,6 +246,7 @@ router.get('/callback',  async (ctx, next) => {
         }
       }
     }`));
+    let confirm_url = api_res.data.appPurchaseOneTimeCreate.confirmationUrl;
 
     // Create reccurring billing by GraphQL mutation
     /*var api_res = await(callGraphql(ctx, shop, `mutation {
@@ -271,14 +272,10 @@ router.get('/callback',  async (ctx, next) => {
           id
         }
       }
-    }`));*/
-
-    console.log(JSON.stringify(api_res));
-
-    let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;
+    }`));    
+    let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;*/
 
     ctx.redirect(confirm_url);
-
 
     //ctx.redirect(redirect_url);  
 
