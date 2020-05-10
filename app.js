@@ -228,7 +228,7 @@ router.get('/callback',  async (ctx, next) => {
     }));
     //console.log(`${JSON.stringify(api_res)}`);
 
-    // Create reccurring billing by GraphQL
+    // Create reccurring billing by GraphQL mutation
     var api_res = await(callGraphql(ctx, shop, `mutation {
       appSubscriptionCreate(
         test: true,
@@ -252,7 +252,7 @@ router.get('/callback',  async (ctx, next) => {
           id
         }
       }
-    }`, false));
+    }`));
 
     console.log(JSON.stringify(api_res));
 
@@ -423,16 +423,11 @@ const checkWebhookSignature = function(ctx, secret) {
 };
 
 /* --- --- */
-const callGraphql = function(ctx, shop, ql, query = true, token = null, path = GRAPHQL_PATH_ADMIN) {
+const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
-    // Set Gqphql string into query or mutation field of the JSON  as string
-    if (query) {
-      api_req.query = ql.replace(/\n/g, '');
-    } else { // mutation
-      //api_req.mutation = ql.replace(/\n/g, '');
-      api_req.query = ql.replace(/\n/g, '');
-    } 
+    // Set Gqphql string into query field of the JSON  as string
+    api_req.query = ql.replace(/\n/g, '');
     var access_token = token;
     if (access_token == null) {
       getDB(shop).then(function(shop_data){
