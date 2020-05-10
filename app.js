@@ -393,7 +393,7 @@ router.get('/proxy_liquid',  async (ctx, next) => {
 
   var res = '<p>{{shop.name}}</p>';
 
-  ctx.headers['Content-Type'] = 'application/liquid';
+  ctx.response.headers['Content-Type'] = 'application/liquid';
   ctx.body = res;
 });
 
