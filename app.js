@@ -388,7 +388,8 @@ router.get('/proxy_liquid',  async (ctx, next) => {
 
   var res = `<p>{{shop.name}}</p><br/>
   <p>{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</p><br/>
-  <p>{{product.title}}</p>`;
+  <p>{{product.title}}</p><br/>
+  {% section 'collection-template' %}`;
   
   ctx.set('Content-Type','application/liquid');
   ctx.body = res;
