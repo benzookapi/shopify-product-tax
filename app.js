@@ -229,7 +229,7 @@ router.get('/callback',  async (ctx, next) => {
     //console.log(`${JSON.stringify(api_res)}`);
 
     // Create reccurring billing by GraphQL
-    var api_res = await(callGraphql(ctx, shop, `{
+    var api_res = await(callGraphql(ctx, shop, `mutation {
       appSubscriptionCreate(
         name: "Product Tax Reflection Plan"
         trialDays: 7
@@ -429,7 +429,8 @@ const callGraphql = function(ctx, shop, ql, query = true, token = null, path = G
     if (query) {
       api_req.query = ql.replace(/\n/g, '');
     } else { // mutation
-      api_req.mutation = ql.replace(/\n/g, '');
+      //api_req.mutation = ql.replace(/\n/g, '');
+      api_req.query = ql.replace(/\n/g, '');
     } 
     var access_token = token;
     if (access_token == null) {
