@@ -253,9 +253,11 @@ router.get('/callback',  async (ctx, next) => {
       }
     }`, false));
 
+    console.log(JSON.stringify(api_res));
+
     let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;
 
-    console.log(confirm_url);
+    
 
 
     ctx.redirect(confirm_url);
