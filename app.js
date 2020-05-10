@@ -229,7 +229,7 @@ router.get('/callback',  async (ctx, next) => {
     //console.log(`${JSON.stringify(api_res)}`);
 
     // Create one time billing by GraphQL mutation
-    var api_res = await(callGraphql(ctx, shop, `mutation {
+    /*var api_res = await(callGraphql(ctx, shop, `mutation {
       appPurchaseOneTimeCreate(
         test: true,
         name: "Product Tax Reflection One time"
@@ -246,10 +246,10 @@ router.get('/callback',  async (ctx, next) => {
         }
       }
     }`));
-    let confirm_url = api_res.data.appPurchaseOneTimeCreate.confirmationUrl;
+    let confirm_url = api_res.data.appPurchaseOneTimeCreate.confirmationUrl;*/
 
     // Create reccurring billing by GraphQL mutation
-    /*var api_res = await(callGraphql(ctx, shop, `mutation {
+    var api_res = await(callGraphql(ctx, shop, `mutation {
       appSubscriptionCreate(
         test: true,
         name: "Product Tax Reflection Plan"
@@ -273,7 +273,7 @@ router.get('/callback',  async (ctx, next) => {
         }
       }
     }`));    
-    let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;*/
+    let confirm_url = api_res.data.appSubscriptionCreate.confirmationUrl;
 
     ctx.redirect(confirm_url);
 
