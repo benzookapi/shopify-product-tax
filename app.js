@@ -231,6 +231,7 @@ router.get('/callback',  async (ctx, next) => {
     // Create reccurring billing by GraphQL
     var api_res = await(callGraphql(ctx, shop, `mutation {
       appSubscriptionCreate(
+        test: true,
         name: "Product Tax Reflection Plan"
         trialDays: 7
         returnUrl: "${redirect_url}"
