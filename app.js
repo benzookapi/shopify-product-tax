@@ -52,10 +52,6 @@ const MONGO_COLLECTION = 'shops';
 
 // Sales channel and storefront API 
 const SALES_CHANNEL = `${process.env.SHOPIFY_SALES_CHANNEL}`;
-const STOREFRONT_TOKEN = `${process.env.SHOPIFY_STOREFRONT_TOKEN}`;
-
-// Basic auth for private app
-const BASIC_AUTH = `${process.env.SHOPIFY_BASIC_AUTH}`;
 
 const METAFIELD_NAMESPACE = 'ProductTaxRefApp';
 const METAFIELD_KEY_IS_DYNAMIC = 'isDynamic';
@@ -220,12 +216,7 @@ router.get('/callback',  async (ctx, next) => {
         res.storefront_access_token = storefront_res.storefront_access_token.access_token;
         await(setDB(shop, res));  
       }
-    } else if (STOREFRONT_TOKEN != null) {
-      // If you have a private app and set storefront access token, you can use it
-      res.storefront_access_token = STOREFRONT_TOKEN;
-      res.basic_auth = BASIC_AUTH;
-      await(setDB(shop, res));  
-    }    
+    }
 
     // Get app handle by GraphQL
     var api_res = await(callGraphql(ctx, shop, `{
@@ -529,11 +520,7 @@ const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_AD
         if (shop_data == null) return resolve(null);
         access_token = shop_data.access_token;
         if (storefront) access_token = shop_data.storefront_access_token;
-        var ba = "";
-        /*if (typeof shop_data.basic_auth !== UNDEFINED) {
-          ba = `${shop_data.basic_auth}@`;
-        }*/
-        accessEndpoint(ctx, `https://${ba}${shop}/${path}`, api_req, access_token, CONTENT_TYPE_JSON, 'POST', storefront).then(function(api_res){
+        accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token, CONTENT_TYPE_JSON, 'POST', storefront).then(function(api_res){
           return resolve(api_res);
         }).catch(function(e){
           console.log(`callGraphql ${e}`);

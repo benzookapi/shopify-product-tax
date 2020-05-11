@@ -19,8 +19,6 @@ SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YO
 
 SHOPIFY_SALES_CHANNEL:     false
 
-SHOPIFY_STOREFRONT_TOKEN:  YOUR_PRIVATE_APP_STOREFRONT_TOKEN
-
 # Installation Endpoint
 `https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
 
