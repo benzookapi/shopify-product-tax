@@ -444,7 +444,7 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
     }
   }`, null, GRAPHQL_PATH_STOREFRONT, {
     "input": {"lineItems": {
-      "variantId": variantId,
+      "variantId": `gid://shopify/ProductVariant/${variantId}`,
       "quantity": 1
     }}
   })); 
