@@ -409,7 +409,7 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
   let pass = `${new Date().getTime()}_pass`;
 
   // Create a customer by Storefront GraphQL mutation
-  var api_res = await(callGraphql(ctx, shop, `mutation customerCreate($input: CustomerCreateInput!) {
+  await(callGraphql(ctx, shop, `mutation customerCreate($input: CustomerCreateInput!) {
     customerCreate(input: $input) {
       customer {
         id
@@ -428,13 +428,29 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
     }
   })); 
 
+  // Create a checkout by Storefront GraphQL mutation
+  await(callGraphql(ctx, shop, `mutation checkoutCreate($input: CheckoutCreateInput!) {
+    checkoutCreate(input: $input) {
+      checkout {
+        id
+      }
+      checkoutUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }`, null, GRAPHQL_PATH_STOREFRONT, {
+    "input": {}
+  })); 
+
   var res = `<p>Shop Name (from Liquid object): {{shop.name}}</p><br/>
   {% form 'customer_login', id: 'myform' %} {{ form.errors | default_errors }}
-    <input type="hidden" name="customer[email]" value="${email}" />
-    <input type="hidden" name="customer[password]" value="${pass}" />
+    <input type="text" name="customer[email]" value="${email}" />
+    <input type="text" name="customer[password]" value="${pass}" />
     <input type="submit" value="Sign In" />
   {% endform %} 
-  <script>document.getElementById("myform").submit();</script>`;
+  <script>//document.getElementById("myform").submit();</script>`;
   
   ctx.set('Content-Type','application/liquid');
   ctx.body = res;
