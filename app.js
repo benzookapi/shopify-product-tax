@@ -407,6 +407,8 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
     return;
   }
 
+  let shop = ctx.request.query.shop;
+
   let email = `${new Date()}@example.com`;
   let pass = `${new Date()}_pass`;
 
