@@ -413,8 +413,8 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
 
   let shop = ctx.request.query.shop;
 
-  let email = `${new Date().getDate()}@example.com`;
-  let pass = `${new Date().getDate()}_pass`;
+  let email = `${new Date().getTime()}@example.com`;
+  let pass = `${new Date().getTime()}_pass`;
 
   // Create a customer by Storefront GraphQL mutation
   var api_res = await(callGraphql(ctx, shop, `mutation customerCreate($input: CustomerCreateInput!) {
