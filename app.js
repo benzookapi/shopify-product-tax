@@ -50,6 +50,10 @@ const MONGO_URL = `${process.env.SHOPIFY_MONGO_URL}`;
 const MONGO_DB_NAME = `${process.env.SHOPIFY_MONGO_DB_NAME}`;
 const MONGO_COLLECTION = 'shops';
 
+// Sales channel and storefront API 
+const SALES_CHANNEL = `${process.env.SHOPIFY_SALES_CHANNEL}`;
+const STOREFRONT_TOKEN = `${process.env.SHOPIFY_STOREFRONT_TOKEN}`;
+
 const METAFIELD_NAMESPACE = 'ProductTaxRefApp';
 const METAFIELD_KEY_IS_DYNAMIC = 'isDynamic';
 const METAFIELD_KEY_WITH_TEXT = 'withText';
@@ -202,16 +206,22 @@ router.get('/callback',  async (ctx, next) => {
       await(setDB(shop, res));  
     }
 
-    let storefront_res = await(callRESTAPI(ctx, shop, `storefront_access_tokens`, {
-      "storefront_access_token": {
-        "title": "My Storefront Token"
+    // If sales channel, get storefront access token
+    if (SALES_CHANNEL == "true") {
+      let storefront_res = await(callRESTAPI(ctx, shop, `storefront_access_tokens`, {
+        "storefront_access_token": {
+          "title": "My Storefront Token"
+        }
+      }));  
+      if (typeof storefront_res.storefront_access_token.access_token !== UNDEFINED) {
+        res.storefront_access_token = storefront_res.storefront_access_token.access_token;
+        await(setDB(shop, res));  
       }
-    }));
-
-    if (typeof storefront_res.storefront_access_token.access_token !== UNDEFINED) {
-      res.storefront_access_token = storefront_res.storefront_access_token.access_token;
+    } else if (STOREFRONT_TOKEN != null) {
+      // If you have a private app and set storefront access token, you can use it
+      res.storefront_access_token = STOREFRONT_TOKEN;
       await(setDB(shop, res));  
-    }
+    }    
 
     // Get app handle by GraphQL
     var api_res = await(callGraphql(ctx, shop, `{

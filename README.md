@@ -17,7 +17,14 @@ SHOPIFY_MONGO_DB_NAME:  YOUR_DB_NAME
 
 SHOPIFY_MONGO_URL:      mongodb://YOUR_ID:YOUR_PASSWORD@YOUR_DOMAIN:YOUR_PORT/YOUR_DB_NAME
 
+SHOPIFY_SALES_CHANNEL:     false
+
+SHOPIFY_STOREFRONT_TOKEN:  YOUR_PRIVATE_APP_STOREFRONT_TOKEN
+
 # Installation Endpoint
+`https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
+
+If your app is sales channel, try the unauthenticated scopes = storefront API
 `https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags,unauthenticated_write_customers,unauthenticated_read_customers&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
 
 (By OAuth endpopint described in the developer contents. See `https://shopify.dev/tutorials/authenticate-with-oauth`)
