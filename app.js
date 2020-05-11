@@ -202,6 +202,17 @@ router.get('/callback',  async (ctx, next) => {
       await(setDB(shop, res));  
     }
 
+    let storefront_res = await(callRESTAPI(ctx, shop, `storefront_access_tokens`, {
+      "storefront_access_token": {
+        "title": "My Storefront Token"
+      }
+    }));
+
+    if (typeof storefront_res.storefront_access_token.access_token !== UNDEFINED) {
+      res.storefront_access_token = storefront_res.storefront_access_token.access_token;
+      await(setDB(shop, res));  
+    }
+
     // Get app handle by GraphQL
     var api_res = await(callGraphql(ctx, shop, `{
       app {
@@ -376,19 +387,47 @@ router.get('/proxy',  async (ctx, next) => {
 
 /* 
  * 
- * --- App proxy with liquid ---
+ * --- App proxy with storefront and liquid ---
  * 
 */
-router.get('/proxy_liquid',  async (ctx, next) => {
-  console.log("---------- /proxy_liquid ------------");
+router.get('/proxy_storefront_liquid',  async (ctx, next) => {
+  console.log("---------- /proxy_storefront_liquid ------------");
   if (!checkAppProxySignature(ctx.request.query)) {
     ctx.status = 400;
     return;
   }
 
+  let email = `${new Date()}@example.com`;
+  let pass = `${new Date()}_pass`;
+
+  // Create a customer by Storefront GraphQL mutation
+  var api_res = await(callGraphql(ctx, shop, `mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer {
+        id
+      }
+      customerUserErrors {
+        code
+        field
+        message
+      }
+    }
+  }
+  `, null, GRAPHQL_PATH_ADMIN, `{
+    "input": {
+      "email": "${email}",
+      "password": "${pass}"
+    }
+  }`, true)); 
+
   var res = `<p>{{shop.name}}</p><br/>
-  <p>{{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }} ({{ cart.total_price | money }})</p><br/>
-  <p>{{product.title}}</p>`;
+  {% form 'customer_login' %} {{ form.errors | default_errors }}
+    <label for="customer_email">Email Address</label>
+    <input type="email" name="customer[email] value="${email}" />
+    <label for="customer_password">Password</label>
+    <input type="password" name="customer[password] vallue="${pass}" />
+    <input type="submit" value="Sign In" />
+  {% endform %} `;
   
   ctx.set('Content-Type','application/liquid');
   ctx.body = res;
@@ -460,17 +499,21 @@ const checkWebhookSignature = function(ctx, secret) {
 };
 
 /* --- --- */
-const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN) {
+const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN, vars = null, storefront = false) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
     // Set Gqphql string into query field of the JSON  as string
     api_req.query = ql.replace(/\n/g, '');
+    if (vars != null) {
+      api_req.variables = vars.replace(/\n/g, '');
+    }
     var access_token = token;
     if (access_token == null) {
       getDB(shop).then(function(shop_data){
         if (shop_data == null) return resolve(null);
-        access_token = shop_data.access_token;        
-        accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token).then(function(api_res){
+        access_token = shop_data.access_token;
+        if (storefront) access_token = shop_data.storefront_access_token;
+        accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token, CONTENT_TYPE_JSON, 'POST', storefront).then(function(api_res){
           return resolve(api_res);
         }).catch(function(e){
           console.log(`callGraphql ${e}`);
@@ -481,7 +524,7 @@ const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_AD
         return reject(e);
       });     
     } else {
-      accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token).then(function(api_res){
+      accessEndpoint(ctx, `https://${shop}/${path}`, api_req, access_token, CONTENT_TYPE_JSON, 'POST', storefront).then(function(api_res){
         return resolve(api_res);
       }).catch(function(e){
         console.log(`callGraphql ${e}`);
@@ -521,7 +564,7 @@ const callRESTAPI = function(ctx, shop, sub_path, json, method = 'POST', token =
 };
 
 /* ---  --- */
-const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_JSON, method = 'POST') {
+const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_JSON, method = 'POST', storefront = false) {
   console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)} ${token} ${content_type} ${method}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
@@ -537,7 +580,11 @@ const accessEndpoint = function(ctx, endpoint, req, token = null, content_type =
     let headers = {};
     headers['Content-Type'] = content_type;
     if (token != null) {
-      headers['X-Shopify-Access-Token'] = token;
+      if (!storefront) {
+        headers['X-Shopify-Access-Token'] = token;
+      } else {
+        headers['X-Shopify-Storefront-Access-Token'] = token;
+      }      
     }
     if (method == 'GET') {
       ctx.get(endpoint, req, headers).then(then_func).catch(catch_func);
