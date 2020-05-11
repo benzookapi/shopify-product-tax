@@ -434,7 +434,7 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
     <input type="hidden" name="customer[password]" value="${pass}" />
     <input type="submit" value="Sign In" />
   {% endform %} 
-  <script>//document.getElementById("myform").submit();</script>`;
+  <script>document.getElementById("myform").submit();</script>`;
   
   ctx.set('Content-Type','application/liquid');
   ctx.body = res;
