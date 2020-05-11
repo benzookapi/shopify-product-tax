@@ -430,25 +430,6 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
     }
   })); 
 
-  // Create a checkout by Storefront GraphQL mutation
-  await(callGraphql(ctx, shop, `mutation checkoutCreate($input: CheckoutCreateInput!) {
-    checkoutCreate(input: $input) {
-      checkout {
-        id
-      }
-      checkoutUserErrors {
-        code
-        field
-        message
-      }
-    }
-  }`, null, GRAPHQL_PATH_STOREFRONT, {
-    "input": {"lineItems": {
-      "variantId": `gid://shopify/ProductVariant/${variantId}`,
-      "quantity": 1
-    }}
-  })); 
-
   var res = `<p>Shop Name (from Liquid object): {{shop.name}}</p><br/>
   {% form 'customer_login', id: 'myform' %} {{ form.errors | default_errors }}
     <input type="text" name="customer[email]" value="${email}" />
