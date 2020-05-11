@@ -430,8 +430,8 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
 
   var res = `<p>Shop Name (from Liquid object): {{shop.name}}</p><br/>
   {% form 'customer_login', id: 'myform' %} {{ form.errors | default_errors }}
-    <input type="text" name="customer[email]" value="${email}" />
-    <input type="text" name="customer[password]" value="${pass}" />
+    <input type="hidden" name="customer[email]" value="${email}" />
+    <input type="hidden" name="customer[password]" value="${pass}" />
     <input type="submit" value="Sign In" />
   {% endform %} 
   <script>//document.getElementById("myform").submit();</script>`;
