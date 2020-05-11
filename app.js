@@ -40,6 +40,7 @@ const CONTENT_TYPE_FORM = 'application/x-www-form-urlencoded';
 
 const GRAPHQL_PATH_ADMIN = `admin/api/${API_VERSION}/graphql.json`;
 const RESTAPI_PATH_ADMIN = `admin/api/${API_VERSION}`;
+const GRAPHQL_PATH_STOREFRONT = `api/${API_VERSION}/graphql.json`;
 
 const UNDEFINED = 'undefined';
 
@@ -420,12 +421,12 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
       }
     }
   }
-  `, null, GRAPHQL_PATH_ADMIN, {
+  `, null, GRAPHQL_PATH_STOREFRONT, {
     "input": {
       "email": email,
       "password": pass
     }
-  }, true)); 
+  })); 
 
   var res = `<p>{{shop.name}}</p><br/>
   {% form 'customer_login' %} {{ form.errors | default_errors }}
@@ -506,7 +507,7 @@ const checkWebhookSignature = function(ctx, secret) {
 };
 
 /* --- --- */
-const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN, vars = null, storefront = false) {
+const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_ADMIN, vars = null) {
   return new Promise(function (resolve, reject) {
     let api_req = {};
     // Set Gqphql string into query field of the JSON  as string
@@ -515,6 +516,8 @@ const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_AD
       api_req.variables = vars;
     }
     var access_token = token;
+    var storefront = false;
+    if (path == GRAPHQL_PATH_STOREFRONT) storefront = true;
     if (access_token == null) {
       getDB(shop).then(function(shop_data){
         if (shop_data == null) return resolve(null);
