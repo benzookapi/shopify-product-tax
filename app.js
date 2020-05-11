@@ -405,6 +405,8 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
 
   let shop = ctx.request.query.shop;
 
+  let variantId = ctx.request.query.variantId;
+
   let email = `${new Date().getTime()}@example.com`;
   let pass = `${new Date().getTime()}_pass`;
 
@@ -441,7 +443,10 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
       }
     }
   }`, null, GRAPHQL_PATH_STOREFRONT, {
-    "input": {}
+    "input": {"lineItems": {
+      "variantId": variantId,
+      "quantity": 1
+    }}
   })); 
 
   var res = `<p>Shop Name (from Liquid object): {{shop.name}}</p><br/>
