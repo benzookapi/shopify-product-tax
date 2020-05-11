@@ -23,7 +23,7 @@ SHOPIFY_SALES_CHANNEL:     false
 `https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
 
 If your app is sales channel, try the unauthenticated scopes = storefront API
-`https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags,unauthenticated_write_customers,unauthenticated_read_customers,read_checkouts,write_checkouts&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
+`https://YOUR_SHOP_DOAMIN/admin/oauth/authorize?client_id=YOUR_API_KEY&scope=read_products,write_products,read_script_tags,write_script_tags,unauthenticated_write_customers,unauthenticated_read_customers,unauthenticated_read_checkouts,unauthenticated_write_checkouts&redirect_uri=https://YOUR_APP_DOMAIN_LIKE_HEROKU/callback&state=&grant_options[]=` 
 
 (By OAuth endpopint described in the developer contents. See `https://shopify.dev/tutorials/authenticate-with-oauth`)
 
