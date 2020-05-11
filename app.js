@@ -530,9 +530,9 @@ const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_AD
         access_token = shop_data.access_token;
         if (storefront) access_token = shop_data.storefront_access_token;
         var ba = "";
-        if (typeof shop_data.basic_auth !== UNDEFINED) {
+        /*if (typeof shop_data.basic_auth !== UNDEFINED) {
           ba = `${shop_data.basic_auth}@`;
-        }
+        }*/
         accessEndpoint(ctx, `https://${ba}${shop}/${path}`, api_req, access_token, CONTENT_TYPE_JSON, 'POST', storefront).then(function(api_res){
           return resolve(api_res);
         }).catch(function(e){
@@ -585,7 +585,9 @@ const callRESTAPI = function(ctx, shop, sub_path, json, method = 'POST', token =
 
 /* ---  --- */
 const accessEndpoint = function(ctx, endpoint, req, token = null, content_type = CONTENT_TYPE_JSON, method = 'POST', storefront = false) {
-  console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)} ${token} ${content_type} ${method}`);
+  var token_header = 'X-Shopify-Access-Token';
+  if (storefront) token_header = 'X-Shopify-Storefront-Access-Token'; 
+  console.log(`accessEndpoint　${endpoint} ${JSON.stringify(req)} ${token_header} ${token} ${content_type} ${method}`);
   return new Promise(function(resolve, reject) { 
     // Success callback
     var then_func = function(res){
@@ -600,11 +602,7 @@ const accessEndpoint = function(ctx, endpoint, req, token = null, content_type =
     let headers = {};
     headers['Content-Type'] = content_type;
     if (token != null) {
-      if (!storefront) {
-        headers['X-Shopify-Access-Token'] = token;
-      } else {
-        headers['X-Shopify-Storefront-Access-Token'] = token;
-      }      
+      headers[token_header] = token;
     }
     if (method == 'GET') {
       ctx.get(endpoint, req, headers).then(then_func).catch(catch_func);
