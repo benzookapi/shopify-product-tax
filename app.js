@@ -429,12 +429,12 @@ router.get('/proxy_storefront_liquid',  async (ctx, next) => {
       }
     }
   }
-  `, null, GRAPHQL_PATH_ADMIN, `{
+  `, null, GRAPHQL_PATH_ADMIN, {
     "input": {
-      "email": "${email}",
-      "password": "${pass}"
+      "email": email,
+      "password": pass
     }
-  }`, true)); 
+  }, true)); 
 
   var res = `<p>{{shop.name}}</p><br/>
   {% form 'customer_login' %} {{ form.errors | default_errors }}
@@ -521,7 +521,7 @@ const callGraphql = function(ctx, shop, ql, token = null, path = GRAPHQL_PATH_AD
     // Set Gqphql string into query field of the JSON  as string
     api_req.query = ql.replace(/\n/g, '');
     if (vars != null) {
-      api_req.variables = vars.replace(/\n/g, '');
+      api_req.variables = vars;
     }
     var access_token = token;
     if (access_token == null) {
