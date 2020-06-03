@@ -139,7 +139,7 @@ const productsQuery = client.graphQLClient.query((root) => {
   root.addConnection('products', {args: {first: 10}}, (product) => {
     product.add('title');
     product.add('tags');// Add fields to be returned
-    product.add('variantBySelectedOptions');
+    product.add('options');
   });
 });
 
