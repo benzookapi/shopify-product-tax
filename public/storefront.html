@@ -162,7 +162,7 @@ let buyMe = function() {
 
     console.log(checkoutId);
 
-    const lineItemsToAdd = [
+    /*const lineItemsToAdd = [
       {
         variantId: document.getElementById('variantId').value,
         quantity: parseInt(document.getElementById('quantity').value)
@@ -199,9 +199,10 @@ let buyMe = function() {
          window.location.href = checkout3.webUrl;
       });
 
-    });  
+    });*/  
 
-//window.location.href = checkout.webUrl;
+    window.location.href = checkout.webUrl;
+    
    });
 };
 document.getElementById('buy-me').addEventListener("click", buyMe);
