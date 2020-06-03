@@ -116,7 +116,6 @@ const client = ShopifyBuy.buildClient({
 const productsQuery = client.graphQLClient.query((root) => {
   root.addConnection('products', {args: {first: 10}}, (product) => {
     product.add('title');
-    product.add('variantBySelectedOptions');
     //product.add('tags');// Add fields to be returned
   });
 });
