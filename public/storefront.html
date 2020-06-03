@@ -98,6 +98,8 @@
  <p id="graphsql-response"></div>
 </div>
 
+<input type="button" value="Buy Me!" id="buy-me"></input>
+
 
 <script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
 <script>
@@ -126,4 +128,15 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
   console.log(res);
   document.getElementById('graphsql-response').innerHTML = res;
 });
+
+let buyMe = function() {
+    // Create an empty checkout
+   client.checkout.create().then((checkout) => {
+    // Do something with the checkout
+     console.log(JSON.stringify(checkout,4 ,null));
+
+   });
+};
+document.getElementById('graphsql-response')..addEventListener("click", buyMe);
+
 </script>
