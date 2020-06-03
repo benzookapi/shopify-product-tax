@@ -1,3 +1,5 @@
+<div style="width: 100%; text-align: center;">
+
 <!-- Buy Button Sample -->
 <!-- https://help.shopify.com/ja/manual/online-sales-channels/buy-button -->
 <!-- https://shopify.github.io/buy-button-js/ -->
@@ -120,6 +122,8 @@
 <input type="button" value="Buy Me!" id="buy-me" style="font-size: x-large;"></input>
 </div>
 
+</div>
+
 <script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
 <script>
 // Do not use import
@@ -193,6 +197,6 @@ let buyMe = function() {
 
    });
 };
-document.getElementById('graphsql-response').addEventListener("click", buyMe);
+document.getElementById('buy-me').addEventListener("click", buyMe);
 
 </script>
