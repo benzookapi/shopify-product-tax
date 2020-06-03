@@ -167,7 +167,7 @@ let buyMe = function() {
         customAttributes: [{key: "MyKey", value: "MyValue"}]
       }
     ];
-
+/*
     // Add an item to the checkout
     client.checkout.addLineItems(checkoutId, lineItemsToAdd).then((checkout) => {
       // Do something with the updated checkout
@@ -194,7 +194,8 @@ let buyMe = function() {
       });
 
     });  
-
+*/
+window.location.href = checkout.webUrl;
    });
 };
 document.getElementById('buy-me').addEventListener("click", buyMe);
