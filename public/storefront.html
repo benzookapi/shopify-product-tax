@@ -122,8 +122,8 @@
 
 </div>
 
-<!--<script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>-->
-<script src="https://sdks.shopifycdn.com/js-buy-sdk/2.0.1/index.unoptimized.umd.min.js"></script>
+<script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
+<!--<script src="https://sdks.shopifycdn.com/js-buy-sdk/2.0.1/index.unoptimized.umd.min.js"></script>-->
 <script>
 // Do not use import
 // import Client from 'shopify-buy/index.unoptimized.umd';
@@ -138,7 +138,7 @@ const client = ShopifyBuy.buildClient({
 const productsQuery = client.graphQLClient.query((root) => {
   root.addConnection('products', {args: {first: 10}}, (product) => {
     product.add('title');
-    product.add('tags');// Add fields to be returned
+    //product.add('tags');// Add fields to be returned
     product.add('options');
   });
 });
