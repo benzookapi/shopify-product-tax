@@ -154,7 +154,7 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
 
 let buyMe = function() {
     // Create an empty checkout
-   client.checkout.create(/*{
+   client.checkout.create({
        email: "junichi.okamura@shopify.com",
        lineItems: [ {
         variantId: document.getElementById('variantId').value,
@@ -173,7 +173,7 @@ let buyMe = function() {
        province: document.getElementById('province').value,
        zip: document.getElementById('zip').value
       }
-   }*/).then((checkout) => {
+   }).then((checkout) => {
     // Do something with the checkout
     console.log(JSON.stringify(checkout,4 ,null));
 
