@@ -95,7 +95,24 @@
 <!-- https://shopify.github.io/js-buy-sdk/ -->
 <h1>Storefront API GraphQL Response</h1>
 <div>
- <p id="graphsql-response"></div>
+ <p id="graphsql-response"></p> 
+</div>
+<h1>My own checkout form with Storefront API</h1>
+<div>
+    <p>What to buy</p>
+    <label>Variant ID</label><input type="text" id="variantId" value=""></input><br/>
+    <label>Quantity</label><input type="text" id="quantity" value="5"></input><br/>
+    <p>Shipping Address</p>
+    <label>address1</label><input type="text" id="address1" value="Chestnut Street 92"></input><br/>
+    <label>address2</label><input type="text" id="address2" value="Apartment 2"></input><br/>
+    <label>city</label><input type="text" id="city" value="Louisville"></input><br/>
+    <label>country</label><input type="text" id="country" value="United States"></input><br/>
+    <label>firstName</label><input type="text" id="firstName" value="Bob"></input><br/>
+    <label>lastName</label><input type="text" id="lastName" value="Norman"></input><br/>
+    <label>phone</label><input type="text" id="phone" value="555-625-1199"></input><br/>
+    <label>province</label><input type="text" id="province" value="Kentucky"></input><br/>
+    <label>zip</label><input type="text" id="zip" value="40202"></input><br/>
+
 </div>
 
 <input type="button" value="Buy Me!" id="buy-me"></input>
@@ -126,6 +143,7 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
   let res = JSON.stringify(model, 4 ,null);
   console.log(res);
   document.getElementById('graphsql-response').innerHTML = res;
+  document.getElementById('variant').value = res.products[0].id;
 });
 
 let buyMe = function() {
@@ -134,12 +152,12 @@ let buyMe = function() {
     // Do something with the checkout
     console.log(JSON.stringify(checkout,4 ,null));
 
-    const checkoutId = 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0SW1hZ2UvMTgyMTc3ODc1OTI='; // ID of an existing checkout
+    const checkoutId = checkout.id; // ID of an existing checkout
 
     const lineItemsToAdd = [
       {
-        variantId: 'Z2lkOi8vc2hvcGlmeS9Qcm9kdWN0VmFyaWFudC8yOTEwNjAyMjc5Mg==',
-        quantity: 5,
+        variantId: document.getElementById('variantId').value,
+        quantity: document.getElementById('quantity').value,
         customAttributes: [{key: "MyKey", value: "MyValue"}]
       }
     ];
@@ -150,22 +168,23 @@ let buyMe = function() {
       console.log(JSON.stringify(checkout.lineItems, 4, null)); // Array with one additional line item
 
       const shippingAddress = {
-       address1: 'Chestnut Street 92',
-       address2: 'Apartment 2',
-       city: 'Louisville',
+       address1: document.getElementById('address1').value,
+       address2: document.getElementById('address2').value,
+       city: document.getElementById('city').value,
        company: null,
-       country: 'United States',
-       firstName: 'Bob',
-       lastName: 'Norman',
-       phone: '555-625-1199',
-       province: 'Kentucky',
-       zip: '40202'
+       country: document.getElementById('country').value,
+       firstName: document.getElementById('firstName').value,
+       lastName: document.getElementById('lastName').value,
+       phone: document.getElementById('phone').value,
+       province: document.getElementById('province').value,
+       zip: document.getElementById('zip').value
       };
 
       // Update the shipping address for an existing checkout.
       client.checkout.updateShippingAddress(checkoutId, shippingAddress).then(checkout => {
          // Do something with the updated checkout
          console.log(JSON.stringify(checkout, 4, null));
+         window.location.href = checkout.webUrl;
       });
 
     });  
