@@ -155,23 +155,23 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
 let buyMe = function() {
     // Create an empty checkout
    client.checkout.create({
-       email: "junichi.okamura@shopify.com",
-       lineItems: [ {
-        variantId: document.getElementById('variantId').value,
-        quantity: parseInt(document.getElementById('quantity').value)
+       "email": "junichi.okamura@shopify.com",
+       "lineItems": [ {
+        "variantId": document.getElementById('variantId').value,
+        "quantity": parseInt(document.getElementById('quantity').value)
         //customAttributes: [{key: "MyKey", value: "MyValue"}]
       }],
-       shippingAddress:  {
-       address1: document.getElementById('address1').value,
-       address2: document.getElementById('address2').value,
-       city: document.getElementById('city').value,
-       company: null,
-       country: document.getElementById('country').value,
-       firstName: document.getElementById('firstName').value,
-       lastName: document.getElementById('lastName').value,
-       phone: document.getElementById('phone').value,
-       province: document.getElementById('province').value,
-       zip: document.getElementById('zip').value
+       "shippingAddress":  {
+       "address1": document.getElementById('address1').value,
+       "address2": document.getElementById('address2').value,
+       "city": document.getElementById('city').value,
+       "company": null,
+       "country": document.getElementById('country').value,
+       "firstName": document.getElementById('firstName').value,
+       "lastName": document.getElementById('lastName').value,
+       "phone": document.getElementById('phone').value,
+       "province": document.getElementById('province').value,
+       "zip": document.getElementById('zip').value
       }
    }).then((checkout) => {
     // Do something with the checkout
