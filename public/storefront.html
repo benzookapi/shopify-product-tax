@@ -116,7 +116,7 @@ const productsQuery = client.graphQLClient.query((root) => {
 // Call the send method with the custom products query
 client.graphQLClient.send(productsQuery).then(({model, data}) => {
   // Do something with the products
-  val res = JSON.stringify(model, 4 ,null);
+  let res = JSON.stringify(model, 4 ,null);
   console.log(res);
   document.getElementById('graphsql-response').innerHTML = res;
 });
