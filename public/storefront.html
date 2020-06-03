@@ -145,7 +145,7 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
   let res = JSON.stringify(model, 4 ,null);
   console.log(res);
   document.getElementById('graphsql-response').innerHTML = res;
-  document.getElementById('variant').value = res.products[0].id;
+  document.getElementById('variantId').value = res.products[0].id;
 });
 
 let buyMe = function() {
@@ -159,7 +159,7 @@ let buyMe = function() {
     const lineItemsToAdd = [
       {
         variantId: document.getElementById('variantId').value,
-        quantity: document.getElementById('quantity').value,
+        quantity: parseInt(document.getElementById('quantity').value),
         customAttributes: [{key: "MyKey", value: "MyValue"}]
       }
     ];
