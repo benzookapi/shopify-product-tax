@@ -1,0 +1,123 @@
+<!-- Buy Button Sample -->
+<!-- https://help.shopify.com/ja/manual/online-sales-channels/buy-button -->
+<div id='product-component-1591153087893'></div>
+<script type="text/javascript">
+/*<![CDATA[*/
+(function () {
+  var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
+  if (window.ShopifyBuy) {
+    if (window.ShopifyBuy.UI) {
+      ShopifyBuyInit();
+    } else {
+      loadScript();
+    }
+  } else {
+    loadScript();
+  }
+  function loadScript() {
+    var script = document.createElement('script');
+    script.async = true;
+    script.src = scriptURL;
+    (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(script);
+    script.onload = ShopifyBuyInit;
+  }
+  function ShopifyBuyInit() {
+    var client = ShopifyBuy.buildClient({
+      domain: 'junichiokamuraspdev123.myshopify.com',
+      storefrontAccessToken: '15269c301ff74cd6a6e9e3329d7a6f0f',
+    });
+    ShopifyBuy.UI.onReady(client).then(function (ui) {
+      ui.createComponent('product', {
+        id: '4634954563620',
+        node: document.getElementById('product-component-1591153087893'),
+        moneyFormat: '%C2%A5%7B%7Bamount_no_decimals%7D%7D',
+        options: {
+  "product": {
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "calc(25% - 20px)",
+          "margin-left": "20px",
+          "margin-bottom": "50px"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "productSet": {
+    "styles": {
+      "products": {
+        "@media (min-width: 601px)": {
+          "margin-left": "-20px"
+        }
+      }
+    }
+  },
+  "modalProduct": {
+    "contents": {
+      "img": false,
+      "imgWithCarousel": true,
+      "button": false,
+      "buttonWithQuantity": true
+    },
+    "styles": {
+      "product": {
+        "@media (min-width: 601px)": {
+          "max-width": "100%",
+          "margin-left": "0px",
+          "margin-bottom": "0px"
+        }
+      }
+    },
+    "text": {
+      "button": "Add to cart"
+    }
+  },
+  "cart": {
+    "text": {
+      "total": "Subtotal",
+      "button": "Checkout"
+    }
+  }
+},
+      });
+    });
+  }
+})();
+/*]]>*/
+</script>
+
+<!-- JS Buy Button SDK sample as CDN-->
+<!-- https://shopify.github.io/js-buy-sdk/ -->
+
+<script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
+<script>
+// Do not use import
+// import Client from 'shopify-buy/index.unoptimized.umd';
+
+// Replace Client with ShopifyBuy 
+const client = ShopifyBuy.buildClient({
+  domain: 'junichiokamuraspdev123.myshopify.com',
+  storefrontAccessToken: '15269c301ff74cd6a6e9e3329d7a6f0f'
+});
+
+// Build a custom products query using the unoptimized version of the SDK
+const productsQuery = client.graphQLClient.query((root) => {
+  root.addConnection('products', {args: {first: 10}}, (product) => {
+    product.add('title');
+    //product.add('tags');// Add fields to be returned
+  });
+});
+
+// Call the send method with the custom products query
+client.graphQLClient.send(productsQuery).then(({model, data}) => {
+  // Do something with the products
+  console.log(JSON.stringify(model));
+  console.log(JSON.stringify(data));
+});
+
+
+
+</script>
