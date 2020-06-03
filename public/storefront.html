@@ -122,8 +122,8 @@
 
 </div>
 
-<script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
-<!--<script src="https://sdks.shopifycdn.com/js-buy-sdk/2.0.1/index.unoptimized.umd.min.js"></script>-->
+<!--<script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>-->
+<script src="https://sdks.shopifycdn.com/js-buy-sdk/2.0.1/index.unoptimized.umd.min.js"></script>
 <script>
 // Do not use import
 // import Client from 'shopify-buy/index.unoptimized.umd';
@@ -138,7 +138,7 @@ const client = ShopifyBuy.buildClient({
 const productsQuery = client.graphQLClient.query((root) => {
   root.addConnection('products', {args: {first: 10}}, (product) => {
     product.add('title');
-    //product.add('tags');// Add fields to be returned
+    product.add('tags');// Add fields to be returned
     product.add('options');
   });
 });
@@ -154,13 +154,32 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
 
 let buyMe = function() {
     // Create an empty checkout
-   client.checkout.create().then((checkout) => {
+   client.checkout.create({
+       email: "junichi.okamura@shopify.com",
+       lineItems: [ {
+        variantId: document.getElementById('variantId').value,
+        quantity: parseInt(document.getElementById('quantity').value)
+        //customAttributes: [{key: "MyKey", value: "MyValue"}]
+      }],
+       shippingAddress:  {
+       address1: document.getElementById('address1').value,
+       address2: document.getElementById('address2').value,
+       city: document.getElementById('city').value,
+       company: null,
+       country: document.getElementById('country').value,
+       firstName: document.getElementById('firstName').value,
+       lastName: document.getElementById('lastName').value,
+       phone: document.getElementById('phone').value,
+       province: document.getElementById('province').value,
+       zip: document.getElementById('zip').value
+      }
+   }).then((checkout) => {
     // Do something with the checkout
     console.log(JSON.stringify(checkout,4 ,null));
 
-    const checkoutId = checkout.id; // ID of an existing checkout
+    //const checkoutId = checkout.id; // ID of an existing checkout
 
-    console.log(checkoutId);
+    //console.log(checkoutId);
 
     /*const lineItemsToAdd = [
       {
@@ -201,27 +220,7 @@ let buyMe = function() {
 
     });*/  
 
-    const shippingAddress = {
-       address1: document.getElementById('address1').value,
-       address2: document.getElementById('address2').value,
-       city: document.getElementById('city').value,
-       company: null,
-       country: document.getElementById('country').value,
-       firstName: document.getElementById('firstName').value,
-       lastName: document.getElementById('lastName').value,
-       phone: document.getElementById('phone').value,
-       province: document.getElementById('province').value,
-       zip: document.getElementById('zip').value
-      };
-
-      console.log(JSON.stringify(shippingAddress, 4, null));
-
-      // Update the shipping address for an existing checkout.
-      client.checkout.updateShippingAddress(checkoutId, shippingAddress).then((checkout3) => {
-         // Do something with the updated checkout
-         console.log(JSON.stringify(checkout3, 4, null));
-         window.location.href = checkout3.webUrl;
-      });
+    
 
     //window.location.href = checkout.webUrl;
 
