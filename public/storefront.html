@@ -171,11 +171,11 @@ let buyMe = function() {
     ];
 
     console.log(JSON.stringify(lineItemsToAdd, 4, null));
-/*
+
     // Add an item to the checkout
-    client.checkout.addLineItems(checkoutId, lineItemsToAdd).then((checkout) => {
+    client.checkout.addLineItems(checkoutId, lineItemsToAdd).then((checkout2) => {
       // Do something with the updated checkout
-      console.log(JSON.stringify(checkout.lineItems, 4, null)); // Array with one additional line item
+      console.log(JSON.stringify(checkout2.lineItems, 4, null)); // Array with one additional line item
 
       const shippingAddress = {
        address1: document.getElementById('address1').value,
@@ -190,15 +190,17 @@ let buyMe = function() {
        zip: document.getElementById('zip').value
       };
 
+      console.log(JSON.stringify(shippingAddress, 4, null));
+
       // Update the shipping address for an existing checkout.
-      client.checkout.updateShippingAddress(checkoutId, shippingAddress).then(checkout => {
+      client.checkout.updateShippingAddress(checkoutId, shippingAddress).then((checkout3) => {
          // Do something with the updated checkout
-         console.log(JSON.stringify(checkout, 4, null));
-         window.location.href = checkout.webUrl;
+         console.log(JSON.stringify(checkout3, 4, null));
+         window.location.href = checkout3.webUrl;
       });
 
     });  
-*/
+
 //window.location.href = checkout.webUrl;
    });
 };
