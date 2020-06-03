@@ -102,7 +102,7 @@
 <h1>My own checkout form with Storefront API</h1>
 <div style="border: solid;">
     <p style="font-size: x-large;">What to buy</p>
-    <label>Variant ID</label><input type="text" id="variantId" value=""></input><br/>
+    <label>Variant ID</label><input type="text" id="variantId" value="gid://shopify/ProductVariant/31967296552996"></input><br/>
     <label>Quantity</label><input type="text" id="quantity" value="5"></input><br/>
     <p style="font-size: x-large;">Shipping Address</p>
     <label>address1</label><input type="text" id="address1" value="Chestnut Street 92"></input><br/>
@@ -148,7 +148,6 @@ client.graphQLClient.send(productsQuery).then(({model, data}) => {
   let res = JSON.stringify(model, 4 ,null);
   console.log(res);
   document.getElementById('graphsql-response').innerHTML = res;
-  document.getElementById('variantId').value = model.products[0].id;
 });
 
 let buyMe = function() {
