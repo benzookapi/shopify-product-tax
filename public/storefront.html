@@ -1,5 +1,6 @@
 <!-- Buy Button Sample -->
 <!-- https://help.shopify.com/ja/manual/online-sales-channels/buy-button -->
+<!-- https://shopify.github.io/buy-button-js/ -->
 <div id='product-component-1591153087893'></div>
 <script type="text/javascript">
 /*<![CDATA[*/
@@ -91,6 +92,7 @@
 
 <!-- JS Buy Button SDK sample as CDN-->
 <!-- https://shopify.github.io/js-buy-sdk/ -->
+<div id="graphsql-response"></div>
 
 <script src="https://sdks.shopifycdn.com/js-buy-sdk/v2/latest/index.umd.min.js"></script>
 <script>
@@ -114,10 +116,8 @@ const productsQuery = client.graphQLClient.query((root) => {
 // Call the send method with the custom products query
 client.graphQLClient.send(productsQuery).then(({model, data}) => {
   // Do something with the products
-  console.log(JSON.stringify(model));
-  console.log(JSON.stringify(data));
+  val res = JSON.stringify(model, 4 ,null);
+  console.log(res);
+  document.getElementById('graphsql-response').innerHTML = res;
 });
-
-
-
 </script>
