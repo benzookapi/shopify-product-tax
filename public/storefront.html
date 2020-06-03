@@ -201,8 +201,30 @@ let buyMe = function() {
 
     });*/  
 
-    window.location.href = checkout.webUrl;
-    
+    const shippingAddress = {
+       address1: document.getElementById('address1').value,
+       address2: document.getElementById('address2').value,
+       city: document.getElementById('city').value,
+       company: null,
+       country: document.getElementById('country').value,
+       firstName: document.getElementById('firstName').value,
+       lastName: document.getElementById('lastName').value,
+       phone: document.getElementById('phone').value,
+       province: document.getElementById('province').value,
+       zip: document.getElementById('zip').value
+      };
+
+      console.log(JSON.stringify(shippingAddress, 4, null));
+
+      // Update the shipping address for an existing checkout.
+      client.checkout.updateShippingAddress(checkoutId, shippingAddress).then((checkout3) => {
+         // Do something with the updated checkout
+         console.log(JSON.stringify(checkout3, 4, null));
+         window.location.href = checkout3.webUrl;
+      });
+
+    //window.location.href = checkout.webUrl;
+
    });
 };
 document.getElementById('buy-me').addEventListener("click", buyMe);
