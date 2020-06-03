@@ -160,6 +160,8 @@ let buyMe = function() {
 
     const checkoutId = checkout.id; // ID of an existing checkout
 
+    console.log(checkoutId);
+
     const lineItemsToAdd = [
       {
         variantId: document.getElementById('variantId').value,
@@ -167,6 +169,8 @@ let buyMe = function() {
         customAttributes: [{key: "MyKey", value: "MyValue"}]
       }
     ];
+
+    console.log(JSON.stringify(lineItemsToAdd, 4, null));
 /*
     // Add an item to the checkout
     client.checkout.addLineItems(checkoutId, lineItemsToAdd).then((checkout) => {
