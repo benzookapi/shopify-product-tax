@@ -2,10 +2,10 @@
     "short_name": "Shopify PWA Sample",
     "name": "Shopify PWA Sample App",
     "display": "standalone",
-    "start_url": "pwa.html",
+    "start_url": "https://shopify-product-tax.herokuapp.com/pwa.html",
     "icons": [
         {
-            "src": "logo.png",
+            "src": "https://shopify-product-tax.herokuapp.com/logo.png",
             "sizes": "192x192",
             "type": "image/png"
         }
