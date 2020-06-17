@@ -72,10 +72,10 @@ const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
  * --- Storefront Buy SDK ---
  *
 */
-router.get('/storefront',  async (ctx, next) => { 
+/*router.get('/storefront',  async (ctx, next) => { 
   console.log("+++++++++ /storefront ++++++++++");
   
-  import Client from 'shopify-buy';
+  
 
   // Initializing a client to return content in the store's primary language
   const client = Client.buildClient({
@@ -92,7 +92,7 @@ router.get('/storefront',  async (ctx, next) => {
   await ctx.render('storefront', {
 
   });
-});
+});*/
 
 /*
  *
