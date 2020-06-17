@@ -66,6 +66,34 @@ const PROXY_KEY_VARIANTS = 'ShopifyProductTaxAppVariants';
 // Set Timezone Japan
 //process.env.TZ = 'Asia/Tokyo'; 
 
+
+/*
+ *
+ * --- Storefront Buy SDK ---
+ *
+*/
+router.get('/storefront',  async (ctx, next) => { 
+  console.log("+++++++++ /storefront ++++++++++");
+  
+  import Client from 'shopify-buy';
+
+  // Initializing a client to return content in the store's primary language
+  const client = Client.buildClient({
+    domain: 'junichiokamuraspdev123.myshopify.com',
+    storefrontAccessToken: '15269c301ff74cd6a6e9e3329d7a6f0f'
+  });
+
+  client.product.fetchAll().then((products) => {
+    // Do something with the products
+    console.log(products);
+  });
+
+
+  await ctx.render('storefront', {
+
+  });
+});
+
 /*
  *
  * --- CDN App Bridge ---

@@ -11,6 +11,7 @@
     "koa-static": "^5.0.0",
     "koa-views": "^5.0.0",
     "mongodb": "^3.4.1",
+    "shopify-buy": "^2.10.0",
     "underscore": "^1.9.0"
   },
   "devDependencies": {},
