@@ -5,6 +5,13 @@
 
 <br /> <br />
 
+<script>
+    let popup = true;
+    if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
+      popup = false;
+    }
+</script>
+
 
 <div id='product-component-1615540304951'></div>
 <script type="text/javascript">
@@ -160,7 +167,7 @@
       "notice": "配送料と割引コードは後で追加されます。",
       "button": "お買い上げ"
     },
-    "popup": false
+    "popup": popup
   },
   "toggle": {
     "styles": {
