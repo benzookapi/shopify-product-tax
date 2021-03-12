@@ -6,14 +6,8 @@
 <br /> <br />
 
 
-<div id='product-component-1615539558846'></div>
+<div id='product-component-1615540304951'></div>
 <script type="text/javascript">
-
-let popup = true;
-if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
-  popup = false;
-}
-
 /*<![CDATA[*/
 (function () {
   var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
@@ -41,42 +35,50 @@ if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
     ShopifyBuy.UI.onReady(client).then(function (ui) {
       ui.createComponent('product', {
         id: '5598843502648',
-        node: document.getElementById('product-component-1615539558846'),
+        node: document.getElementById('product-component-1615540304951'),
         moneyFormat: '%C2%A5%7B%7Bamount_no_decimals%7D%7D',
         options: {
   "product": {
     "styles": {
       "product": {
         "@media (min-width: 601px)": {
-          "max-width": "100%",
-          "margin-left": "0",
+          "max-width": "calc(25% - 20px)",
+          "margin-left": "20px",
           "margin-bottom": "50px"
-        },
-        "text-align": "left"
+        }
       },
       "title": {
-        "font-weight": "normal",
-        "font-size": "26px"
+        "font-weight": "normal"
       },
-      "price": {
-        "font-size": "18px"
+      "button": {
+        "font-size": "18px",
+        "padding-top": "17px",
+        "padding-bottom": "17px",
+        ":hover": {
+          "background-color": "#4e91a4"
+        },
+        "background-color": "#57a1b6",
+        ":focus": {
+          "background-color": "#4e91a4"
+        },
+        "border-radius": "28px",
+        "padding-left": "70px",
+        "padding-right": "70px"
       },
-      "compareAt": {
-        "font-size": "15.299999999999999px"
-      },
-      "unitPrice": {
-        "font-size": "15.299999999999999px"
+      "quantityInput": {
+        "font-size": "18px",
+        "padding-top": "17px",
+        "padding-bottom": "17px"
       }
     },
-    "layout": "horizontal",
+    "buttonDestination": "checkout",
     "contents": {
       "img": false,
-      "imgWithCarousel": true,
-      "description": true
+      "title": false,
+      "price": false
     },
-    "width": "100%",
     "text": {
-      "button": "カートに追加"
+      "button": "Buy now"
     }
   },
   "productSet": {
@@ -103,28 +105,30 @@ if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
           "margin-bottom": "0px"
         }
       },
+      "button": {
+        "font-size": "18px",
+        "padding-top": "17px",
+        "padding-bottom": "17px",
+        ":hover": {
+          "background-color": "#4e91a4"
+        },
+        "background-color": "#57a1b6",
+        ":focus": {
+          "background-color": "#4e91a4"
+        },
+        "border-radius": "28px",
+        "padding-left": "70px",
+        "padding-right": "70px"
+      },
+      "quantityInput": {
+        "font-size": "18px",
+        "padding-top": "17px",
+        "padding-bottom": "17px"
+      },
       "title": {
         "font-family": "Helvetica Neue, sans-serif",
         "font-weight": "normal",
         "font-size": "26px",
-        "color": "#4c4c4c"
-      },
-      "price": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "18px",
-        "color": "#4c4c4c"
-      },
-      "compareAt": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
-        "color": "#4c4c4c"
-      },
-      "unitPrice": {
-        "font-family": "Helvetica Neue, sans-serif",
-        "font-weight": "normal",
-        "font-size": "15.299999999999999px",
         "color": "#4c4c4c"
       }
     },
@@ -134,6 +138,21 @@ if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
   },
   "option": {},
   "cart": {
+    "styles": {
+      "button": {
+        "font-size": "18px",
+        "padding-top": "17px",
+        "padding-bottom": "17px",
+        ":hover": {
+          "background-color": "#4e91a4"
+        },
+        "background-color": "#57a1b6",
+        ":focus": {
+          "background-color": "#4e91a4"
+        },
+        "border-radius": "28px"
+      }
+    },
     "text": {
       "title": "カート",
       "total": "小計",
@@ -141,9 +160,24 @@ if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
       "notice": "配送料と割引コードは後で追加されます。",
       "button": "お買い上げ"
     },
-    "popup": popup
+    "popup": false
   },
-  "toggle": {}
+  "toggle": {
+    "styles": {
+      "toggle": {
+        "background-color": "#57a1b6",
+        ":hover": {
+          "background-color": "#4e91a4"
+        },
+        ":focus": {
+          "background-color": "#4e91a4"
+        }
+      },
+      "count": {
+        "font-size": "18px"
+      }
+    }
+  }
 },
       });
     });
@@ -151,8 +185,3 @@ if (navigator.userAgent.match(/iPhone|Android.+Mobile/)) {
 })();
 /*]]>*/
 </script>
-
-
-
-
-
