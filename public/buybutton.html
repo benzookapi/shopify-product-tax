@@ -1,6 +1,10 @@
 <iframe width="560" height="315" src="https://www.youtube.com/embed/2zDFNS6r1aQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen=""></iframe> <br /> <br />
-<div id="product-component-1615533132921"></div>
-<script type="text/javascript">// <![CDATA[
+
+
+
+<div id='product-component-1615536568968'></div>
+<script type="text/javascript">
+/*<![CDATA[*/
 (function () {
   var scriptURL = 'https://sdks.shopifycdn.com/buy-button/latest/buy-button-storefront.min.js';
   if (window.ShopifyBuy) {
@@ -27,7 +31,7 @@
     ShopifyBuy.UI.onReady(client).then(function (ui) {
       ui.createComponent('product', {
         id: '5598843502648',
-        node: document.getElementById('product-component-1615533132921'),
+        node: document.getElementById('product-component-1615536568968'),
         moneyFormat: '%C2%A5%7B%7Bamount_no_decimals%7D%7D',
         options: {
   "product": {
@@ -126,7 +130,8 @@
       "empty": "カートが空です。",
       "notice": "配送料と割引コードは後で追加されます。",
       "button": "お買い上げ"
-    }
+    },
+    "popup": false
   },
   "toggle": {}
 },
@@ -134,4 +139,6 @@
     });
   }
 })();
-// ]]></script>
+/*]]>*/
+</script>
+
