@@ -489,7 +489,7 @@ const checkAppProxySignature = function(json) {
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure = hmac.digest('hex');
-  //console.log(`checkAppProxySignature ${signarure}`);
+  console.log(`checkAppProxySignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
