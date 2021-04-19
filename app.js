@@ -474,7 +474,7 @@ const checkSignature = function(json) {
   const hmac = crypto.createHmac('sha256', HMAC_SECRET);
   hmac.update(msg);
   let signarure =  hmac.digest('hex');
-  //console.log(`checkSignature ${signarure}`);
+  console.log(`checkSignature ${signarure}`);
   return signarure === sig ? true : false;
 };
 
